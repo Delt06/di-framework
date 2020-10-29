@@ -11,6 +11,9 @@ namespace ECS.Core
 
 		bool TryFindComponent([NotNull] Type type, out object component);
 		bool TryFindComponent<T>(out T component) where T : class, IComponent;
+		
+		T RequireComponent<T>() where T : class , IComponent;
+		
 		T ResolveGlobal<T>() where T : class;
 		object ResolveGlobal([NotNull] Type type);
 	}

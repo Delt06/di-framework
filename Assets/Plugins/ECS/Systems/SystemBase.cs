@@ -13,6 +13,8 @@ namespace ECS.Systems
 
 		protected void LateUpdate()
 		{
+			UpdateAll(UpdateMode.LateUpdate, Time.deltaTime);
+			
 			foreach (var changedEntity in _changedEntities)
 			{
 				var isActive = EntityWorld.IsActive(changedEntity);
@@ -51,15 +53,31 @@ namespace ECS.Systems
 		{
 			BuildQuery(_query);
 			_query.Freeze();
-			InvalidateBuffer();
+			PopulateBuffer();
 			
 			this.ResolveDependencies();
-			OnStarted();
+
+			foreach (var entity in _entityBuffer)
+			{
+				OnStarted(entity);
+			}
 		}
 
 		protected abstract void BuildQuery(ComponentQuery query);
 
-		protected virtual void OnStarted() { }
+		private void PopulateBuffer()
+		{
+			_entityBuffer.Clear();
+
+			for (var index = 0; index < EntityWorld.EntitiesCount; index++)
+			{
+				var entity = EntityWorld.GetEntity(index);
+				if (_query.IsSelected(entity))
+					_entityBuffer.Add(entity);
+			}
+		}
+
+		protected virtual void OnStarted([NotNull] IEntity entity) { }
 
 		protected void Awake()
 		{
@@ -74,7 +92,7 @@ namespace ECS.Systems
 			
 			OnAwake();
 		}
-		
+
 		protected virtual void OnAwake() { }
 
 		protected void OnDestroy()
@@ -83,19 +101,8 @@ namespace ECS.Systems
 			EntityWorld.Removed -= _onEntityChanged;
 			OnDestroyed();
 		}
-		
+
 		protected virtual void OnDestroyed() { }
-
-		private void InvalidateBuffer()
-		{
-			_entityBuffer.Clear();
-
-			for (var index = 0; index < EntityWorld.EntitiesCount; index++)
-			{
-				var entity = EntityWorld.GetEntity(index);
-				_entityBuffer.Add(entity);
-			}
-		}
 
 		private EntityAction _onEntityChanged;
 		private readonly HashSet<IEntity> _changedEntities = new HashSet<IEntity>();

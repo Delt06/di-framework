@@ -7,11 +7,19 @@ namespace ECS.Systems
 {
 	public sealed class ComponentQuery
 	{
-		public void AddType([NotNull] Type type)
+		public ComponentQuery AddType([NotNull] Type type)
 		{
 			if (IsFrozen) throw new InvalidOperationException("Cannot change a query if it is frozen.");
 			if (type == null) throw new ArgumentNullException(nameof(type));
+			if (!typeof(IComponent).IsAssignableFrom(type)) throw new ArgumentException($"Type has to derive from {nameof(IComponent)}.");
 			_componentTypes.Add(type);
+			return this;
+		}
+
+		public ComponentQuery AddType<T>() where T : IComponent
+		{
+			AddType(typeof(T));
+			return this;
 		}
 
 		public void Freeze() => IsFrozen = true;

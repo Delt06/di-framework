@@ -23,6 +23,14 @@ namespace ECS.Entities
 			return _components.TryGet(out component);
 		}
 
+		public T RequireComponent<T>() where T : class, IComponent
+		{
+			if (TryFindComponent(out T component))
+				return component;
+			
+			throw new ArgumentException($"Entity {this} does not have a component of type {typeof(T)}.");
+		}
+
 		public T ResolveGlobal<T>() where T : class
 		{
 			EnsureDependencyContainerExists();
