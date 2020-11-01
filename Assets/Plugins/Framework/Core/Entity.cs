@@ -14,42 +14,24 @@ namespace Framework.Core
 			return _components.TryGet(type, out component);
 		}
 
-		public bool TryFindComponent<T>(out T component) where T : class
-		{
-			return _components.TryGet(out component);
-		}
+		public bool TryFindComponent<T>(out T component) where T : class => _components.TryGet(out component);
 
 		public T RequireComponent<T>() where T : class
 		{
 			if (TryFindComponent(out T component))
 				return component;
-			
+
 			throw new ArgumentException($"Entity {this} does not have a component of type {typeof(T)}.");
 		}
 
-		public T ResolveGlobal<T>() where T : class
-		{
-			EnsureDependencyContainerExists();
-			return _dependencyContainer.Resolve<T>();
-		}
-
-		private void EnsureDependencyContainerExists()
-		{
-			if (!_dependencyContainer)
-				_dependencyContainer = FindObjectOfType<RootDependencyContainer>();
-
-			if (!_dependencyContainer)
-				throw new InvalidOperationException("Dependency container does not exist.");
-		}
+		public T ResolveGlobal<T>() where T : class => RootDependencyContainer.Instance.Resolve<T>();
 
 		public object ResolveGlobal(Type type)
 		{
 			if (type == null) throw new ArgumentNullException(nameof(type));
-			EnsureDependencyContainerExists();
-			return _dependencyContainer.Resolve(type);
+			return RootDependencyContainer.Instance.Resolve(type);
 		}
 
-		private RootDependencyContainer _dependencyContainer;
 		private readonly TypedCache _components = new TypedCache();
 	}
 }

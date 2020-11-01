@@ -54,7 +54,7 @@ namespace Framework.Dependencies
 
 			if (context.TryGetComponent(type, out component)) return;
 
-			throw new ComponentResolutionError(context, type);
+			throw new ComponentResolutionException(context, type);
 		}
 
 		private static void RequireInParent<T>([NotNull] this Component context, out T component) where T : class
@@ -64,7 +64,7 @@ namespace Framework.Dependencies
 			component = context.GetComponentInParent<T>();
 			if (component != null) return;
 
-			throw new ParentComponentResolutionError(context, typeof(T));
+			throw new ParentComponentResolutionException(context, typeof(T));
 		}
 
 		private static void RequireInParent([NotNull] this Component context, [NotNull] Type type,
@@ -76,7 +76,7 @@ namespace Framework.Dependencies
 			component = context.GetComponentInParent(type);
 			if (component != null) return;
 
-			throw new ParentComponentResolutionError(context, type);
+			throw new ParentComponentResolutionException(context, type);
 		}
 
 		private static void RequireInChildren([NotNull] this Component context, [NotNull] Type type,
@@ -88,7 +88,7 @@ namespace Framework.Dependencies
 			component = context.GetComponentInChildren(type);
 			if (component != null) return;
 
-			throw new ChildrenComponentResolutionError(context, type);
+			throw new ChildrenComponentResolutionException(context, type);
 		}
 
 		private static void RequireInChildren([NotNull] this GameObject context, [NotNull] Type type,
@@ -100,7 +100,7 @@ namespace Framework.Dependencies
 			component = context.GetComponentInChildren(type);
 			if (component != null) return;
 
-			throw new ChildrenComponentResolutionError(context, type);
+			throw new ChildrenComponentResolutionException(context, type);
 		}
 
 		private static IEnumerable<FieldInfo> GetDependencyFields(this Type type)

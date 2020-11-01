@@ -11,7 +11,7 @@ namespace Framework.Dependencies.Containers
 			foreach (var component in GetComponentsInChildren<Component>())
 			{
 				if (component is IDependencyContainer) continue;
-				
+
 				Register(component);
 			}
 		}

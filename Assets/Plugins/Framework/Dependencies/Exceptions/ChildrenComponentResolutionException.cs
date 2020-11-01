@@ -3,9 +3,9 @@ using Object = UnityEngine.Object;
 
 namespace Framework.Dependencies.Exceptions
 {
-	internal sealed class ChildrenComponentResolutionError : ComponentResolutionErrorBase
+	internal sealed class ChildrenComponentResolutionException : ComponentResolutionExceptionBase
 	{
-		public ChildrenComponentResolutionError(Object context, Type componentType) :
+		public ChildrenComponentResolutionException(Object context, Type componentType) :
 			base(FormatMessage(context, componentType) + " nor in its children.") { }
 	}
 }

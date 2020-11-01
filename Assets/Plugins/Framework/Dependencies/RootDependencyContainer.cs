@@ -9,6 +9,11 @@ namespace Framework.Dependencies
 	[AddComponentMenu("Dependency Container/Root Dependency Container")]
 	public sealed class RootDependencyContainer : MonoBehaviour, IDependencyContainer
 	{
+		public static RootDependencyContainer Instance =>
+			_instance ? _instance : _instance = FindObjectOfType<RootDependencyContainer>();
+
+		private static RootDependencyContainer _instance;
+
 		public void EnsureInitialized()
 		{
 			if (_initialized) return;
@@ -32,7 +37,7 @@ namespace Framework.Dependencies
 		public bool TryResolve<T>(out T dependency) where T : class
 		{
 			var type = typeof(T);
-			
+
 			if (TryResolve(type, out var foundDependency))
 			{
 				dependency = (T) foundDependency;
@@ -47,15 +52,15 @@ namespace Framework.Dependencies
 		{
 			if (type == null) throw new ArgumentNullException(nameof(type));
 			EnsureInitialized();
-		
+
 			foreach (var subContainer in _subContainers)
 			{
 				subContainer.EnsureInitialized();
 				if (!subContainer.TryResolve(type, out dependency)) continue;
-			
+
 				if (dependency is IInitializable initializable)
 					initializable.EnsureInitialized();
-				
+
 				return true;
 			}
 
@@ -74,11 +79,20 @@ namespace Framework.Dependencies
 		public object Resolve(Type type)
 		{
 			if (type == null) throw new ArgumentNullException(nameof(type));
-			
+
 			if (TryResolve(type, out var dependency))
 				return dependency;
 
 			throw NotRegistered(type);
+		}
+
+		private void Awake()
+		{
+			if (Instance != this)
+			{
+				Debug.LogWarning("A duplicate container was found and destroyed.", gameObject);
+				Destroy(this);
+			}
 		}
 
 		private bool _initialized;

@@ -13,7 +13,7 @@ namespace Framework.Core.Shared
 				obj = (T) foundObject;
 				return true;
 			}
-		
+
 			obj = default;
 			return false;
 		}
@@ -24,7 +24,7 @@ namespace Framework.Core.Shared
 
 			if (!_objects.TryGetValue(type, out var foundObject))
 				return false;
-		
+
 			if (!TryFindInSubclasses(type, out foundObject))
 				return false;
 
@@ -38,7 +38,7 @@ namespace Framework.Core.Shared
 			{
 				var typeOfExistingObject = existingObject.GetType();
 				if (!type.IsAssignableFrom(typeOfExistingObject)) continue;
-			
+
 				obj = existingObject;
 				_objects[type] = existingObject;
 				return true;
@@ -51,7 +51,7 @@ namespace Framework.Core.Shared
 		public bool TryRegister([NotNull] object obj, out object existingObject)
 		{
 			if (obj == null) throw new ArgumentNullException(nameof(obj));
-		
+
 			var type = obj.GetType();
 			if (_objects.TryGetValue(type, out existingObject))
 				return false;
@@ -60,7 +60,7 @@ namespace Framework.Core.Shared
 			_objects[type] = obj;
 			return true;
 		}
-	
+
 		private readonly HashSet<object> _allObjects = new HashSet<object>();
 		private readonly IDictionary<Type, object> _objects = new Dictionary<Type, object>();
 	}

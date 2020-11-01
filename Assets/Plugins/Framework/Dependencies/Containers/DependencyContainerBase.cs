@@ -25,12 +25,13 @@ namespace Framework.Dependencies.Containers
 
 			if (_cache.TryRegister(dependency, out var registeredDependency))
 				return;
-			
+
 			var type = dependency.GetType();
 			throw AlreadyRegistered(type, registeredDependency);
 		}
 
 		public bool TryResolve<T>(out T dependency) where T : class => _cache.TryGet(out dependency);
+
 		public bool TryResolve(Type type, out object dependency)
 		{
 			if (type == null) throw new ArgumentNullException(nameof(type));
@@ -48,7 +49,7 @@ namespace Framework.Dependencies.Containers
 		public object Resolve(Type type)
 		{
 			if (type == null) throw new ArgumentNullException(nameof(type));
-			
+
 			if (TryResolve(type, out var dependency))
 				return dependency;
 
