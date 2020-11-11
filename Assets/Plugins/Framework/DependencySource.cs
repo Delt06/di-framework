@@ -32,30 +32,33 @@ namespace Framework
 
 		public static bool TryResolve(this DependencySource source, Context context, Type type, out object result)
 		{
-			if (source.Includes(Local))
-				if (context.Component.TryGetComponent(type, out var foundComponent))
+			if (typeof(Component).IsAssignableFrom(type))
+			{
+				if (source.Includes(Local))
+					if (context.Component.TryGetComponent(type, out var foundComponent))
+					{
+						result = foundComponent;
+						return true;
+					}
+
+				if (source.Includes(Children))
 				{
-					result = foundComponent;
-					return true;
+					var foundComponent = context.Resolver.GetComponentInChildren(type);
+					if (foundComponent != null)
+					{
+						result = foundComponent;
+						return true;
+					}
 				}
 
-			if (source.Includes(Children))
-			{
-				var foundComponent = context.Resolver.GetComponentInChildren(type);
-				if (foundComponent != null)
+				if (source.Includes(Parent))
 				{
-					result = foundComponent;
-					return true;
-				}
-			}
-
-			if (source.Includes(Parent))
-			{
-				var foundComponent = context.Resolver.GetComponentInParent(type);
-				if (foundComponent != null)
-				{
-					result = foundComponent;
-					return true;
+					var foundComponent = context.Resolver.GetComponentInParent(type);
+					if (foundComponent != null)
+					{
+						result = foundComponent;
+						return true;
+					}
 				}
 			}
 

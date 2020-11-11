@@ -23,7 +23,7 @@ namespace Framework.PlayTests
 		}
 
 		[Test]
-		public void CreateObject_Ignored_NotResolved()
+		public void CreateObject_WithIgnoredDependency_NotResolved()
 		{
 			NewGameObject()
 				.gameObject.AddComponent<IgnoreByContainer>()
