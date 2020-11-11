@@ -1,5 +1,5 @@
 ﻿public interface IInputSource
 {
-		float HorizontalAxis { get; }
-		float VerticalAxis { get; }
+	float HorizontalAxis { get; }
+	float VerticalAxis { get; }
 }

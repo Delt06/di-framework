@@ -90,7 +90,7 @@ namespace Framework
 
 		private static bool TryResolveGlobally(DependencySource source, Type type, out object result)
 		{
-			if (source.Includes(Global) && RootDependencyContainer.Instance.TryResolve(type, out result)) 
+			if (source.Includes(Global) && RootDependencyContainer.Instance.TryResolve(type, out result))
 				return true;
 
 			result = default;

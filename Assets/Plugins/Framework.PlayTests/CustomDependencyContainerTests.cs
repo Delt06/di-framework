@@ -31,10 +31,10 @@ namespace Framework.PlayTests
 		public void CreateObject_WithParentDependency_ResolvedViaChild()
 		{
 			CreateContainerWith<CustomContainer>();
-			
+
 			var component = NewGameObject().AddComponent<ParentDependencyComponent>();
 			component.gameObject.AddComponent<Resolver>();
-			
+
 			Assert.That(component.Parent, Is.InstanceOf<Child>());
 		}
 	}

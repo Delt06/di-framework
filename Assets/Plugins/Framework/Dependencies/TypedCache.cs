@@ -8,7 +8,7 @@ namespace Framework.Dependencies
 	internal sealed class TypedCache
 	{
 		public object[] AllObjects => _allObjects.ToArray();
-		
+
 		public bool TryGet<T>(out T obj) where T : class
 		{
 			if (TryGet(typeof(T), out var foundObject))

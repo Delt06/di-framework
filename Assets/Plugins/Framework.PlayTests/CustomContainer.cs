@@ -27,15 +27,9 @@ namespace Framework.PlayTests
 
 	public class Ignored : IIgnoreByContainer { }
 
-	public class Parent
-	{
-		
-	}
+	public class Parent { }
 
-	public class Child : Parent
-	{
-		
-	}
+	public class Child : Parent { }
 
 	public class ParentDependencyComponent : MonoBehaviour
 	{
