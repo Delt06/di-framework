@@ -6,7 +6,7 @@ namespace Framework.PlayTests
 	public class CustomContainer : DependencyContainerBase
 	{
 		public const string String = "Some String";
-		
+
 		protected override void ComposeDependencies()
 		{
 			Register(String);
@@ -24,8 +24,5 @@ namespace Framework.PlayTests
 		}
 	}
 
-	public class Ignored : IIgnoreByContainer
-	{
-		
-	}
+	public class Ignored : IIgnoreByContainer { }
 }

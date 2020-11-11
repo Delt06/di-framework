@@ -32,39 +32,66 @@ namespace Framework
 
 		public static bool TryResolve(this DependencySource source, Context context, Type type, out object result)
 		{
-			if (typeof(Component).IsAssignableFrom(type))
+			if (IsComponent(type))
 			{
-				if (source.Includes(Local))
-					if (context.Component.TryGetComponent(type, out var foundComponent))
-					{
-						result = foundComponent;
-						return true;
-					}
+				if (TryResolveLocally(source, context, type, out result)) return true;
+				if (TryResolveInChildren(source, context, type, out result)) return true;
+				if (TryResolveInParent(source, context, type, out result)) return true;
+			}
 
-				if (source.Includes(Children))
-				{
-					var foundComponent = context.Resolver.GetComponentInChildren(type);
-					if (foundComponent != null)
-					{
-						result = foundComponent;
-						return true;
-					}
-				}
+			return TryResolveGlobally(source, type, out result);
+		}
 
-				if (source.Includes(Parent))
+		private static bool IsComponent(Type type) => typeof(Component).IsAssignableFrom(type);
+
+		private static bool TryResolveLocally(DependencySource source, Context context, Type type, out object result)
+		{
+			if (source.Includes(Local) && context.Component.TryGetComponent(type, out var foundComponent))
+			{
+				result = foundComponent;
+				return true;
+			}
+
+			result = default;
+			return false;
+		}
+
+		private static bool TryResolveInChildren(DependencySource source, Context context, Type type, out object result)
+		{
+			if (source.Includes(Children))
+			{
+				var foundComponent = context.Resolver.GetComponentInChildren(type);
+				if (foundComponent != null)
 				{
-					var foundComponent = context.Resolver.GetComponentInParent(type);
-					if (foundComponent != null)
-					{
-						result = foundComponent;
-						return true;
-					}
+					result = foundComponent;
+					return true;
 				}
 			}
 
-			if (source.Includes(Global))
-				if (RootDependencyContainer.Instance.TryResolve(type, out result))
+			result = default;
+			return false;
+		}
+
+		private static bool TryResolveInParent(DependencySource source, Context context, Type type, out object result)
+		{
+			if (source.Includes(Parent))
+			{
+				var foundComponent = context.Resolver.GetComponentInParent(type);
+				if (foundComponent != null)
+				{
+					result = foundComponent;
 					return true;
+				}
+			}
+
+			result = default;
+			return false;
+		}
+
+		private static bool TryResolveGlobally(DependencySource source, Type type, out object result)
+		{
+			if (source.Includes(Global) && RootDependencyContainer.Instance.TryResolve(type, out result)) 
+				return true;
 
 			result = default;
 			return false;

@@ -12,10 +12,10 @@ namespace Framework.PlayTests
 
 			var component = NewGameObject().AddComponent<StringDependencyComponent>();
 			component.gameObject.AddComponent<Resolver>();
-			
+
 			Assert.That(component.String, Is.EqualTo(CustomContainer.String));
 		}
-		
+
 		[Test]
 		public void CreateObject_WithIgnoredDependency_NotResolved()
 		{
@@ -23,7 +23,7 @@ namespace Framework.PlayTests
 
 			var component = NewGameObject().AddComponent<StringDependencyComponent>();
 			component.gameObject.AddComponent<Resolver>();
-			
+
 			Assert.That(component.String, Is.EqualTo(CustomContainer.String));
 		}
 	}
