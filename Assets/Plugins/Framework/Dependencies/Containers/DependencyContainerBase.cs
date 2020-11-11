@@ -1,7 +1,7 @@
 ﻿using System;
 using JetBrains.Annotations;
 using UnityEngine;
-using static Framework.Dependencies.Containers.DependencyExceptionFactory;
+using static Framework.Dependencies.DependencyExceptionFactory;
 
 namespace Framework.Dependencies.Containers
 {

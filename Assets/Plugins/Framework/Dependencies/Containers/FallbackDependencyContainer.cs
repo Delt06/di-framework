@@ -1,6 +1,6 @@
 ﻿using System;
 using UnityEngine;
-using static Framework.Dependencies.Containers.DependencyExceptionFactory;
+using static Framework.Dependencies.DependencyExceptionFactory;
 using Object = UnityEngine.Object;
 
 namespace Framework.Dependencies.Containers

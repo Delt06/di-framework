@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Linq;
 using UnityEngine;
-using static Framework.Dependencies.Containers.DependencyExceptionFactory;
+using static Framework.Dependencies.DependencyExceptionFactory;
 
 namespace Framework.Dependencies
 {
 	[AddComponentMenu("Dependency Container/Root Dependency Container")]
 	public sealed class RootDependencyContainer : MonoBehaviour, IDependencyContainer
 	{
-		public static IDependencyContainer Instance =>
+		internal static IDependencyContainer Instance =>
 			_instance ? _instance : _instance = FindObjectOfType<RootDependencyContainer>();
 
 		private static RootDependencyContainer _instance;
