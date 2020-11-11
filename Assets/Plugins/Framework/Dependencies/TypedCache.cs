@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using JetBrains.Annotations;
 
 namespace Framework.Dependencies
 {
 	internal sealed class TypedCache
 	{
+		public object[] AllObjects => _allObjects.ToArray();
+		
 		public bool TryGet<T>(out T obj) where T : class
 		{
 			if (TryGet(typeof(T), out var foundObject))
@@ -20,16 +23,14 @@ namespace Framework.Dependencies
 
 		public bool TryGet([NotNull] Type type, out object obj)
 		{
+			if (_objects.TryGetValue(type, out obj))
+				return true;
+
+			if (TryFindInSubclasses(type, out obj))
+				return true;
+
 			obj = default;
-
-			if (!_objects.TryGetValue(type, out var foundObject))
-				return false;
-
-			if (!TryFindInSubclasses(type, out foundObject))
-				return false;
-
-			obj = foundObject;
-			return true;
+			return false;
 		}
 
 		private bool TryFindInSubclasses([NotNull] Type type, out object obj)

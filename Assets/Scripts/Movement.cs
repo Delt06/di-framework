@@ -7,15 +7,19 @@ public sealed class Movement : MonoBehaviour
 	private void FixedUpdate()
 	{
 		var velocity = _rigidbody.velocity;
-		velocity.x = Input.GetAxisRaw("Horizontal") * _speed;
-		velocity.z = Input.GetAxisRaw("Vertical") * _speed;
+		var direction = new Vector2(_inputSource.HorizontalAxis, _inputSource.VerticalAxis);
+		direction.Normalize();
+		velocity.x = direction.x * _speed;
+		velocity.z = direction.y * _speed;
 		_rigidbody.velocity = velocity;
 	}
 
-	public void Construct(Rigidbody rigidbody)
+	public void Construct(Rigidbody rigidbody, IInputSource inputSource)
 	{
 		_rigidbody = rigidbody;
+		_inputSource = inputSource;
 	}
 
+	private IInputSource _inputSource;
 	private Rigidbody _rigidbody;
 }

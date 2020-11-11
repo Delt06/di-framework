@@ -15,7 +15,7 @@ namespace Framework
 			Resolve();
 		}
 
-		public void Resolve()
+		private void Resolve()
 		{
 			if (_resolved) return;
 

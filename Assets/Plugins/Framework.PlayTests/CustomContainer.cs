@@ -10,7 +10,8 @@ namespace Framework.PlayTests
 		protected override void ComposeDependencies()
 		{
 			Register(String);
-			Register(new Ignored());
+			Register<Ignored>();
+			Register<Child>();
 		}
 	}
 
@@ -25,4 +26,24 @@ namespace Framework.PlayTests
 	}
 
 	public class Ignored : IIgnoreByContainer { }
+
+	public class Parent
+	{
+		
+	}
+
+	public class Child : Parent
+	{
+		
+	}
+
+	public class ParentDependencyComponent : MonoBehaviour
+	{
+		public Parent Parent { get; private set; }
+
+		public void Construct(Parent parent)
+		{
+			Parent = parent;
+		}
+	}
 }

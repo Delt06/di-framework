@@ -18,6 +18,8 @@ namespace Framework.Dependencies.Containers
 
 		protected abstract void ComposeDependencies();
 
+		protected void Register<T>() where T : class, new() => Register(new T());
+
 		protected void Register([NotNull] object dependency)
 		{
 			if (dependency == null) throw new ArgumentNullException(nameof(dependency));

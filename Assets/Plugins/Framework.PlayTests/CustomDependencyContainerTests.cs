@@ -26,5 +26,16 @@ namespace Framework.PlayTests
 
 			Assert.That(component.String, Is.EqualTo(CustomContainer.String));
 		}
+
+		[Test]
+		public void CreateObject_WithParentDependency_ResolvedViaChild()
+		{
+			CreateContainerWith<CustomContainer>();
+			
+			var component = NewGameObject().AddComponent<ParentDependencyComponent>();
+			component.gameObject.AddComponent<Resolver>();
+			
+			Assert.That(component.Parent, Is.InstanceOf<Child>());
+		}
 	}
 }
