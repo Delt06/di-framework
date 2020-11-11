@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using JetBrains.Annotations;
 
-namespace Framework.Core.Shared
+namespace Framework.Dependencies
 {
 	internal sealed class TypedCache
 	{

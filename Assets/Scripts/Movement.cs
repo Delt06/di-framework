@@ -1,8 +1,6 @@
-﻿using Framework.Core;
-using Framework.Dependencies;
-using UnityEngine;
+﻿using UnityEngine;
 
-public sealed class Movement : ComponentBase
+public sealed class Movement : MonoBehaviour
 {
 	[SerializeField, Min(0f)] private float _speed = 1f;
 
@@ -14,5 +12,10 @@ public sealed class Movement : ComponentBase
 		_rigidbody.velocity = velocity;
 	}
 
-	[Dependency(Source.Entity)] private readonly Rigidbody _rigidbody = default;
+	public void Construct(Rigidbody rigidbody)
+	{
+		_rigidbody = rigidbody;
+	}
+
+	private Rigidbody _rigidbody;
 }

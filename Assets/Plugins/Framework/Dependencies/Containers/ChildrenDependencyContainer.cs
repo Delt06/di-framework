@@ -10,8 +10,7 @@ namespace Framework.Dependencies.Containers
 		{
 			foreach (var component in GetComponentsInChildren<Component>())
 			{
-				if (component is IDependencyContainer) continue;
-
+				if (component is Transform) continue;
 				Register(component);
 			}
 		}

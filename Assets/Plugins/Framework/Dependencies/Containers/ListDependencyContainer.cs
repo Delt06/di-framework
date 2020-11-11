@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Framework.Dependencies.Containers
 {
@@ -8,7 +10,11 @@ namespace Framework.Dependencies.Containers
 	{
 		[SerializeField] private List<Object> _dependencies = new List<Object>();
 
-		public List<Object> Dependencies => _dependencies;
+		public void Add(Object @object)
+		{
+			if (_frozen) throw new InvalidOperationException("Container is frozen.");
+			_dependencies.Add(@object);
+		}
 
 		protected override void ComposeDependencies()
 		{
@@ -21,30 +27,12 @@ namespace Framework.Dependencies.Containers
 				}
 
 				var dependency = _dependencies[index];
-
-				switch (dependency)
-				{
-					case GameObject go:
-						foreach (var c in go.GetComponents<Component>())
-						{
-							Register(c);
-						}
-
-						break;
-
-					case Component component:
-						foreach (var c in component.GetComponents<Component>())
-						{
-							Register(c);
-						}
-
-						break;
-
-					default:
-						Register(dependency);
-						break;
-				}
+				Register(dependency);
 			}
+
+			_frozen = true;
 		}
+
+		private bool _frozen;
 	}
 }

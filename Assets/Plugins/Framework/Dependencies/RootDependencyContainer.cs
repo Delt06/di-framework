@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using Framework.Core.Shared;
 using UnityEngine;
 using static Framework.Dependencies.Containers.DependencyExceptionFactory;
 
@@ -9,7 +8,7 @@ namespace Framework.Dependencies
 	[AddComponentMenu("Dependency Container/Root Dependency Container")]
 	public sealed class RootDependencyContainer : MonoBehaviour, IDependencyContainer
 	{
-		public static RootDependencyContainer Instance =>
+		public static IDependencyContainer Instance =>
 			_instance ? _instance : _instance = FindObjectOfType<RootDependencyContainer>();
 
 		private static RootDependencyContainer _instance;
@@ -53,19 +52,32 @@ namespace Framework.Dependencies
 			if (type == null) throw new ArgumentNullException(nameof(type));
 			EnsureInitialized();
 
+			if (_cache.TryGet(type, out dependency))
+				return true;
+
 			foreach (var subContainer in _subContainers)
 			{
 				subContainer.EnsureInitialized();
 				if (!subContainer.TryResolve(type, out dependency)) continue;
 
-				if (dependency is IInitializable initializable)
-					initializable.EnsureInitialized();
-
+				_cache.TryRegister(dependency, out _);
+				EnsureInitialized(dependency);
 				return true;
 			}
 
 			dependency = default;
 			return false;
+		}
+
+		private static void EnsureInitialized(object dependency)
+		{
+			if (!(dependency is MonoBehaviour behaviour)) return;
+			var initializable = behaviour.GetComponents<IInitializable>();
+
+			foreach (var i in initializable)
+			{
+				i.EnsureInitialized();
+			}
 		}
 
 		public T Resolve<T>() where T : class
@@ -86,16 +98,8 @@ namespace Framework.Dependencies
 			throw NotRegistered(type);
 		}
 
-		private void Awake()
-		{
-			if (Instance != this)
-			{
-				Debug.LogWarning("A duplicate container was found and destroyed.", gameObject);
-				Destroy(this);
-			}
-		}
-
 		private bool _initialized;
 		private IDependencyContainer[] _subContainers = Array.Empty<IDependencyContainer>();
+		private readonly TypedCache _cache = new TypedCache();
 	}
 }

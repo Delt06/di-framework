@@ -1,5 +1,4 @@
 ﻿using System;
-using Framework.Core.Shared;
 using JetBrains.Annotations;
 using UnityEngine;
 using static Framework.Dependencies.Containers.DependencyExceptionFactory;
@@ -22,6 +21,7 @@ namespace Framework.Dependencies.Containers
 		protected void Register([NotNull] object dependency)
 		{
 			if (dependency == null) throw new ArgumentNullException(nameof(dependency));
+			if (dependency.ShouldBeIgnoredByContainer()) return;
 
 			if (_cache.TryRegister(dependency, out var registeredDependency))
 				return;

@@ -1,5 +1,4 @@
 ﻿using System;
-using Framework.Core.Shared;
 using UnityEngine;
 using static Framework.Dependencies.Containers.DependencyExceptionFactory;
 using Object = UnityEngine.Object;
@@ -34,11 +33,18 @@ namespace Framework.Dependencies.Containers
 			if (_cache.TryGet(type, out dependency))
 				return true;
 
-			dependency = FindObjectOfType(type);
-			if (dependency == null) return false;
+			var dependencies = FindObjectsOfType(type);
 
-			_cache.TryRegister(dependency, out _);
-			return true;
+			foreach (var d in dependencies)
+			{
+				if (d.ShouldBeIgnoredByContainer()) continue;
+
+				dependency = d;
+				_cache.TryRegister(dependency, out _);
+				return true;
+			}
+
+			return false;
 		}
 
 		public T Resolve<T>() where T : class
