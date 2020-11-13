@@ -1,4 +1,6 @@
-﻿using Framework.PlayTests.Components;
+﻿using Framework.Dependencies.Containers;
+using Framework.PlayTests.Components;
+using Framework.PlayTests.Containers;
 using NUnit.Framework;
 
 namespace Framework.PlayTests
@@ -50,14 +52,28 @@ namespace Framework.PlayTests
 		[Test]
 		public void Resolver_ResolverByInterfaceInGameObject_Resolved()
 		{
-			var root = NewInactiveGameObject();
-			var component = root.AddComponent<InterfaceDependencyComponent>();
-			var implementation = root.AddComponent<InterfaceImplementation>();
-			root.AddComponent<Resolver>();
+			var go = NewInactiveGameObject();
+			var component = go.AddComponent<InterfaceDependencyComponent>();
+			var implementation = go.AddComponent<InterfaceImplementation>();
+			go.AddComponent<Resolver>();
 
-			root.SetActive(true);
+			go.SetActive(true);
 
 			Assert.That(component.Dependency, Is.EqualTo(implementation));
+		}
+
+		[Test]
+		public void CreateObject_WithSeveralConstructors_ResolveAll()
+		{
+			var go = NewInactiveGameObject();
+			var component = go.AddComponent<ComponentsWithSeveralConstructors>();
+			go.AddComponent<Resolver>();
+			CreateContainerWith<CustomContainer>();
+
+			go.SetActive(true);
+
+			Assert.That(component.FirstCalled);
+			Assert.That(component.SecondCalled);
 		}
 	}
 }
