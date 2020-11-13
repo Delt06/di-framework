@@ -46,5 +46,18 @@ namespace Framework.PlayTests
 
 			Assert.That(counter.Count, Is.EqualTo(1));
 		}
+
+		[Test]
+		public void Resolver_ResolverByInterfaceInGameObject_Resolved()
+		{
+			var root = NewInactiveGameObject();
+			var component = root.AddComponent<InterfaceDependencyComponent>();
+			var implementation = root.AddComponent<InterfaceImplementation>();
+			root.AddComponent<Resolver>();
+
+			root.SetActive(true);
+
+			Assert.That(component.Dependency, Is.EqualTo(implementation));
+		}
 	}
 }
