@@ -56,30 +56,10 @@ namespace Framework.Dependencies.Containers
 			throw AlreadyRegistered(type, registeredDependency);
 		}
 
-		public bool TryResolve<T>(out T dependency) where T : class => _cache.TryGet(out dependency);
-
 		public bool TryResolve(Type type, out object dependency)
 		{
 			if (type == null) throw new ArgumentNullException(nameof(type));
 			return _cache.TryGet(type, out dependency);
-		}
-
-		public T Resolve<T>() where T : class
-		{
-			if (TryResolve(out T dependency))
-				return dependency;
-
-			throw NotRegistered(typeof(T));
-		}
-
-		public object Resolve(Type type)
-		{
-			if (type == null) throw new ArgumentNullException(nameof(type));
-
-			if (TryResolve(type, out var dependency))
-				return dependency;
-
-			throw NotRegistered(type);
 		}
 
 		private readonly TypedCache _cache = new TypedCache();

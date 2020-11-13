@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static Framework.Dependencies.DependencyExceptionFactory;
 
 namespace Framework.Dependencies
 {
@@ -36,19 +35,7 @@ namespace Framework.Dependencies
 			GetComponentsInChildren<IDependencyContainer>()
 				.Where(c => !ReferenceEquals(c, this));
 
-		public bool TryResolve<T>(out T dependency) where T : class
-		{
-			var type = typeof(T);
-
-			if (TryResolve(type, out var foundDependency))
-			{
-				dependency = (T) foundDependency;
-				return true;
-			}
-
-			dependency = default;
-			return false;
-		}
+		public bool CanBeResolvedSafe(Type type) => GetChildContainers().Any(c => c.CanBeResolvedSafe(type));
 
 		public bool TryResolve(Type type, out object dependency)
 		{
@@ -83,28 +70,8 @@ namespace Framework.Dependencies
 			}
 		}
 
-		public T Resolve<T>() where T : class
-		{
-			if (TryResolve(out T dependency))
-				return dependency;
-
-			throw NotRegistered(typeof(T));
-		}
-
-		public object Resolve(Type type)
-		{
-			if (type == null) throw new ArgumentNullException(nameof(type));
-
-			if (TryResolve(type, out var dependency))
-				return dependency;
-
-			throw NotRegistered(type);
-		}
-
 		private bool _initialized;
 		private IDependencyContainer[] _subContainers = Array.Empty<IDependencyContainer>();
 		private readonly TypedCache _cache = new TypedCache();
-
-		public bool CanBeResolvedSafe(Type type) => GetChildContainers().Any(c => c.CanBeResolvedSafe(type));
 	}
 }

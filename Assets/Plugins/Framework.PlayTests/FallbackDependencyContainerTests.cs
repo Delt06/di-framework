@@ -1,4 +1,5 @@
-﻿using Framework.Dependencies.Containers;
+﻿using Framework.Dependencies;
+using Framework.Dependencies.Containers;
 using Framework.PlayTests.Components;
 using NUnit.Framework;
 using UnityEngine;
