@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Framework.Dependencies;
 using UnityEngine;
@@ -20,42 +22,54 @@ namespace Framework
 			if (_resolved) return;
 
 			_resolved = true;
-			ProcessNodeRecursively(transform);
+
+			foreach (var (component, _) in GetAffectedComponents(transform))
+			{
+				Process(component);
+			}
 		}
 
-		private void ProcessNodeRecursively(Transform root)
+		public static IEnumerable<(MonoBehaviour component, int depth)> GetAffectedComponents(Transform root,
+			int depth = 0)
 		{
 			var components = root.GetComponents<MonoBehaviour>();
 
 			foreach (var component in components)
 			{
-				Process(component);
+				if (component is Resolver) continue;
+				yield return (component, depth);
 			}
 
 			foreach (Transform child in root)
 			{
 				if (child.TryGetComponent(out Resolver _)) continue;
-				ProcessNodeRecursively(child);
+
+				foreach (var component in GetAffectedComponents(child, depth + 1))
+				{
+					yield return component;
+				}
 			}
 		}
 
 		private void Process(MonoBehaviour component)
 		{
-			var type = component.GetType();
-			var methods = type.GetMethods();
-
-			foreach (var method in methods)
+			foreach (var method in GetResolutionMethods(component))
 			{
 				ProcessMethod(component, method);
 			}
 		}
 
+		public static IEnumerable<MethodInfo> GetResolutionMethods(MonoBehaviour component) =>
+			component.GetType()
+				.GetMethods()
+				.Where(IsSuitableMethod);
+
+		private static bool IsSuitableMethod(MethodInfo method) =>
+			method.Name == Constructor &&
+			method.IsPublic && method.ReturnType == typeof(void);
+
 		private void ProcessMethod(MonoBehaviour component, MethodInfo method)
 		{
-			if (method.Name != Constructor) return;
-			if (!method.IsPublic) return;
-			if (method.ReturnType != typeof(void)) return;
-
 			var parameters = method.GetParameters();
 			var arguments = new object[parameters.Length];
 
@@ -89,6 +103,12 @@ namespace Framework
 				return dependency;
 
 			throw Exception($"Did not resolve dependency of type {type}.");
+		}
+
+		public bool CabBeResolvedSafe(MonoBehaviour component, Type type)
+		{
+			var context = new Context(this, component);
+			return _dependencySource.CanBeResolvedSafe(context, type);
 		}
 
 		private static Exception Exception(string message) => new ArgumentException(message);

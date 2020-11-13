@@ -6,13 +6,15 @@ namespace Framework.Dependencies.Containers
 	[DisallowMultipleComponent, AddComponentMenu("Dependency Container/Children Dependency Container")]
 	public sealed class ChildrenDependencyContainer : DependencyContainerBase
 	{
-		protected override void ComposeDependencies()
+		protected override void ComposeDependencies(ContainerBuilder builder)
 		{
 			foreach (var component in GetComponentsInChildren<Component>())
 			{
-				if (component is Transform) continue;
-				Register(component);
+				if (IsIgnored(component)) continue;
+				builder.Register(component);
 			}
 		}
+
+		private static bool IsIgnored(Component component) => component is Transform;
 	}
 }

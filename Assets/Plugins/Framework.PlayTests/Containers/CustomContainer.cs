@@ -1,4 +1,5 @@
-﻿using Framework.Dependencies.Containers;
+﻿using Framework.Dependencies;
+using Framework.Dependencies.Containers;
 using Framework.PlayTests.Components;
 
 namespace Framework.PlayTests.Containers
@@ -7,11 +8,11 @@ namespace Framework.PlayTests.Containers
 	{
 		public const string String = "Some String";
 
-		protected override void ComposeDependencies()
+		protected override void ComposeDependencies(ContainerBuilder builder)
 		{
-			Register(String);
-			Register<Ignored>();
-			Register<Child>();
+			builder.Register(String)
+				.Register<Ignored>()
+				.Register<Child>();
 		}
 	}
 }

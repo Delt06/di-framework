@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using static Framework.Dependencies.DependencyExceptionFactory;
@@ -8,7 +9,7 @@ namespace Framework.Dependencies
 	[AddComponentMenu("Dependency Container/Root Dependency Container")]
 	public sealed class RootDependencyContainer : MonoBehaviour, IDependencyContainer
 	{
-		internal static IDependencyContainer Instance =>
+		internal static RootDependencyContainer Instance =>
 			_instance ? _instance : _instance = FindObjectOfType<RootDependencyContainer>();
 
 		private static RootDependencyContainer _instance;
@@ -23,15 +24,17 @@ namespace Framework.Dependencies
 
 		private void Initialize()
 		{
-			_subContainers = GetComponentsInChildren<IDependencyContainer>()
-				.Where(c => !ReferenceEquals(c, this))
-				.ToArray();
+			_subContainers = GetChildContainers().ToArray();
 
 			foreach (var subContainer in _subContainers)
 			{
 				subContainer.EnsureInitialized();
 			}
 		}
+
+		private IEnumerable<IDependencyContainer> GetChildContainers() =>
+			GetComponentsInChildren<IDependencyContainer>()
+				.Where(c => !ReferenceEquals(c, this));
 
 		public bool TryResolve<T>(out T dependency) where T : class
 		{
@@ -101,5 +104,7 @@ namespace Framework.Dependencies
 		private bool _initialized;
 		private IDependencyContainer[] _subContainers = Array.Empty<IDependencyContainer>();
 		private readonly TypedCache _cache = new TypedCache();
+
+		public bool CanBeResolvedSafe(Type type) => GetChildContainers().Any(c => c.CanBeResolvedSafe(type));
 	}
 }

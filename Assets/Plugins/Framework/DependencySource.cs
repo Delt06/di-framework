@@ -2,6 +2,7 @@
 using Framework.Dependencies;
 using UnityEngine;
 using static Framework.DependencySource;
+using Object = UnityEngine.Object;
 
 namespace Framework
 {
@@ -30,7 +31,16 @@ namespace Framework
 	{
 		public static DependencySource All => Local | Children | Parent | Global;
 
-		public static bool TryResolve(this DependencySource source, Context context, Type type, out object result)
+		public static bool CanBeResolvedSafe(this DependencySource source, Context context, Type type) =>
+			source.TryResolveInGameObject(context, type, out _) ||
+			CanBeResolvedGloballySafe(type);
+
+		public static bool TryResolve(this DependencySource source, Context context, Type type, out object result) =>
+			source.TryResolveInGameObject(context, type, out result) ||
+			source.TryResolveGlobally(type, out result);
+
+		private static bool TryResolveInGameObject(this DependencySource source, Context context, Type type,
+			out object result)
 		{
 			if (IsComponent(type))
 			{
@@ -39,7 +49,8 @@ namespace Framework
 				if (TryResolveInParent(source, context, type, out result)) return true;
 			}
 
-			return TryResolveGlobally(source, type, out result);
+			result = default;
+			return false;
 		}
 
 		private static bool IsComponent(Type type) => typeof(Component).IsAssignableFrom(type);
@@ -88,13 +99,21 @@ namespace Framework
 			return false;
 		}
 
-		private static bool TryResolveGlobally(DependencySource source, Type type, out object result)
+		private static bool TryResolveGlobally(this DependencySource source, Type type, out object result)
 		{
-			if (source.Includes(Global) && RootDependencyContainer.Instance.TryResolve(type, out result))
+			var container = RootDependencyContainer.Instance;
+
+			if (source.Includes(Global) && container && container.TryResolve(type, out result))
 				return true;
 
 			result = default;
 			return false;
+		}
+
+		private static bool CanBeResolvedGloballySafe(Type type)
+		{
+			var container = Object.FindObjectOfType<RootDependencyContainer>();
+			return container && container.CanBeResolvedSafe(type);
 		}
 
 		private static bool Includes(this DependencySource source, DependencySource other) => (source & other) != 0;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using JetBrains.Annotations;
 using UnityEngine;
 using static Framework.Dependencies.DependencyExceptionFactory;
@@ -11,16 +12,39 @@ namespace Framework.Dependencies.Containers
 		{
 			if (_initialized) return;
 
-			ComposeDependencies();
+			var builder = new ContainerBuilder();
+			ComposeDependencies(builder);
+
+			for (var index = 0; index < builder.DependenciesCount; index++)
+			{
+				if (builder.TryGetObject(index, out var obj))
+					Register(obj);
+				else if (builder.TryGetType(index, out var type))
+					Register(Activator.CreateInstance(type));
+				else
+					throw new InvalidOperationException("Neither object nor type is present in the builder.");
+			}
 
 			_initialized = true;
 		}
 
-		protected abstract void ComposeDependencies();
+		protected abstract void ComposeDependencies(ContainerBuilder builder);
 
-		protected void Register<T>() where T : class, new() => Register(new T());
+		public bool CanBeResolvedSafe(Type type)
+		{
+			if (type == null) throw new ArgumentNullException(nameof(type));
 
-		protected void Register([NotNull] object dependency)
+			var builder = new ContainerBuilder();
+			ComposeDependencies(builder);
+			return Enumerable.Range(0, builder.DependenciesCount)
+				.Any(i => ConformsTo(builder, i, type));
+		}
+
+		private static bool ConformsTo(ContainerBuilder builder, int index, Type checkedType) =>
+			builder.TryGetObject(index, out var @object) && checkedType.IsInstanceOfType(@object) ||
+			builder.TryGetType(index, out var type) && checkedType.IsAssignableFrom(type);
+
+		private void Register([NotNull] object dependency)
 		{
 			if (dependency == null) throw new ArgumentNullException(nameof(dependency));
 			if (dependency.ShouldBeIgnoredByContainer()) return;

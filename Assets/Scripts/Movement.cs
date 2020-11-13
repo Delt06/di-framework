@@ -14,12 +14,14 @@ public sealed class Movement : MonoBehaviour
 		_rigidbody.velocity = velocity;
 	}
 
-	public void Construct(Rigidbody rigidbody, IInputSource inputSource)
+	public void Construct(Rigidbody rigidbody, IInputSource inputSource, ISpeedProvider speedProvider)
 	{
 		_rigidbody = rigidbody;
 		_inputSource = inputSource;
+		_speedProvider = speedProvider;
 	}
 
 	private IInputSource _inputSource;
 	private Rigidbody _rigidbody;
+	private ISpeedProvider _speedProvider;
 }

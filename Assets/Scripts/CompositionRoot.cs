@@ -1,9 +1,10 @@
-﻿using Framework.Dependencies.Containers;
+﻿using Framework.Dependencies;
+using Framework.Dependencies.Containers;
 
 public sealed class CompositionRoot : DependencyContainerBase
 {
-	protected override void ComposeDependencies()
+	protected override void ComposeDependencies(ContainerBuilder builder)
 	{
-		Register<InputSource>();
+		builder.Register<InputSource>();
 	}
 }

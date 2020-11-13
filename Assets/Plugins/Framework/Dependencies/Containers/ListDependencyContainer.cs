@@ -16,7 +16,7 @@ namespace Framework.Dependencies.Containers
 			_dependencies.Add(@object);
 		}
 
-		protected override void ComposeDependencies()
+		protected override void ComposeDependencies(ContainerBuilder builder)
 		{
 			for (var index = 0; index < _dependencies.Count; index++)
 			{
@@ -27,7 +27,7 @@ namespace Framework.Dependencies.Containers
 				}
 
 				var dependency = _dependencies[index];
-				Register(dependency);
+				builder.Register(dependency);
 			}
 
 			_frozen = true;

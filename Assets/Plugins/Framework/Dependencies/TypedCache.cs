@@ -62,6 +62,12 @@ namespace Framework.Dependencies
 			return true;
 		}
 
+		public void Clear()
+		{
+			_allObjects.Clear();
+			_objects.Clear();
+		}
+
 		private readonly HashSet<object> _allObjects = new HashSet<object>();
 		private readonly IDictionary<Type, object> _objects = new Dictionary<Type, object>();
 	}

@@ -10,6 +10,12 @@ namespace Framework.Dependencies.Containers
 	{
 		public void EnsureInitialized() { }
 
+		public bool CanBeResolvedSafe(Type type)
+		{
+			if (type == null) throw new ArgumentNullException(nameof(type));
+			return TryFindObjectOfType(type, out _);
+		}
+
 		public bool TryResolve<T>(out T dependency) where T : class
 		{
 			if (TryResolve(typeof(T), out var foundDependency))
@@ -25,14 +31,20 @@ namespace Framework.Dependencies.Containers
 		public bool TryResolve(Type type, out object dependency)
 		{
 			if (type == null) throw new ArgumentNullException(nameof(type));
+			if (_cache.TryGet(type, out dependency)) return true;
+			if (!TryFindObjectOfType(type, out dependency)) return false;
+
+			_cache.TryRegister(dependency, out _);
+			return true;
+		}
+
+		public bool TryFindObjectOfType(Type type, out object dependency)
+		{
 			if (!typeof(Object).IsAssignableFrom(type))
 			{
 				dependency = default;
 				return false;
 			}
-
-			if (_cache.TryGet(type, out dependency))
-				return true;
 
 			var dependencies = FindObjectsOfType(type);
 
@@ -41,10 +53,10 @@ namespace Framework.Dependencies.Containers
 				if (d.ShouldBeIgnoredByContainer()) continue;
 
 				dependency = d;
-				_cache.TryRegister(dependency, out _);
 				return true;
 			}
 
+			dependency = default;
 			return false;
 		}
 

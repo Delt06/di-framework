@@ -1,5 +1,4 @@
 ﻿using System;
-using Framework.Dependencies.Containers;
 using JetBrains.Annotations;
 
 namespace Framework.Dependencies
@@ -11,5 +10,7 @@ namespace Framework.Dependencies
 		T Resolve<T>() where T : class;
 		object Resolve([NotNull] Type type);
 		void EnsureInitialized();
+
+		bool CanBeResolvedSafe([NotNull] Type type);
 	}
 }
