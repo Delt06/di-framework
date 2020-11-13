@@ -3,7 +3,7 @@ using Component = UnityEngine.Component;
 
 namespace Framework.Dependencies.Containers
 {
-	[AddComponentMenu("Dependency Container/Children Dependency Container")]
+	[DisallowMultipleComponent, AddComponentMenu("Dependency Container/Children Dependency Container")]
 	public sealed class ChildrenDependencyContainer : DependencyContainerBase
 	{
 		protected override void ComposeDependencies()

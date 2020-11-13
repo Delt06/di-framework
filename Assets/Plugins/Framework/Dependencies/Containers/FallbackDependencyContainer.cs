@@ -5,6 +5,7 @@ using Object = UnityEngine.Object;
 
 namespace Framework.Dependencies.Containers
 {
+	[DisallowMultipleComponent, AddComponentMenu("Dependency Container/Fallback Container")]
 	public sealed class FallbackDependencyContainer : MonoBehaviour, IDependencyContainer
 	{
 		public void EnsureInitialized() { }
