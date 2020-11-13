@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using Framework.PlayTests.Components;
+using NUnit.Framework;
 using UnityEngine;
 
 namespace Framework.PlayTests

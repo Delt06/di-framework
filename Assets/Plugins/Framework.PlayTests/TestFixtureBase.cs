@@ -27,6 +27,13 @@ namespace Framework.PlayTests
 			return go;
 		}
 
+		protected GameObject NewInactiveGameObject()
+		{
+			var go = NewGameObject();
+			go.SetActive(false);
+			return go;
+		}
+
 		protected T CreateContainerWith<T>() where T : Component
 		{
 			var root = NewGameObject().AddComponent<RootDependencyContainer>();
