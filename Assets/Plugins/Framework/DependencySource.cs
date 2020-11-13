@@ -42,7 +42,7 @@ namespace Framework
 		private static bool TryResolveInGameObject(this DependencySource source, Context context, Type type,
 			out object result)
 		{
-			if (IsComponent(type))
+			if (CanBeResolvedInGameObject(type))
 			{
 				if (TryResolveLocally(source, context, type, out result)) return true;
 				if (TryResolveInChildren(source, context, type, out result)) return true;
@@ -53,7 +53,7 @@ namespace Framework
 			return false;
 		}
 
-		private static bool IsComponent(Type type) => typeof(Component).IsAssignableFrom(type);
+		private static bool CanBeResolvedInGameObject(Type type) => typeof(Component).IsAssignableFrom(type) || type.IsInterface;
 
 		private static bool TryResolveLocally(DependencySource source, Context context, Type type, out object result)
 		{
