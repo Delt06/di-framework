@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -10,8 +11,9 @@ namespace Framework.Dependencies.Containers
 	{
 		[SerializeField] private List<Object> _dependencies = new List<Object>();
 
-		public void Add(Object @object)
+		public void Add([NotNull] Object @object)
 		{
+			if (@object == null) throw new ArgumentNullException(nameof(@object));
 			if (_frozen) throw new InvalidOperationException("Container is frozen.");
 			_dependencies.Add(@object);
 		}
