@@ -33,7 +33,7 @@ namespace Framework
 
 		public static bool CanBeResolvedSafe(this DependencySource source, Context context, Type type) =>
 			source.TryResolveInGameObject(context, type, out _) ||
-			CanBeResolvedGloballySafe(type);
+			source.CanBeResolvedGloballySafe(type);
 
 		public static bool TryResolve(this DependencySource source, Context context, Type type, out object result) =>
 			source.TryResolveInGameObject(context, type, out result) ||
@@ -110,8 +110,9 @@ namespace Framework
 			return false;
 		}
 
-		private static bool CanBeResolvedGloballySafe(Type type)
+		private static bool CanBeResolvedGloballySafe(this DependencySource source, Type type)
 		{
+			if (!source.Includes(Global)) return false;
 			var container = Object.FindObjectOfType<RootDependencyContainer>();
 			return container && container.CanBeResolvedSafe(type);
 		}
