@@ -59,7 +59,7 @@ namespace Plugins.Framework.Editor
 
 			return new StringBuilder()
 				.Append(notResolved > 0 ? "<color=red>" : "<color=green>")
-				.AppendFormat("<b>{0}</b> resolved, <b>{1}</b> failed to resolve", resolved.ToString(),
+				.AppendFormat("<b>{0} resolved, {1} failed to resolve</b>", resolved.ToString(),
 					notResolved.ToString())
 				.Append("</color>")
 				.ToString();
