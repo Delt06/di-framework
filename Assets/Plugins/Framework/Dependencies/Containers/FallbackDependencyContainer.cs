@@ -38,7 +38,7 @@ namespace Framework.Dependencies.Containers
 			return true;
 		}
 
-		public bool TryFindObjectOfType(Type type, out object dependency)
+		private bool TryFindObjectOfType(Type type, out object dependency)
 		{
 			if (!typeof(Object).IsAssignableFrom(type))
 			{
