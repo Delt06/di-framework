@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Framework
 {
-	[DefaultExecutionOrder(-100)]
+	[DefaultExecutionOrder(-100), DisallowMultipleComponent]
 	public sealed class Resolver : MonoBehaviour, IInitializable
 	{
 		[SerializeField] private DependencySource _dependencySource = DependencySources.All;
@@ -20,26 +20,37 @@ namespace Framework
 			if (_resolved) return;
 
 			_resolved = true;
-			var children = GetComponentsInChildren<MonoBehaviour>(true);
+			ProcessNodeRecursively(transform);
+		}
 
-			foreach (var child in children)
+		private void ProcessNodeRecursively(Transform root)
+		{
+			var components = root.GetComponents<MonoBehaviour>();
+
+			foreach (var component in components)
 			{
-				ProcessChild(child);
+				Process(component);
+			}
+
+			foreach (Transform child in root)
+			{
+				if (child.TryGetComponent(out Resolver _)) continue;
+				ProcessNodeRecursively(child);
 			}
 		}
 
-		private void ProcessChild(MonoBehaviour child)
+		private void Process(MonoBehaviour component)
 		{
-			var type = child.GetType();
+			var type = component.GetType();
 			var methods = type.GetMethods();
 
 			foreach (var method in methods)
 			{
-				ProcessMethod(child, method);
+				ProcessMethod(component, method);
 			}
 		}
 
-		private void ProcessMethod(MonoBehaviour child, MethodInfo method)
+		private void ProcessMethod(MonoBehaviour component, MethodInfo method)
 		{
 			if (method.Name != Constructor) return;
 			if (!method.IsPublic) return;
@@ -52,10 +63,10 @@ namespace Framework
 			{
 				var parameter = parameters[index];
 				VerifyParameter(parameter);
-				arguments[index] = Resolve(child, parameter.ParameterType);
+				arguments[index] = Resolve(component, parameter.ParameterType);
 			}
 
-			method.Invoke(child, arguments);
+			method.Invoke(component, arguments);
 		}
 
 		private static void VerifyParameter(ParameterInfo parameter)
@@ -71,9 +82,9 @@ namespace Framework
 				throw Exception("Injection methods cannot have ref parameters.");
 		}
 
-		private object Resolve(MonoBehaviour child, Type type)
+		private object Resolve(MonoBehaviour component, Type type)
 		{
-			var context = new Context(this, child);
+			var context = new Context(this, component);
 			if (_dependencySource.TryResolve(context, type, out var dependency))
 				return dependency;
 
