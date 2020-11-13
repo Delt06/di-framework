@@ -22,14 +22,14 @@ namespace Framework.PlayTests
 		public void AddResolver_WithOtherComponent_ResolverIsCalledFirst()
 		{
 			var go = NewInactiveGameObject();
-			var first = go.AddComponent<DefaultExecutionOrderScript>();
+			var componentBefore = go.AddComponent<DefaultExecutionOrderScript>();
 			go.AddComponent<Resolver>();
-			var second = go.AddComponent<DefaultExecutionOrderScript>();
+			var componentAfter = go.AddComponent<DefaultExecutionOrderScript>();
 
 			go.SetActive(true);
 
-			Assert.That(first.AwakenWhenConstructed, Is.False);
-			Assert.That(second.AwakenWhenConstructed, Is.False);
+			Assert.That(componentBefore.AwakenWhenConstructed, Is.False);
+			Assert.That(componentAfter.AwakenWhenConstructed, Is.False);
 		}
 
 		[Test]
