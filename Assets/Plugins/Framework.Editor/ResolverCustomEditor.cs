@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Framework;
+using Framework.Dependencies;
 using UnityEditor;
 using UnityEngine;
 
@@ -55,17 +56,17 @@ namespace Plugins.Framework.Editor
 
 		private static string GetResolutionText(Resolver resolver, IEnumerable<MonoBehaviour> components)
 		{
-			var (resolved, notResolved) = GetResolutionStatistics(resolver, components);
+			var (resolved, notResolved, notInjectable) = GetResolutionStatistics(resolver, components);
 
 			return new StringBuilder()
-				.Append(notResolved > 0 ? "<color=red>" : "<color=green>")
-				.AppendFormat("<b>{0} resolved, {1} failed to resolve</b>", resolved.ToString(),
-					notResolved.ToString())
+				.Append(notResolved > 0 || notInjectable > 0 ? "<color=red>" : "<color=green>")
+				.AppendFormat("<b>{0} resolved, {1} failed to resolve, {2} not injectable</b>", resolved.ToString(),
+					notResolved.ToString(), notInjectable.ToString())
 				.Append("</color>")
 				.ToString();
 		}
 
-		private static (int resolved, int notResolved) GetResolutionStatistics(Resolver resolver,
+		private static (int resolved, int notResolved, int notInjectable) GetResolutionStatistics(Resolver resolver,
 			IEnumerable<MonoBehaviour> components)
 		{
 			var types = components
@@ -73,8 +74,9 @@ namespace Plugins.Framework.Editor
 				.ToArray();
 
 			var resolved = Sum(types, (c, t) => CanBeResolved(resolver, t, c));
-			var notResolved = Sum(types, (c, t) => !CanBeResolved(resolver, t, c));
-			return (resolved, notResolved);
+			var notResolved = Sum(types, (c, t) => IsInjectable(c) && !CanBeResolved(resolver, t, c));
+			var notInjectable = types.Count(t => !IsInjectable(t.component));
+			return (resolved, notResolved, notInjectable);
 		}
 
 		private static int Sum(IEnumerable<(MonoBehaviour component, IEnumerable<Type> types)> dependencies,
@@ -94,7 +96,13 @@ namespace Plugins.Framework.Editor
 			GUILayout.Label("-", GUILayout.Width(10));
 			DrawReadonlyField(component);
 			GUILayout.FlexibleSpace();
-			DrawDependencies(resolver, component);
+			
+			if (IsInjectable(component))
+				DrawDependencies(resolver, component);
+			else
+				DrawBox("Not injectable", false);
+			
+			
 			GUILayout.EndHorizontal();
 
 			GUI.color = color;
@@ -115,9 +123,29 @@ namespace Plugins.Framework.Editor
 			{
 				var dependencyText = dependency.Name;
 
-				GUI.color = CanBeResolved(resolver, dependency, component) ? Color.green : Color.red;
-				GUILayout.Box(dependencyText);
+				var canBeResolved = CanBeResolved(resolver, dependency, component);
+				DrawBox(dependencyText, canBeResolved);
 			}
+		}
+
+		private static void DrawBox(string text, bool success)
+		{
+			GUI.color = success ? Color.green : Color.red;
+			GUILayout.Box(text);
+		} 
+
+		private static bool IsInjectable(MonoBehaviour component)
+		{
+			var methods = Resolver.GetResolutionMethods(component);
+
+			foreach (var method in methods)
+			{
+				var parameters = method.GetParameters();
+				if (!parameters.AreInjectable())
+					return false;
+			}
+
+			return true;
 		}
 
 		private static IEnumerable<Type> GetDependencies(MonoBehaviour component)

@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 
 namespace Framework.Dependencies
 {
-	internal static class MethodInfoExtensions
+	public static class InjectionChecking
 	{
 		public static bool AreInjectable([NotNull] this ParameterInfo[] parameters)
 		{
