@@ -71,29 +71,18 @@ namespace Framework
 		private void ProcessMethod(MonoBehaviour component, MethodInfo method)
 		{
 			var parameters = method.GetParameters();
+			if (!parameters.AreInjectable())
+				throw new InvalidOperationException($"{component}'s {Constructor} method is not injectable.");
+
 			var arguments = new object[parameters.Length];
 
 			for (var index = 0; index < parameters.Length; index++)
 			{
 				var parameter = parameters[index];
-				VerifyParameter(parameter);
 				arguments[index] = Resolve(component, parameter.ParameterType);
 			}
 
 			method.Invoke(component, arguments);
-		}
-
-		private static void VerifyParameter(ParameterInfo parameter)
-		{
-			var parameterType = parameter.ParameterType;
-			if (parameterType.IsValueType)
-				throw Exception("Injection methods cannot have value-type parameters.");
-			if (parameter.IsOut)
-				throw Exception("Injection methods cannot have out parameters.");
-			if (parameter.IsIn)
-				throw Exception("Injection methods cannot have in parameters.");
-			if (parameterType.IsByRef)
-				throw Exception("Injection methods cannot have ref parameters.");
 		}
 
 		private object Resolve(MonoBehaviour component, Type type)
