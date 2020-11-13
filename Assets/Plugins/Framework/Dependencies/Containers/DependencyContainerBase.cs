@@ -17,12 +17,8 @@ namespace Framework.Dependencies.Containers
 
 			for (var index = 0; index < builder.DependenciesCount; index++)
 			{
-				if (builder.TryGetObject(index, out var obj))
-					Register(obj);
-				else if (builder.TryGetType(index, out var type))
-					Register(Activator.CreateInstance(type));
-				else
-					throw new InvalidOperationException("Neither object nor type is present in the builder.");
+				var @object = builder.GetOrCreateObject(index);
+				Register(@object);
 			}
 
 			_initialized = true;
@@ -41,8 +37,7 @@ namespace Framework.Dependencies.Containers
 		}
 
 		private static bool ConformsTo(ContainerBuilder builder, int index, Type checkedType) =>
-			builder.TryGetObject(index, out var @object) && checkedType.IsInstanceOfType(@object) ||
-			builder.TryGetType(index, out var type) && checkedType.IsAssignableFrom(type);
+			checkedType.IsAssignableFrom(builder.GetType(index));
 
 		private void Register([NotNull] object dependency)
 		{

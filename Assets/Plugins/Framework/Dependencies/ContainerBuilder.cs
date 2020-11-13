@@ -19,21 +19,53 @@ namespace Framework.Dependencies
 			return this;
 		}
 
-		internal int DependenciesCount => _dependencies.Count;
+		internal object GetOrCreateObject(int index)
+		{
+			ValidateIndex(index);
 
-		internal bool TryGetObject(int index, out object obj)
+			if (TryGetObject(index, out var obj))
+				return obj;
+
+			if (TryGetType(index, out var type))
+				return Activator.CreateInstance(type);
+
+			throw InvalidStateException();
+		}
+
+		internal Type GetType(int index)
+		{
+			ValidateIndex(index);
+
+			if (TryGetObject(index, out var obj))
+				return obj.GetType();
+
+			if (TryGetType(index, out var type))
+				return type;
+
+			throw InvalidStateException();
+		}
+
+		private void ValidateIndex(int index)
 		{
 			if (index < 0 || index >= DependenciesCount) throw new ArgumentOutOfRangeException(nameof(index));
+		}
+
+		internal int DependenciesCount => _dependencies.Count;
+
+		private bool TryGetObject(int index, out object obj)
+		{
 			obj = _dependencies[index].obj;
 			return obj != null;
 		}
 
-		internal bool TryGetType(int index, out Type type)
+		private bool TryGetType(int index, out Type type)
 		{
-			if (index < 0 || index >= DependenciesCount) throw new ArgumentOutOfRangeException(nameof(index));
 			type = _dependencies[index].type;
 			return type != null;
 		}
+
+		private static InvalidOperationException InvalidStateException() =>
+			new InvalidOperationException("Invalid state: either object or type should be not null.");
 
 		private readonly List<(object obj, Type type)> _dependencies = new List<(object obj, Type type)>();
 	}
