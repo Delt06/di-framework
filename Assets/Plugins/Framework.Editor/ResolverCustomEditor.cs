@@ -96,13 +96,13 @@ namespace Plugins.Framework.Editor
 			GUILayout.Label("-", GUILayout.Width(10));
 			DrawReadonlyField(component);
 			GUILayout.FlexibleSpace();
-			
+
 			if (IsInjectable(component))
 				DrawDependencies(resolver, component);
 			else
 				DrawBox("Not injectable", false);
-			
-			
+
+
 			GUILayout.EndHorizontal();
 
 			GUI.color = color;
@@ -132,7 +132,7 @@ namespace Plugins.Framework.Editor
 		{
 			GUI.color = success ? Color.green : Color.red;
 			GUILayout.Box(text);
-		} 
+		}
 
 		private static bool IsInjectable(MonoBehaviour component)
 		{
