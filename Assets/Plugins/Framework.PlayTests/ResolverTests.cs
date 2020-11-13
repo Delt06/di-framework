@@ -75,5 +75,20 @@ namespace Framework.PlayTests
 			Assert.That(component.FirstCalled);
 			Assert.That(component.SecondCalled);
 		}
+
+		[Test]
+		public void CreateObject_WithDependenceOnSimpleTypeWithConstructor_ResolveRecursively()
+		{
+			var go = NewInactiveGameObject();
+			var component = go.AddComponent<CtorInjectionContainer.StringDependentComponent>();
+			go.AddComponent<Resolver>();
+			CreateContainerWith<CtorInjectionContainer>();
+
+			go.SetActive(true);
+
+			Assert.That(component.Dependent, Is.Not.Null);
+			Assert.That(component.Dependent.Dependent, Is.Not.Null);
+			Assert.That(component.Dependent.Dependent.S, Is.Not.Null);
+		}
 	}
 }

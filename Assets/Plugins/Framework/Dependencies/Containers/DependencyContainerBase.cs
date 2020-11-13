@@ -12,8 +12,9 @@ namespace Framework.Dependencies.Containers
 		{
 			if (_initialized) return;
 
-			var builder = new ContainerBuilder();
+			var builder = new ContainerBuilder(this);
 			ComposeDependencies(builder);
+			builder.SortTopologically();
 
 			for (var index = 0; index < builder.DependenciesCount; index++)
 			{
@@ -30,7 +31,7 @@ namespace Framework.Dependencies.Containers
 		{
 			if (type == null) throw new ArgumentNullException(nameof(type));
 
-			var builder = new ContainerBuilder();
+			var builder = new ContainerBuilder(this);
 			ComposeDependencies(builder);
 			return Enumerable.Range(0, builder.DependenciesCount)
 				.Any(i => ConformsTo(builder, i, type));
