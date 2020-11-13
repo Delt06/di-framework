@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Linq;
-using System.Reflection;
 using Framework.Dependencies;
 using UnityEditor;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 
 namespace Plugins.Framework.Editor
@@ -18,19 +16,17 @@ namespace Plugins.Framework.Editor
 				.Where(FilterTypes)
 				.Prepend(null)
 				.ToArray();
-			
+
 			_typeNames = _types
 				.Select(t => t?.Name ?? "Add Container")
 				.ToArray();
 		}
 
-		private static bool FilterTypes(Type type)
-		{
-			return typeof(IDependencyContainer).IsAssignableFrom(type) &&
-			       typeof(MonoBehaviour).IsAssignableFrom(type) &&
-			       type != typeof(RootDependencyContainer) && 
-			       !type.IsAbstract;
-		}
+		private static bool FilterTypes(Type type) =>
+			typeof(IDependencyContainer).IsAssignableFrom(type) &&
+			typeof(MonoBehaviour).IsAssignableFrom(type) &&
+			type != typeof(RootDependencyContainer) &&
+			!type.IsAbstract;
 
 		public override void OnInspectorGUI()
 		{
