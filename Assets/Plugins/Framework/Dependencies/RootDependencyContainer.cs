@@ -8,6 +8,8 @@ namespace Framework.Dependencies
 	[AddComponentMenu("Dependency Container/Root Dependency Container")]
 	public sealed class RootDependencyContainer : MonoBehaviour, IDependencyContainer
 	{
+		[SerializeField] private bool _dontDestroyOnLoad = false;
+
 		internal static RootDependencyContainer Instance =>
 			_instance ? _instance : _instance = FindObjectOfType<RootDependencyContainer>();
 
@@ -68,6 +70,12 @@ namespace Framework.Dependencies
 			{
 				i.EnsureInitialized();
 			}
+		}
+
+		private void Awake()
+		{
+			if (_dontDestroyOnLoad)
+				DontDestroyOnLoad(gameObject);
 		}
 
 		private bool _initialized;
