@@ -7,8 +7,6 @@ namespace Framework.Dependencies.Containers
 	[DisallowMultipleComponent, AddComponentMenu("Dependency Container/Fallback Container")]
 	public sealed class FallbackDependencyContainer : MonoBehaviour, IDependencyContainer
 	{
-		public void EnsureInitialized() { }
-
 		public bool CanBeResolvedSafe(Type type)
 		{
 			if (type == null) throw new ArgumentNullException(nameof(type));

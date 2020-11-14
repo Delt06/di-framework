@@ -8,9 +8,11 @@ namespace Framework.Dependencies.Containers
 {
 	public abstract class DependencyContainerBase : MonoBehaviour, IDependencyContainer
 	{
-		public void EnsureInitialized()
+		private void EnsureInitialized()
 		{
 			if (_initialized) return;
+
+			_initialized = true;
 
 			var builder = new ContainerBuilder(this);
 			ComposeDependencies(builder);
@@ -21,8 +23,6 @@ namespace Framework.Dependencies.Containers
 				var @object = builder.GetOrCreateObject(index);
 				Register(@object);
 			}
-
-			_initialized = true;
 		}
 
 		protected abstract void ComposeDependencies(ContainerBuilder builder);
@@ -55,6 +55,7 @@ namespace Framework.Dependencies.Containers
 		public bool TryResolve(Type type, out object dependency)
 		{
 			if (type == null) throw new ArgumentNullException(nameof(type));
+			EnsureInitialized();
 			return _cache.TryGet(type, out dependency);
 		}
 

@@ -15,7 +15,7 @@ namespace Framework.Dependencies
 
 		private static RootDependencyContainer _instance;
 
-		public void EnsureInitialized()
+		private void EnsureInitialized()
 		{
 			if (_initialized) return;
 
@@ -26,11 +26,6 @@ namespace Framework.Dependencies
 		private void Initialize()
 		{
 			_subContainers = GetChildContainers().ToArray();
-
-			foreach (var subContainer in _subContainers)
-			{
-				subContainer.EnsureInitialized();
-			}
 		}
 
 		private IEnumerable<IDependencyContainer> GetChildContainers() =>
@@ -49,7 +44,6 @@ namespace Framework.Dependencies
 
 			foreach (var subContainer in _subContainers)
 			{
-				subContainer.EnsureInitialized();
 				if (!subContainer.TryResolve(type, out dependency)) continue;
 
 				_cache.TryRegister(dependency, out _);
