@@ -14,7 +14,6 @@ namespace Framework.Dependencies.Containers
 		public void Add([NotNull] Object @object)
 		{
 			if (@object == null) throw new ArgumentNullException(nameof(@object));
-			if (_frozen) throw new InvalidOperationException("Container is frozen.");
 			_dependencies.Add(@object);
 		}
 
@@ -22,19 +21,23 @@ namespace Framework.Dependencies.Containers
 		{
 			for (var index = 0; index < _dependencies.Count; index++)
 			{
-				if (_dependencies[index] == null)
+				var dependency = _dependencies[index];
+
+				if (dependency == null)
 				{
 					Debug.LogError($"Dependency at index {index} is null.", this);
 					continue;
 				}
 
-				var dependency = _dependencies[index];
+				if (dependency is GameObject)
+				{
+					Debug.LogWarning($"Dependency at index {index} is a GameObject ({dependency}), it will be ignored.",
+						this);
+					continue;
+				}
+
 				builder.Register(dependency);
 			}
-
-			_frozen = true;
 		}
-
-		private bool _frozen;
 	}
 }

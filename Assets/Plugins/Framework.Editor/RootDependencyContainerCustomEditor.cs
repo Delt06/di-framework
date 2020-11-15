@@ -18,7 +18,7 @@ namespace Plugins.Framework.Editor
 				.ToArray();
 
 			_typeNames = _types
-				.Select(t => t?.Name ?? "Add Container")
+				.Select(t => t?.Name ?? "<Add Container>")
 				.ToArray();
 		}
 

@@ -90,18 +90,28 @@ namespace Plugins.Framework.Editor
 			var color = GUI.color;
 			GUI.color = Color.white;
 
+			var dependencies = GetDependencies(component).ToArray();
+
 			GUILayout.BeginHorizontal();
-			const int indentPerLevel = 20;
-			GUILayout.Space(depth * indentPerLevel);
-			GUILayout.Label("-", GUILayout.Width(10));
-			DrawReadonlyField(component);
-			GUILayout.FlexibleSpace();
+
+			if (dependencies.Length > 0)
+			{
+				const int indentPerLevel = 20;
+				GUILayout.Space(depth * indentPerLevel);
+				GUILayout.Label("-", GUILayout.Width(10));
+				DrawReadonlyField(component);
+				GUILayout.FlexibleSpace();
+			}
 
 			if (IsInjectable(component))
-				DrawDependencies(resolver, component);
+			{
+				if (dependencies.Length > 0)
+					DrawDependencies(resolver, component);
+			}
 			else
+			{
 				DrawBox("Not injectable", false);
-
+			}
 
 			GUILayout.EndHorizontal();
 

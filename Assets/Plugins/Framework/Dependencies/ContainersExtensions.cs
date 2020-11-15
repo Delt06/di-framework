@@ -7,7 +7,7 @@ namespace Framework.Dependencies
 {
 	public static class ContainersExtensions
 	{
-		internal static bool ShouldBeIgnoredByContainer(this object obj) =>
+		public static bool ShouldBeIgnoredByContainer(this object obj) =>
 			obj is IIgnoreByContainer || obj is IDependencyContainer ||
 			obj is Component c && c.TryGetComponent(out IIgnoreByContainer _);
 

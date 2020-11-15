@@ -1,4 +1,6 @@
-﻿using Framework.Dependencies.Containers;
+﻿using System.Linq;
+using Framework.Dependencies;
+using Framework.Dependencies.Containers;
 using UnityEditor;
 using UnityEngine;
 
@@ -19,12 +21,12 @@ namespace Plugins.Framework.Editor
 			serializedObject.Update();
 
 			var dependencies = serializedObject.FindProperty("_dependencies");
-			DrawList(dependencies);
+			DrawList(serializedObject, dependencies);
 
 			serializedObject.ApplyModifiedProperties();
 		}
 
-		private void DrawList(SerializedProperty list)
+		private void DrawList(SerializedObject container, SerializedProperty list)
 		{
 			for (var index = 0; index < list.arraySize; index++)
 			{
@@ -55,6 +57,27 @@ namespace Plugins.Framework.Editor
 				if (MiniButton("+")) list.InsertArrayElementAtIndex(index);
 
 				if (MiniButton("-")) DeleteArrayElementAtIndex(list, index);
+
+				if (currentValue is GameObject go)
+				{
+					var size = GUILayout.Width(150);
+					var components = go.GetComponents<Component>()
+						.Where(c => !(c is Transform) && !c.ShouldBeIgnoredByContainer())
+						.ToArray();
+
+					var options = components.Select(c => c.GetType().Name).Prepend("<Select Component>").ToArray();
+					var selectedIndex = EditorGUILayout.Popup(0, options, size);
+					if (selectedIndex != 0)
+					{
+						var listDependencyContainer = (ListDependencyContainer) container.targetObject;
+						listDependencyContainer.Add(components[selectedIndex - 1]);
+						container.Update();
+						EditorUtility.SetDirty(listDependencyContainer);
+
+						list.DeleteArrayElementAtIndex(index);
+						list.DeleteArrayElementAtIndex(index);
+					}
+				}
 
 				EditorGUILayout.EndHorizontal();
 			}
