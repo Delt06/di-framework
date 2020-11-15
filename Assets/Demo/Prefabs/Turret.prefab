@@ -234,6 +234,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _shootingPeriod: 1
+  _powerfulShotProbability: 0.25
 --- !u!114 &2172815720654805409
 MonoBehaviour:
   m_ObjectHideFlags: 0
