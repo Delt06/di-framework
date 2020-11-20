@@ -5,6 +5,7 @@ using NUnit.Framework;
 using UnityEngine;
 
 namespace Framework.PlayTests
+
 {
 	[TestFixture]
 	public class FallbackDependencyContainerTests : TestFixtureBase

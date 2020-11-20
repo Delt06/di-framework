@@ -24,7 +24,7 @@ namespace Framework.PlayTests
 		protected GameObject NewGameObject([CanBeNull] string name = null)
 		{
 			var go = new GameObject();
-			
+
 			if (name != null)
 				go.name = name;
 
