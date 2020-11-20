@@ -12,8 +12,7 @@ namespace Framework.PlayTests
 		[Test]
 		public void CreateObject_WithDependency_Resolved()
 		{
-			var body = NewGameObject().AddComponent<Rigidbody>();
-			body.name = "Rigidbody";
+			var body = NewGameObject("Rigidbody").AddComponent<Rigidbody>();
 			CreateContainerWith<FallbackDependencyContainer>();
 
 			var go = NewGameObject();

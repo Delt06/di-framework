@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Framework.Dependencies;
+using JetBrains.Annotations;
 using NUnit.Framework;
 using UnityEngine;
 
@@ -20,9 +21,13 @@ namespace Framework.PlayTests
 			_gameObjects.Clear();
 		}
 
-		protected GameObject NewGameObject()
+		protected GameObject NewGameObject([CanBeNull] string name = null)
 		{
 			var go = new GameObject();
+			
+			if (name != null)
+				go.name = name;
+
 			_gameObjects.Add(go);
 			return go;
 		}
