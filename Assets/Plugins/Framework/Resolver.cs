@@ -8,6 +8,7 @@ namespace Framework
 	public sealed class Resolver : MonoBehaviour, IInitializable
 	{
 		[SerializeField] private DependencySource _dependencySource = DependencySources.All;
+		[SerializeField] private bool _destroyWhenFinished = true;
 
 		private void Awake()
 		{
@@ -24,6 +25,11 @@ namespace Framework
 			{
 				Process(component);
 			}
+			
+			_cache.Clear();
+			
+			if (_destroyWhenFinished)
+				Destroy(this);
 		}
 
 		private void Process(MonoBehaviour component)
@@ -54,9 +60,14 @@ namespace Framework
 
 		private object Resolve(MonoBehaviour component, Type type)
 		{
+			if (_cache.TryGet(type, out var dependency)) return dependency;
+			
 			var context = new Context(this, component);
-			if (_dependencySource.TryResolve(context, type, out var dependency))
+			if (_dependencySource.TryResolve(context, type, out dependency))
+			{
+				_cache.TryRegister(dependency, out _);
 				return dependency;
+			}
 
 			throw Exception($"Did not resolve dependency of type {type}.");
 		}
@@ -71,6 +82,7 @@ namespace Framework
 
 		void IInitializable.EnsureInitialized() => Resolve();
 
+		private readonly TypedCache _cache = new TypedCache();
 		private bool _resolved;
 	}
 }
