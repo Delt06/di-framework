@@ -23,24 +23,24 @@ namespace Framework
 
 			foreach (var (component, _) in Resolution.GetAffectedComponents(transform))
 			{
-				Process(component);
+				Inject(component);
 			}
-			
+
 			_cache.Clear();
-			
+
 			if (_destroyWhenFinished)
 				Destroy(this);
 		}
 
-		private void Process(MonoBehaviour component)
+		private void Inject(MonoBehaviour component)
 		{
 			foreach (var method in Resolution.GetMethodsIn(component))
 			{
-				ProcessMethod(component, method);
+				InjectThrough(component, method);
 			}
 		}
 
-		private void ProcessMethod(MonoBehaviour component, MethodInfo method)
+		private void InjectThrough(MonoBehaviour component, MethodInfo method)
 		{
 			var parameters = method.GetParameters();
 			if (!parameters.AreInjectable())
@@ -61,7 +61,7 @@ namespace Framework
 		private object Resolve(MonoBehaviour component, Type type)
 		{
 			if (_cache.TryGet(type, out var dependency)) return dependency;
-			
+
 			var context = new Context(this, component);
 			if (_dependencySource.TryResolve(context, type, out dependency))
 			{
