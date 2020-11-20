@@ -1,6 +1,6 @@
 ﻿using System.Linq;
-using Framework.Dependencies;
-using Framework.Dependencies.Containers;
+using Framework;
+using Framework.Containers;
 using UnityEditor;
 using UnityEngine;
 

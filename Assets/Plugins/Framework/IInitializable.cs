@@ -1,4 +1,4 @@
-﻿namespace Framework.Dependencies
+﻿namespace Framework
 {
 	internal interface IInitializable
 	{

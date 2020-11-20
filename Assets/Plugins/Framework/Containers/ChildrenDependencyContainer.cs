@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Component = UnityEngine.Component;
 
-namespace Framework.Dependencies.Containers
+namespace Framework.Containers
 {
 	[DisallowMultipleComponent, AddComponentMenu("Dependency Container/Children Dependency Container")]
 	public sealed class ChildrenDependencyContainer : DependencyContainerBase

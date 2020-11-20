@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace Framework.Dependencies.Containers
+namespace Framework.Containers
 {
 	[AddComponentMenu("Dependency Container/List Dependency Container")]
 	public sealed class ListDependencyContainer : DependencyContainerBase

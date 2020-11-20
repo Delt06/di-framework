@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Framework.Dependencies;
 using JetBrains.Annotations;
 using NUnit.Framework;
 using UnityEngine;

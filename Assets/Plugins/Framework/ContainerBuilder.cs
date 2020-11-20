@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Reflection;
 using JetBrains.Annotations;
-using static Framework.Dependencies.DependencyExceptionFactory;
+using static Framework.DependencyExceptionFactory;
 
-namespace Framework.Dependencies
+namespace Framework
 {
 	public sealed class ContainerBuilder
 	{

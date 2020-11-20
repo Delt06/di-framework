@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Framework.Dependencies
+namespace Framework
 {
 	internal static class DependencyExceptionFactory
 	{

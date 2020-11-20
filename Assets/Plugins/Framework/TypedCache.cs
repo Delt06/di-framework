@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 
-namespace Framework.Dependencies
+namespace Framework
 {
 	internal sealed class TypedCache
 	{

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Framework.Dependencies.Containers
+namespace Framework.Containers
 {
 	public interface IIgnoreByContainer { }
 

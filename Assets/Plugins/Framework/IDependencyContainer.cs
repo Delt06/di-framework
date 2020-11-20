@@ -1,7 +1,7 @@
 ﻿using System;
 using JetBrains.Annotations;
 
-namespace Framework.Dependencies
+namespace Framework
 {
 	public interface IDependencyContainer
 	{

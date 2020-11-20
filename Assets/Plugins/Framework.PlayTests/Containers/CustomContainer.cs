@@ -1,5 +1,4 @@
-﻿using Framework.Dependencies;
-using Framework.Dependencies.Containers;
+﻿using Framework.Containers;
 using Framework.PlayTests.Components;
 
 namespace Framework.PlayTests.Containers

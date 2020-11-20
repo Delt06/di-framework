@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Framework;
-using Framework.Dependencies;
 using UnityEditor;
 using UnityEngine;
+using static Framework.Resolution;
 
 namespace Plugins.Framework.Editor
 {
@@ -32,7 +32,7 @@ namespace Plugins.Framework.Editor
 			base.OnInspectorGUI();
 
 			var resolver = (Resolver) serializedObject.targetObject;
-			var components = Resolver.GetAffectedComponents(resolver.transform).ToArray();
+			var components = GetAffectedComponents(resolver.transform).ToArray();
 
 			EditorGUILayout.Space();
 
@@ -70,7 +70,7 @@ namespace Plugins.Framework.Editor
 			IEnumerable<MonoBehaviour> components)
 		{
 			var types = components
-				.Select(component => (component, GetDependencies(component)))
+				.Select(component => (component, GetAllDependenciesOf(component)))
 				.ToArray();
 
 			var resolved = Sum(types, (c, t) => CanBeResolved(resolver, t, c));
@@ -90,7 +90,7 @@ namespace Plugins.Framework.Editor
 			var color = GUI.color;
 			GUI.color = Color.white;
 
-			var dependencies = GetDependencies(component).ToArray();
+			var dependencies = GetAllDependenciesOf(component).ToArray();
 
 			GUILayout.BeginHorizontal();
 
@@ -127,7 +127,7 @@ namespace Plugins.Framework.Editor
 
 		private static void DrawDependencies(Resolver resolver, MonoBehaviour component)
 		{
-			var dependencies = GetDependencies(component);
+			var dependencies = GetAllDependenciesOf(component);
 
 			foreach (var dependency in dependencies)
 			{
@@ -142,28 +142,6 @@ namespace Plugins.Framework.Editor
 		{
 			GUI.color = success ? Color.green : Color.red;
 			GUILayout.Box(text);
-		}
-
-		private static bool IsInjectable(MonoBehaviour component)
-		{
-			var methods = Resolver.GetResolutionMethods(component);
-
-			foreach (var method in methods)
-			{
-				var parameters = method.GetParameters();
-				if (!parameters.AreInjectable())
-					return false;
-			}
-
-			return true;
-		}
-
-		private static IEnumerable<Type> GetDependencies(MonoBehaviour component)
-		{
-			return Resolver.GetResolutionMethods(component)
-				.SelectMany(m => m.GetParameters())
-				.Select(p => p.ParameterType)
-				.Distinct();
 		}
 
 		private static bool CanBeResolved(Resolver resolver, Type dependency, MonoBehaviour component) =>

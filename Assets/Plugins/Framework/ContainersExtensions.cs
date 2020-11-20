@@ -1,9 +1,9 @@
 ﻿using System;
-using Framework.Dependencies.Containers;
+using Framework.Containers;
 using JetBrains.Annotations;
 using UnityEngine;
 
-namespace Framework.Dependencies
+namespace Framework
 {
 	public static class ContainersExtensions
 	{

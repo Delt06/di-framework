@@ -1,5 +1,4 @@
-﻿using Framework.Dependencies.Containers;
-using Framework.PlayTests.Components;
+﻿using Framework.PlayTests.Components;
 using Framework.PlayTests.Containers;
 using NUnit.Framework;
 

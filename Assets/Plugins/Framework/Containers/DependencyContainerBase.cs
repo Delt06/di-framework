@@ -2,9 +2,9 @@
 using System.Linq;
 using JetBrains.Annotations;
 using UnityEngine;
-using static Framework.Dependencies.DependencyExceptionFactory;
+using static Framework.DependencyExceptionFactory;
 
-namespace Framework.Dependencies.Containers
+namespace Framework.Containers
 {
 	public abstract class DependencyContainerBase : MonoBehaviour, IDependencyContainer
 	{

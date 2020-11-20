@@ -1,5 +1,4 @@
-﻿using Framework.Dependencies;
-using Framework.Dependencies.Containers;
+﻿using Framework.Containers;
 using UnityEngine;
 
 namespace Framework.PlayTests.Containers
