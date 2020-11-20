@@ -1,19 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Text;
 using Framework;
+using Framework.Reporting;
 using UnityEditor;
 using UnityEngine;
-using static Framework.Resolution;
 
 namespace Plugins.Framework.Editor
 {
 	[CustomEditor(typeof(Resolver))]
-	public class ResolverCustomEditor : UnityEditor.Editor
+	public sealed class ResolverCustomEditor : UnityEditor.Editor
 	{
 		private GUIStyle _headerStyle;
 		private bool _foldout;
+		private ResolverReport _report;
 
 		private void OnEnable()
 		{
@@ -25,38 +23,39 @@ namespace Plugins.Framework.Editor
 				},
 				richText = true
 			};
+
+			_report = new ResolverReport((Resolver) serializedObject.targetObject);
 		}
 
 		public override void OnInspectorGUI()
 		{
 			base.OnInspectorGUI();
 
-			var resolver = (Resolver) serializedObject.targetObject;
-			var components = GetAffectedComponents(resolver.transform).ToArray();
+			_report.Generate();
 
 			EditorGUILayout.Space();
 
 			GUILayout.BeginHorizontal();
 			EditorGUILayout.LabelField("<size=14><b>Dependencies</b></size>:", _headerStyle);
 			GUILayout.FlexibleSpace();
-			var resolutionText = GetResolutionText(resolver, components.Select(c => c.component));
+			var resolutionText = GetResolutionText(_report);
 			GUILayout.Box(resolutionText, _headerStyle);
 			GUILayout.EndHorizontal();
 
 			_foldout = EditorGUILayout.BeginFoldoutHeaderGroup(_foldout, "Components");
 
 			if (_foldout)
-				foreach (var (component, depth) in components)
+				foreach (var componentData in _report.ComponentsData)
 				{
-					DrawComponent(resolver, component, depth);
+					DrawComponent(componentData);
 				}
 
 			EditorGUILayout.EndFoldoutHeaderGroup();
 		}
 
-		private static string GetResolutionText(Resolver resolver, IEnumerable<MonoBehaviour> components)
+		private static string GetResolutionText(ResolverReport report)
 		{
-			var (resolved, notResolved, notInjectable) = GetResolutionStatistics(resolver, components);
+			var (resolved, notResolved, notInjectable) = (report.Resolved, report.NotResolved, report.NotInjectable);
 
 			return new StringBuilder()
 				.Append(notResolved > 0 || notInjectable > 0 ? "<color=red>" : "<color=green>")
@@ -66,47 +65,26 @@ namespace Plugins.Framework.Editor
 				.ToString();
 		}
 
-		private static (int resolved, int notResolved, int notInjectable) GetResolutionStatistics(Resolver resolver,
-			IEnumerable<MonoBehaviour> components)
-		{
-			var types = components
-				.Select(component => (component, GetAllDependenciesOf(component)))
-				.ToArray();
-
-			var resolved = Sum(types, (c, t) => CanBeResolved(resolver, t, c));
-			var notResolved = Sum(types, (c, t) => IsInjectable(c) && !CanBeResolved(resolver, t, c));
-			var notInjectable = types.Count(t => !IsInjectable(t.component));
-			return (resolved, notResolved, notInjectable);
-		}
-
-		private static int Sum(IEnumerable<(MonoBehaviour component, IEnumerable<Type> types)> dependencies,
-			Func<MonoBehaviour, Type, bool> predicate)
-		{
-			return dependencies.Sum(d => d.types.Count(t => predicate(d.component, t)));
-		}
-
-		private static void DrawComponent(Resolver resolver, MonoBehaviour component, int depth)
+		private static void DrawComponent(ComponentResolutionData componentData)
 		{
 			var color = GUI.color;
 			GUI.color = Color.white;
 
-			var dependencies = GetAllDependenciesOf(component).ToArray();
-
 			GUILayout.BeginHorizontal();
 
-			if (dependencies.Length > 0)
+			if (componentData.Dependencies.Length > 0)
 			{
 				const int indentPerLevel = 20;
-				GUILayout.Space(depth * indentPerLevel);
+				GUILayout.Space(componentData.Depth * indentPerLevel);
 				GUILayout.Label("-", GUILayout.Width(10));
-				DrawReadonlyField(component);
+				DrawReadonlyField(componentData.Component);
 				GUILayout.FlexibleSpace();
 			}
 
-			if (IsInjectable(component))
+			if (componentData.Injectable)
 			{
-				if (dependencies.Length > 0)
-					DrawDependencies(resolver, component);
+				if (componentData.Dependencies.Length > 0)
+					DrawDependencies(componentData);
 			}
 			else
 			{
@@ -125,15 +103,11 @@ namespace Plugins.Framework.Editor
 			EditorGUI.EndDisabledGroup();
 		}
 
-		private static void DrawDependencies(Resolver resolver, MonoBehaviour component)
+		private static void DrawDependencies(ComponentResolutionData componentData)
 		{
-			var dependencies = GetAllDependenciesOf(component);
-
-			foreach (var dependency in dependencies)
+			foreach (var (dependency, canBeResolved) in componentData.Dependencies)
 			{
 				var dependencyText = dependency.Name;
-
-				var canBeResolved = CanBeResolved(resolver, dependency, component);
 				DrawBox(dependencyText, canBeResolved);
 			}
 		}
@@ -143,8 +117,5 @@ namespace Plugins.Framework.Editor
 			GUI.color = success ? Color.green : Color.red;
 			GUILayout.Box(text);
 		}
-
-		private static bool CanBeResolved(Resolver resolver, Type dependency, MonoBehaviour component) =>
-			resolver.CabBeResolvedSafe(component, dependency);
 	}
 }
