@@ -12,6 +12,7 @@ namespace Plugins.Framework.Editor
 		private void OnEnable()
 		{
 			_types = AppDomain.CurrentDomain.GetAssemblies()
+			    .Where(a => !a.IsDynamic)
 				.SelectMany(a => a.GetExportedTypes())
 				.Where(FilterTypes)
 				.Prepend(null)
