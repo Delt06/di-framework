@@ -58,8 +58,10 @@ The Inspector menu of the Resolver allows to specify where to get the dependenci
 Additionally, all the resolved/not resolved dependencies are displayed.
 
 ## "Unused" code stripping 
-The plugin was verified to work with `Managed Stripping Level` set to `Low`.   
-In case of any problems related to code stripping, refer to the [official manual](https://docs.unity3d.com/Manual/ManagedCodeStripping.html).
+- The plugin was verified to work with `Managed Stripping Level` set to `Low`.  
+- A `link.xml` file in the `DI` folder root prevents the default Unity assembly (`Assembly-CSharp`) from stripping. 
+- If you use assembly definitions in your code, you should create extra `link.xml` files to ensure nothing would get stripped. 
+- In case of any problems related to code stripping, refer to the [official manual](https://docs.unity3d.com/Manual/ManagedCodeStripping.html).
 
 ## Notes
 - Developed with Unity 2019 LTS
