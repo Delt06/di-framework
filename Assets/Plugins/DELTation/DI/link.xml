@@ -1,0 +1,4 @@
+﻿<linker>
+    <assembly fullname="DIFramework.PlayTests" preserve="all">
+    </assembly>
+</linker>
