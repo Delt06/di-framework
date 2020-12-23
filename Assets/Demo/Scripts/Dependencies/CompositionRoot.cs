@@ -1,5 +1,5 @@
-﻿using Framework;
-using Framework.Containers;
+﻿using DELTation.DIFramework;
+using DELTation.DIFramework.Containers;
 
 namespace Demo.Scripts.Dependencies
 {
