@@ -941,6 +941,7 @@ GameObject:
   - component: {fileID: 1544271270}
   - component: {fileID: 1544271271}
   - component: {fileID: 1544271272}
+  - component: {fileID: 1544271273}
   m_Layer: 0
   m_Name: '[Dependencies]'
   m_TagString: Untagged
@@ -1016,6 +1017,18 @@ MonoBehaviour:
   - {fileID: 1422217259}
   - {fileID: 1422217263}
   - {fileID: 963194227}
+--- !u!114 &1544271273
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1544271267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19d612115d554b4a9042e6ca47a12ae3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1806082907
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,7 +4,7 @@ using Object = UnityEngine.Object;
 
 namespace Framework.Containers
 {
-	[DisallowMultipleComponent, AddComponentMenu("Dependency Container/Fallback Container")]
+	[DisallowMultipleComponent, AddComponentMenu("Dependency Container/Fallback Dependency Container")]
 	public sealed class FallbackDependencyContainer : MonoBehaviour, IDependencyContainer
 	{
 		public bool CanBeResolvedSafe(Type type)
