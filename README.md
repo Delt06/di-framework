@@ -7,9 +7,9 @@ A simple Unity framework to inject dependencies into your components.
 
 ## Setting up
 - Create a `GameObject` and attach a `Root Dependency Container` component.
-- Using the menu of the attached `Root Dependency Container` (or manually), add the other container types. For detailed info on them, refer to the section [Container types](#Container types).
-- Define an injectable component according to the rules described in the section [Injection rules](#Injection rules).
-- Attach the created component to a `GameObject` and add a `Resolver` to it. Configure the `Resolver`, if needed: refer to [Resolvers](#Resolvers). 
+- Using the menu of the attached `Root Dependency Container` (or manually), add the other container types. For detailed info on them, refer to the section [Container types](#container-types).
+- Define an injectable component according to the rules described in the section [Injection rules](#injection-rules).
+- Attach the created component to a `GameObject` and add a `Resolver` to it. Configure the `Resolver`, if needed: refer to [Resolvers](#resolvers). 
 
 ## Container types
 *Note*: There is an order in which containers are queried. That is, if a container was not able to resolve the dependency, the next one will be queried. The order of containers is the same as in the Inspector. 
