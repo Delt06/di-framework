@@ -1,5 +1,4 @@
-﻿using DELTation.DIFramework;
-using DELTation.DIFramework.Containers;
+﻿using DELTation.DIFramework.Containers;
 using DELTation.DIFramework.PlayTests.Components;
 using NUnit.Framework;
 using UnityEngine;

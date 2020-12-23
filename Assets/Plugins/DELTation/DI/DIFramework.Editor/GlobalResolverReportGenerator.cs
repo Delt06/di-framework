@@ -1,5 +1,4 @@
-﻿using DELTation.DIFramework;
-using DELTation.DIFramework.Reporting;
+﻿using DELTation.DIFramework.Reporting;
 using UnityEditor;
 using UnityEngine;
 
