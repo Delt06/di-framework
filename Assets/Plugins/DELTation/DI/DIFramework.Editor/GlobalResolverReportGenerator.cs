@@ -6,7 +6,7 @@ namespace DELTation.DIFramework.Editor
 {
 	public static class GlobalResolverReportGenerator
 	{
-		[MenuItem("DI/Generate Report")]
+		[MenuItem("DI/Generate Report", priority = 50)]
 		public static void GenerateReport()
 		{
 			var resolvers = Object.FindObjectsOfType<Resolver>();
