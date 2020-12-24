@@ -32,11 +32,18 @@ namespace DELTation.DIFramework.Editor
 		{
 			base.OnInspectorGUI();
 
+			EditorGUILayout.BeginHorizontal();
+			EditorGUILayout.LabelField("Attach other containers: ", EditorStyles.boldLabel);
+
 			var selected = EditorGUILayout.Popup(0, _typeNames);
-			if (selected == 0) return;
-			var container = (RootDependencyContainer) serializedObject.targetObject;
-			container.gameObject.AddComponent(_types[selected]);
-			EditorUtility.SetDirty(container.gameObject);
+			if (selected != 0)
+			{
+				var container = (RootDependencyContainer) serializedObject.targetObject;
+				container.gameObject.AddComponent(_types[selected]);
+				EditorUtility.SetDirty(container.gameObject);
+			}
+			
+			EditorGUILayout.EndHorizontal();
 		}
 
 		private string[] _typeNames = Array.Empty<string>();
