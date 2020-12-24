@@ -78,7 +78,7 @@ namespace DELTation.DIFramework
 
 		public static IEnumerable<MethodInfo> GetMethodsIn(MonoBehaviour component) =>
 			component.GetType()
-				.GetMethods()
+				.GetMethods(BindingFlags.Public | BindingFlags.Instance)
 				.Where(IsSuitableMethod);
 
 		private static bool IsSuitableMethod(MethodInfo method) =>
