@@ -46,5 +46,26 @@ namespace DELTation.DIFramework.PlayTests
 
 			Assert.That(dependency.Rigidbody, Is.EqualTo(body));
 		}
+
+		[Test]
+		public void CreateObjectWithTwoChildren_WithLocalDependencies_BothResolvedLocally()
+		{
+			var parent = NewGameObject();
+
+			var child1 = NewGameObject();
+			child1.transform.parent = parent.transform;
+			var rigidbody1 = child1.AddComponent<Rigidbody>();
+			var rigidbodyComponent1 = child1.AddComponent<RigidbodyComponent>();
+
+			var child2 = NewGameObject();
+			child2.transform.parent = parent.transform;
+			var rigidbody2 = child2.AddComponent<Rigidbody>();
+			var rigidbodyComponent2 = child2.AddComponent<RigidbodyComponent>();
+
+			parent.AddComponent<Resolver>();
+
+			Assert.That(rigidbodyComponent1.Rigidbody, Is.SameAs(rigidbody1));
+			Assert.That(rigidbodyComponent2.Rigidbody, Is.SameAs(rigidbody2));
+		}
 	}
 }

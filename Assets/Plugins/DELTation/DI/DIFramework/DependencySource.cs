@@ -31,24 +31,40 @@ namespace DELTation.DIFramework
 		public static DependencySource All => Local | Children | Parent | Global;
 
 		public static bool CanBeResolvedSafe(this DependencySource source, Context context, Type type) =>
-			source.TryResolveInGameObject(context, type, out _) ||
+			source.TryResolveInGameObject(context, type, out _, out _) ||
 			source.CanBeResolvedGloballySafe(type);
 
-		public static bool TryResolve(this DependencySource source, Context context, Type type, out object result) =>
-			source.TryResolveInGameObject(context, type, out result) ||
-			source.TryResolveGlobally(type, out result);
+		public static bool TryResolve(this DependencySource source, Context context, Type type, out object result,
+			out DependencySource actualSource) =>
+			source.TryResolveInGameObject(context, type, out result, out actualSource) ||
+			source.TryResolveGlobally(type, out result, out actualSource);
 
 		private static bool TryResolveInGameObject(this DependencySource source, Context context, Type type,
-			out object result)
+			out object result, out DependencySource dependencySource)
 		{
 			if (CanBeResolvedInGameObject(type))
 			{
-				if (TryResolveLocally(source, context, type, out result)) return true;
-				if (TryResolveInChildren(source, context, type, out result)) return true;
-				if (TryResolveInParent(source, context, type, out result)) return true;
+				if (TryResolveLocally(source, context, type, out result))
+				{
+					dependencySource = Local;
+					return true;
+				}
+
+				if (TryResolveInChildren(source, context, type, out result))
+				{
+					dependencySource = Children;
+					return true;
+				}
+
+				if (TryResolveInParent(source, context, type, out result))
+				{
+					dependencySource = Parent;
+					return true;
+				}
 			}
 
 			result = default;
+			dependencySource = default;
 			return false;
 		}
 
@@ -99,14 +115,19 @@ namespace DELTation.DIFramework
 			return false;
 		}
 
-		private static bool TryResolveGlobally(this DependencySource source, Type type, out object result)
+		private static bool TryResolveGlobally(this DependencySource source, Type type, out object result,
+			out DependencySource dependencySource)
 		{
 			var container = RootDependencyContainer.Instance;
 
 			if (source.Includes(Global) && container && container.TryResolve(type, out result))
+			{
+				dependencySource = Global;
 				return true;
+			}
 
 			result = default;
+			dependencySource = default;
 			return false;
 		}
 

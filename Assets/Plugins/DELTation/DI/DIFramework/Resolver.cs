@@ -63,14 +63,18 @@ namespace DELTation.DIFramework
 			if (_cache.TryGet(type, out var dependency)) return dependency;
 
 			var context = new Context(this, component);
-			if (_dependencySource.TryResolve(context, type, out dependency))
+			if (_dependencySource.TryResolve(context, type, out dependency, out var actualSource))
 			{
-				_cache.TryRegister(dependency, out _);
+				if (IsCacheable(actualSource))
+					_cache.TryRegister(dependency, out _);
+
 				return dependency;
 			}
 
 			throw Exception($"Did not resolve dependency of type {type}.");
 		}
+
+		private bool IsCacheable(DependencySource source) => source != DependencySource.Local;
 
 		public bool CabBeResolvedSafe(MonoBehaviour component, Type type)
 		{
