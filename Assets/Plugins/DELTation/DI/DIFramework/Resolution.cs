@@ -54,7 +54,7 @@ namespace DELTation.DIFramework
 			       !parameter.IsIn && !parameterType.IsByRef;
 		}
 
-		public static IEnumerable<(MonoBehaviour component, int depth)> GetAffectedComponents(Transform root,
+		public static void GetAffectedComponents(List<(MonoBehaviour component, int depth)> affectedComponents, Transform root,
 			int depth = 0)
 		{
 			var components = root.GetComponents<MonoBehaviour>();
@@ -62,29 +62,63 @@ namespace DELTation.DIFramework
 			foreach (var component in components)
 			{
 				if (component is Resolver) continue;
-				yield return (component, depth);
+				affectedComponents.Add((component, depth));
 			}
 
 			foreach (Transform child in root)
 			{
 				if (child.TryGetComponent(out Resolver _)) continue;
 
-				foreach (var component in GetAffectedComponents(child, depth + 1))
-				{
-					yield return component;
-				}
+				GetAffectedComponents(affectedComponents, child, depth + 1);
 			}
 		}
+		
+		public static IEnumerable<(MonoBehaviour component, int depth)> GetAffectedComponents(Transform root,
+			int depth = 0)
+		{
+			var components = new List<(MonoBehaviour, int)>();
+			GetAffectedComponents(components, root, depth);
+			return components;
+		}
 
-		public static IEnumerable<MethodInfo> GetMethodsIn(MonoBehaviour component) =>
-			component.GetType()
+		public static IEnumerable<MethodInfo> GetMethodsIn(MonoBehaviour component)
+		{
+			var type = component.GetType();
+			if (InjectableMethods.TryGetValue(type, out var methods)) return methods;
+			
+			return InjectableMethods[type] = type
 				.GetMethods(BindingFlags.Public | BindingFlags.Instance)
-				.Where(IsSuitableMethod);
+				.Where(IsSuitableMethod)
+				.ToArray();
+		}
+
+		public static bool TryGetInjectableParameters(MethodInfo method, out IReadOnlyList<ParameterInfo> parameters)
+		{
+			if (InjectableParameters.TryGetValue(method, out var parametersInfo))
+			{
+				parameters = parametersInfo;
+				return true;
+			}
+			
+			parametersInfo = method.GetParameters();
+			if (parametersInfo.AreInjectable())
+			{
+				InjectableParameters[method] = parametersInfo;
+				parameters = parametersInfo;
+				return true;
+			}
+
+			parameters = default;
+			return false;
+		}
 
 		private static bool IsSuitableMethod(MethodInfo method) =>
 			method.Name == Constructor &&
 			method.IsPublic && method.ReturnType == typeof(void);
 
 		public const string Constructor = "Construct";
+		
+		private static readonly IDictionary<Type, MethodInfo[]> InjectableMethods = new Dictionary<Type, MethodInfo[]>();
+		private static readonly IDictionary<MethodInfo, ParameterInfo[]> InjectableParameters = new Dictionary<MethodInfo, ParameterInfo[]>();
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 
@@ -21,7 +22,10 @@ namespace DELTation.DIFramework
 
 			_resolved = true;
 
-			foreach (var (component, _) in Resolution.GetAffectedComponents(transform))
+			_affectedComponents.Clear();
+			Resolution.GetAffectedComponents(_affectedComponents, transform);
+			
+			foreach (var (component, _) in _affectedComponents)
 			{
 				Inject(component);
 			}
@@ -42,14 +46,12 @@ namespace DELTation.DIFramework
 
 		private void InjectThrough(MonoBehaviour component, MethodInfo method)
 		{
-			var parameters = method.GetParameters();
-			if (!parameters.AreInjectable())
-				throw new InvalidOperationException(
-					$"{component}'s {Resolution.Constructor} method is not injectable.");
+			if (!Resolution.TryGetInjectableParameters(method, out var parameters)) 
+				throw new InvalidOperationException($"{component}'s {Resolution.Constructor} method is not injectable.");
 
-			var arguments = new object[parameters.Length];
+			var arguments = new object[parameters.Count];
 
-			for (var index = 0; index < parameters.Length; index++)
+			for (var index = 0; index < parameters.Count; index++)
 			{
 				var parameter = parameters[index];
 				arguments[index] = Resolve(component, parameter.ParameterType);
@@ -88,5 +90,6 @@ namespace DELTation.DIFramework
 
 		private readonly TypedCache _cache = new TypedCache();
 		private bool _resolved;
+		private readonly List<(MonoBehaviour component, int depth)> _affectedComponents = new List<(MonoBehaviour, int depth)>();
 	}
 }
