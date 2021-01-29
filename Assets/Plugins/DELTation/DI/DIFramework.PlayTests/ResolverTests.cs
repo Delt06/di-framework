@@ -1,6 +1,7 @@
 ﻿using DELTation.DIFramework.PlayTests.Components;
 using DELTation.DIFramework.PlayTests.Containers;
 using NUnit.Framework;
+using Unity.PerformanceTesting;
 
 namespace DELTation.DIFramework.PlayTests
 {
@@ -88,6 +89,28 @@ namespace DELTation.DIFramework.PlayTests
 			Assert.That(component.Dependent, Is.Not.Null);
 			Assert.That(component.Dependent.Dependent, Is.Not.Null);
 			Assert.That(component.Dependent.Dependent.S, Is.Not.Null);
+		}
+		
+		[Test, Performance]
+		public void Benchmark_CreateObject_WithDependenceOnSimpleTypeWithConstructor_ResolveRecursively()
+		{
+			Measure.Method(() =>
+				{
+					var go = NewInactiveGameObject();
+					var component = go.AddComponent<CtorInjectionContainer.StringDependentComponent>();
+					go.AddComponent<Resolver>();
+					CreateContainerWith<CtorInjectionContainer>();
+
+					go.SetActive(true);
+
+					Assert.That(component.Dependent, Is.Not.Null);
+					Assert.That(component.Dependent.Dependent, Is.Not.Null);
+					Assert.That(component.Dependent.Dependent.S, Is.Not.Null);
+				})
+				.MeasurementCount(10)
+				.IterationsPerMeasurement(5)
+				.GC()
+				.Run();
 		}
 	}
 }

@@ -2,7 +2,8 @@
     "name": "DIFramework.PlayTests",
     "references": [
         "GUID:1b60fcce313931d4f9eefc7f1c079778",
-        "GUID:27619889b8ba8c24980f49ee34dbb44a"
+        "GUID:27619889b8ba8c24980f49ee34dbb44a",
+        "GUID:91836b14885b8a34196f4aa8303d7793"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
