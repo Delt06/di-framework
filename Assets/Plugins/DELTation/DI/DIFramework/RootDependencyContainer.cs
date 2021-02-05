@@ -10,10 +10,27 @@ namespace DELTation.DIFramework
 	{
 		[SerializeField] private bool _dontDestroyOnLoad = false;
 
-		internal static RootDependencyContainer Instance =>
-			_instance ? _instance : _instance = FindObjectOfType<RootDependencyContainer>();
+		internal static RootDependencyContainer GetInstance(int index)
+		{
+			if (index < 0) throw new ArgumentOutOfRangeException(nameof(index), index, "Index cannot be negative.");
+			if (index >= InstancesCount)
+				throw new ArgumentOutOfRangeException(nameof(index), index,
+					$"Index cannot be greater or equal to InstancesCount ({InstancesCount}).");
 
-		private static RootDependencyContainer _instance;
+			return Containers[index];
+		}
+
+		internal static int InstancesCount => Containers.Count;
+
+		private static void Register(RootDependencyContainer container)
+		{
+			if (!Containers.Contains(container))
+				Containers.Add(container);
+		}
+
+		private static void Unregister(RootDependencyContainer container) => Containers.Remove(container);
+
+		private static readonly List<RootDependencyContainer> Containers = new List<RootDependencyContainer>();
 
 		private void EnsureInitialized()
 		{
@@ -64,6 +81,16 @@ namespace DELTation.DIFramework
 			{
 				i.EnsureInitialized();
 			}
+		}
+
+		private void OnEnable()
+		{
+			Register(this);
+		}
+
+		private void OnDisable()
+		{
+			Unregister(this);
 		}
 
 		private void Awake()

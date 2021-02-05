@@ -118,8 +118,22 @@ namespace DELTation.DIFramework
 		private static bool TryResolveGlobally(this DependencySource source, Type type, out object result,
 			out DependencySource dependencySource)
 		{
-			var container = RootDependencyContainer.Instance;
+			for (var index = RootDependencyContainer.InstancesCount - 1; index >= 0; index--)
+			{
+				var container = RootDependencyContainer.GetInstance(index);
+				if (source.TryResolveGlobally(container, type, out result, out dependencySource))
+					return true;
+			}
 
+			result = default;
+			dependencySource = default;
+			return false;
+		}
+
+		private static bool TryResolveGlobally(this DependencySource source, RootDependencyContainer container,
+			Type type, out object result,
+			out DependencySource dependencySource)
+		{
 			if (source.Includes(Global) && container && container.TryResolve(type, out result))
 			{
 				dependencySource = Global;
