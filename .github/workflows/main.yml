@@ -5,6 +5,7 @@ on:
   push: { branches: [main, master, develop] }
 
 env:
+  UNITY_VERSION: 2019.4.1f1
   UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
   PROJECT_PATH: .
 
@@ -61,6 +62,7 @@ jobs:
           projectPath: ${{ env.PROJECT_PATH }}
           testMode: all
           customParameters: "-nographics"
+          unityVersion: ${{ env.UNITY_VERSION }}
       - uses: actions/upload-artifact@v2
         with:
           name: Test results (all modes)
@@ -99,6 +101,7 @@ jobs:
         with:
           projectPath: ${{ env.PROJECT_PATH }}
           targetPlatform: ${{ matrix.targetPlatform }}
+          unityVersion: ${{ env.UNITY_VERSION }}
       - uses: actions/upload-artifact@v2
         with:
           name: Build-${{ matrix.targetPlatform }}
