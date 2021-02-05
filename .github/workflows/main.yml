@@ -106,5 +106,5 @@ jobs:
           unityVersion: ${{ env.UNITY_VERSION }}
       - uses: actions/upload-artifact@v2
         with:
-          name: Build-${{ matrix.targetPlatform }}
+          name: build #Build-${{ matrix.targetPlatform }}
           path: build
