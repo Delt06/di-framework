@@ -40,7 +40,7 @@ public sealed class CompositionRoot : DependencyContainerBase
     - Value types, and `in`, `out`, `ref` parameters are not supported. 
 - Normal C# classes:
     - injected through public constructors.
-- `MonoBehaviour`'s, `ScriptableObject`'s:
+- `MonoBehaviour`'s:
     - injected through *ALL* public methods named `Construct`. For example:
 ```c#
 public class Example : MonoBehaviour 
