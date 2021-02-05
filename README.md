@@ -1,4 +1,5 @@
 # Unity DI Framework
+![Unity Actions](https://github.com/Delt06/di-framework/workflows/Unity%20Actions/badge.svg)  
 A simple Unity framework to inject dependencies into your components.
 
 ## Installation
