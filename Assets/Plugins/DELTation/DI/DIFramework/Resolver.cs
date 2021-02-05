@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace DELTation.DIFramework
 {
-	[DefaultExecutionOrder(-100), DisallowMultipleComponent]
+	[DisallowMultipleComponent]
 	public sealed class Resolver : MonoBehaviour, IInitializable
 	{
 		[SerializeField] private DependencySource _dependencySource = DependencySources.All;

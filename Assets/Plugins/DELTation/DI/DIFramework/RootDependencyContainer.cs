@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace DELTation.DIFramework
 {
-	[AddComponentMenu("Dependency Container/Root Dependency Container")]
+	[AddComponentMenu("Dependency Container/Root Dependency Container"), DisallowMultipleComponent]
 	public sealed class RootDependencyContainer : MonoBehaviour, IDependencyContainer
 	{
 		[SerializeField] private bool _dontDestroyOnLoad = false;
