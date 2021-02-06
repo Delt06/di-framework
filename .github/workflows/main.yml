@@ -1,4 +1,4 @@
-name: Unity Actions
+name: Test and Build 🛠️
 
 on:
   pull_request: {}
