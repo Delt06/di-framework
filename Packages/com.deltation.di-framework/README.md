@@ -1,9 +1,11 @@
 # Unity DI Framework
+![Unity Actions](https://github.com/Delt06/di-framework/workflows/Unity%20Actions/badge.svg)  
 A simple Unity framework to inject dependencies into your components.
 
 ## Installation
-- Download the latest version from the `Releases` section.
-- Open the `.unitypackage` in the desired Unity project and import everything.
+- Open Package Manager through Window/Package Manager
+- Click "+" and choose "Add package from .git URL..."
+- Insert the URL: https://github.com/Delt06/di-framework.git?path=Packages/com.deltation.di-framework
 
 ## Setting up
 - Create a `GameObject` and attach a `Root Dependency Container` component.
@@ -39,7 +41,7 @@ public sealed class CompositionRoot : DependencyContainerBase
     - Value types, and `in`, `out`, `ref` parameters are not supported. 
 - Normal C# classes:
     - injected through public constructors.
-- `MonoBehaviour`'s, `ScriptableObject`'s:
+- `MonoBehaviour`'s:
     - injected through *ALL* public methods named `Construct`. For example:
 ```c#
 public class Example : MonoBehaviour 
