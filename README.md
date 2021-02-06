@@ -5,7 +5,7 @@ A simple Unity framework to inject dependencies into your components.
 
 ## Installation
 - Open Package Manager through Window/Package Manager
-- Click "+" and choose "Add package from .git URL..."
+- Click "+" and choose "Add package from git URL..."
 - Insert the URL: https://github.com/Delt06/di-framework.git?path=Packages/com.deltation.di-framework
 
 ## Setting up
