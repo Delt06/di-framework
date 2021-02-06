@@ -1,5 +1,6 @@
 # Unity DI Framework
 ![Test and Build 🛠️](https://github.com/Delt06/di-framework/workflows/Test%20and%20Build%20%F0%9F%9B%A0%EF%B8%8F/badge.svg)
+
 A simple Unity framework to inject dependencies into your components.
 
 ## Installation
