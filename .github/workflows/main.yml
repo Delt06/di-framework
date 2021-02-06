@@ -73,7 +73,7 @@ jobs:
   build:
     needs: [checklicense]
     if: needs.checklicense.outputs.is_unity_license_set == 'true'
-    name: Build for ${{ matrix.targetPlatform }}
+    name: Build for ${{ matrix.targetPlatform }} 🛠️
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
