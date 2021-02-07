@@ -10,7 +10,8 @@ namespace DELTation.DIFramework.Resolution
 			source.TryResolveInGameObject(context, type, out _, out _) ||
 			source.CanBeResolvedGloballySafe(type);
 
-		public static bool TryResolve(this DependencySource source, ResolutionContext context, Type type, out object result,
+		public static bool TryResolve(this DependencySource source, ResolutionContext context, Type type,
+			out object result,
 			out DependencySource actualSource) =>
 			source.TryResolveInGameObject(context, type, out result, out actualSource) ||
 			source.TryResolveGlobally(type, out result, out actualSource);
@@ -47,9 +48,11 @@ namespace DELTation.DIFramework.Resolution
 		private static bool CanBeResolvedInGameObject(Type type) =>
 			typeof(Component).IsAssignableFrom(type) || type.IsInterface;
 
-		private static bool TryResolveLocally(DependencySource source, ResolutionContext context, Type type, out object result)
+		private static bool TryResolveLocally(DependencySource source, ResolutionContext context, Type type,
+			out object result)
 		{
-			if (source.Includes(DependencySource.Local) && context.Component.TryGetComponent(type, out var foundComponent))
+			if (source.Includes(DependencySource.Local) &&
+			    context.Component.TryGetComponent(type, out var foundComponent))
 			{
 				result = foundComponent;
 				return true;
@@ -59,7 +62,8 @@ namespace DELTation.DIFramework.Resolution
 			return false;
 		}
 
-		private static bool TryResolveInChildren(DependencySource source, ResolutionContext context, Type type, out object result)
+		private static bool TryResolveInChildren(DependencySource source, ResolutionContext context, Type type,
+			out object result)
 		{
 			if (source.Includes(DependencySource.Children))
 			{
@@ -75,7 +79,8 @@ namespace DELTation.DIFramework.Resolution
 			return false;
 		}
 
-		private static bool TryResolveInParent(DependencySource source, ResolutionContext context, Type type, out object result)
+		private static bool TryResolveInParent(DependencySource source, ResolutionContext context, Type type,
+			out object result)
 		{
 			if (source.Includes(DependencySource.Parent))
 			{

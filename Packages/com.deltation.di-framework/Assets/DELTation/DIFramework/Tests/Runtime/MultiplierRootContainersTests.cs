@@ -19,7 +19,7 @@ namespace DELTation.DIFramework.Tests.Runtime
 			Assert.That(component.Rigidbody != null);
 			Assert.That(component.Rigidbody, Is.EqualTo(rigidbody2));
 		}
-		
+
 		[Test]
 		public void CreateTwoContainersOneAfterOther_BothWithCorrectDependency_SecondBecomesTheActualSource()
 		{

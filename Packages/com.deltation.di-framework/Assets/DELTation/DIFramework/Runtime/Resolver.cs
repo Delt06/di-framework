@@ -26,13 +26,12 @@ namespace DELTation.DIFramework
 				Destroy(this);
 		}
 
-		public bool CabBeResolvedSafe(MonoBehaviour component, Type type)
-		{
-			return InnerResolver.CabBeResolvedSafe(component, type);
-		}
+		public bool CabBeResolvedSafe(MonoBehaviour component, Type type) =>
+			InnerResolver.CabBeResolvedSafe(component, type);
 
-		private IResolver InnerResolver => _implementation ?? (_implementation = new CachedComponentResolver(this, _dependencySource));
-		
+		private IResolver InnerResolver =>
+			_implementation ?? (_implementation = new CachedComponentResolver(this, _dependencySource));
+
 		void IInitializable.EnsureInitialized() => Resolve();
 
 		private IResolver _implementation;

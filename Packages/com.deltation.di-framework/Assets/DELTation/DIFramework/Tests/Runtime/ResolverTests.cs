@@ -90,7 +90,7 @@ namespace DELTation.DIFramework.Tests.Runtime
 			Assert.That(component.Dependent.Dependent, Is.Not.Null);
 			Assert.That(component.Dependent.Dependent.S, Is.Not.Null);
 		}
-		
+
 		[Test, Performance]
 		public void Benchmark_CreateObject_WithDependenceOnSimpleTypeWithConstructor_ResolveRecursively()
 		{

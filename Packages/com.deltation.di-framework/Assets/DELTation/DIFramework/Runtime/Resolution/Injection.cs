@@ -54,7 +54,8 @@ namespace DELTation.DIFramework.Resolution
 			       !parameter.IsIn && !parameterType.IsByRef;
 		}
 
-		internal static void GetAffectedComponents(List<(MonoBehaviour component, int depth)> affectedComponents, Transform root,
+		internal static void GetAffectedComponents(List<(MonoBehaviour component, int depth)> affectedComponents,
+			Transform root,
 			int depth = 0)
 		{
 			var components = root.GetComponents<MonoBehaviour>();
@@ -72,7 +73,7 @@ namespace DELTation.DIFramework.Resolution
 				GetAffectedComponents(affectedComponents, child, depth + 1);
 			}
 		}
-		
+
 		public static IEnumerable<(MonoBehaviour component, int depth)> GetAffectedComponents(Transform root,
 			int depth = 0)
 		{
@@ -85,7 +86,7 @@ namespace DELTation.DIFramework.Resolution
 		{
 			var type = component.GetType();
 			if (InjectableMethods.TryGetValue(type, out var methods)) return methods;
-			
+
 			return InjectableMethods[type] = type
 				.GetMethods(BindingFlags.Public | BindingFlags.Instance)
 				.Where(IsSuitableMethod)
@@ -99,7 +100,7 @@ namespace DELTation.DIFramework.Resolution
 				parameters = parametersInfo;
 				return true;
 			}
-			
+
 			parametersInfo = method.GetParameters();
 			if (parametersInfo.AreInjectable())
 			{
@@ -117,8 +118,11 @@ namespace DELTation.DIFramework.Resolution
 			method.IsPublic && method.ReturnType == typeof(void);
 
 		public const string Constructor = "Construct";
-		
-		private static readonly IDictionary<Type, MethodInfo[]> InjectableMethods = new Dictionary<Type, MethodInfo[]>();
-		private static readonly IDictionary<MethodInfo, ParameterInfo[]> InjectableParameters = new Dictionary<MethodInfo, ParameterInfo[]>();
+
+		private static readonly IDictionary<Type, MethodInfo[]>
+			InjectableMethods = new Dictionary<Type, MethodInfo[]>();
+
+		private static readonly IDictionary<MethodInfo, ParameterInfo[]> InjectableParameters =
+			new Dictionary<MethodInfo, ParameterInfo[]>();
 	}
 }
