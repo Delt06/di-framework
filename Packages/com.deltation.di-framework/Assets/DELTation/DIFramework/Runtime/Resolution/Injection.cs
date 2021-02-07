@@ -5,9 +5,9 @@ using System.Reflection;
 using JetBrains.Annotations;
 using UnityEngine;
 
-namespace DELTation.DIFramework
+namespace DELTation.DIFramework.Resolution
 {
-	public static class Resolution
+	public static class Injection
 	{
 		public static IEnumerable<Type> GetAllDependenciesOf([NotNull] MonoBehaviour component)
 		{
@@ -33,7 +33,7 @@ namespace DELTation.DIFramework
 			return true;
 		}
 
-		public static bool AreInjectable([NotNull] this ParameterInfo[] parameters)
+		internal static bool AreInjectable([NotNull] this ParameterInfo[] parameters)
 		{
 			if (parameters == null) throw new ArgumentNullException(nameof(parameters));
 
@@ -54,7 +54,7 @@ namespace DELTation.DIFramework
 			       !parameter.IsIn && !parameterType.IsByRef;
 		}
 
-		public static void GetAffectedComponents(List<(MonoBehaviour component, int depth)> affectedComponents, Transform root,
+		internal static void GetAffectedComponents(List<(MonoBehaviour component, int depth)> affectedComponents, Transform root,
 			int depth = 0)
 		{
 			var components = root.GetComponents<MonoBehaviour>();
@@ -81,7 +81,7 @@ namespace DELTation.DIFramework
 			return components;
 		}
 
-		public static IEnumerable<MethodInfo> GetMethodsIn(MonoBehaviour component)
+		internal static IEnumerable<MethodInfo> GetMethodsIn(MonoBehaviour component)
 		{
 			var type = component.GetType();
 			if (InjectableMethods.TryGetValue(type, out var methods)) return methods;
@@ -92,7 +92,7 @@ namespace DELTation.DIFramework
 				.ToArray();
 		}
 
-		public static bool TryGetInjectableParameters(MethodInfo method, out IReadOnlyList<ParameterInfo> parameters)
+		internal static bool TryGetInjectableParameters(MethodInfo method, out IReadOnlyList<ParameterInfo> parameters)
 		{
 			if (InjectableParameters.TryGetValue(method, out var parametersInfo))
 			{
