@@ -15,10 +15,10 @@ namespace DELTation.DIFramework.Editor
 			EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
 		}
 
-		[MenuItem("DI/Create Root Container", isValidateFunction: true)]
+		[MenuItem("DI/Create Root Container", true)]
 		public static bool ThereIsNotRootContainer()
 		{
 			return Object.FindObjectOfType<RootDependencyContainer>() == null;
-		} 
+		}
 	}
 }

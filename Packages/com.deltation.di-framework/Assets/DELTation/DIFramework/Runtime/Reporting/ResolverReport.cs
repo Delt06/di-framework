@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static DELTation.DIFramework.Resolution;
+using static DELTation.DIFramework.Resolution.Injection;
 
 namespace DELTation.DIFramework.Reporting
 {

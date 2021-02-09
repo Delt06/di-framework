@@ -20,6 +20,21 @@ namespace DELTation.DIFramework.Tests.Runtime
 			Assert.That(component.Rigidbody, Is.EqualTo(rigidbody2));
 		}
 
+		[Test]
+		public void CreateTwoContainersOneAfterOther_BothWithCorrectDependency_SecondBecomesTheActualSource()
+		{
+			var rigidbody1 = CreateRigidbodyWithinContainer();
+			var component1 = CreateAndResolveRigidbodyComponent();
+
+			var rigidbody2 = CreateRigidbodyWithinContainer();
+			var component2 = CreateAndResolveRigidbodyComponent();
+
+			Assert.That(component1.Rigidbody != null);
+			Assert.That(component1.Rigidbody, Is.EqualTo(rigidbody1));
+			Assert.That(component2.Rigidbody != null);
+			Assert.That(component2.Rigidbody, Is.EqualTo(rigidbody2));
+		}
+
 		private Rigidbody CreateRigidbodyWithinContainer()
 		{
 			var container = CreateContainerWith<ListDependencyContainer>();

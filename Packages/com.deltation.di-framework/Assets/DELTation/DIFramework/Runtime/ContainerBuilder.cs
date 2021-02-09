@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using DELTation.DIFramework.Resolution;
 using JetBrains.Annotations;
 using static DELTation.DIFramework.DependencyExceptionFactory;
 
