@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -129,8 +130,9 @@ namespace DELTation.DIFramework.Resolution
 		private static bool CanBeResolvedGloballySafe(this DependencySource source, Type type)
 		{
 			if (!source.Includes(DependencySource.Global)) return false;
-			var container = Object.FindObjectOfType<RootDependencyContainer>();
-			return container && container.CanBeResolvedSafe(type);
+
+			var containers = Object.FindObjectsOfType<RootDependencyContainer>();
+			return containers.Any(container => container.CanBeResolvedSafe(type));
 		}
 
 		private static bool Includes(this DependencySource source, DependencySource other) => (source & other) != 0;
