@@ -34,7 +34,7 @@ namespace DELTation.DIFramework.Resolution
 
 		private void Inject(MonoBehaviour component)
 		{
-			foreach (var method in Injection.GetMethodsIn(component))
+			foreach (var method in Injection.GetSuitableMethodsIn(component.GetType()))
 			{
 				InjectThrough(component, method);
 			}

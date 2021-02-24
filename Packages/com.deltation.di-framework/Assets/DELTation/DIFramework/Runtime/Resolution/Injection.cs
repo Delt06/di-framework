@@ -9,24 +9,23 @@ namespace DELTation.DIFramework.Resolution
 {
 	public static class Injection
 	{
-		public static IEnumerable<Type> GetAllDependenciesOf([NotNull] MonoBehaviour component)
+		public static IEnumerable<Type> GetAllDependenciesOf([NotNull] Type componentType)
 		{
-			if (component == null) throw new ArgumentNullException(nameof(component));
-			return GetMethodsIn(component)
+			if (componentType == null) throw new ArgumentNullException(nameof(componentType));
+			return GetSuitableMethodsIn(componentType)
 				.SelectMany(m => m.GetParameters())
 				.Select(p => p.ParameterType)
 				.Distinct();
 		}
 
-		public static bool IsInjectable([NotNull] MonoBehaviour component)
+		public static bool IsInjectable([NotNull] Type componentType)
 		{
-			if (component == null) throw new ArgumentNullException(nameof(component));
-			var methods = GetMethodsIn(component);
+			if (componentType == null) throw new ArgumentNullException(nameof(componentType));
+			var methods = GetSuitableMethodsIn(componentType);
 
 			foreach (var method in methods)
 			{
-				var parameters = method.GetParameters();
-				if (!parameters.AreInjectable())
+				if (!TryGetInjectableParameters(method, out _))
 					return false;
 			}
 
@@ -82,9 +81,8 @@ namespace DELTation.DIFramework.Resolution
 			return components;
 		}
 
-		internal static IEnumerable<MethodInfo> GetMethodsIn(MonoBehaviour component)
+		internal static IEnumerable<MethodInfo> GetSuitableMethodsIn(Type type)
 		{
-			var type = component.GetType();
 			if (InjectableMethods.TryGetValue(type, out var methods)) return methods;
 
 			return InjectableMethods[type] = type

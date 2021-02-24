@@ -30,12 +30,12 @@ namespace DELTation.DIFramework.Reporting
 			IEnumerable<MonoBehaviour> components)
 		{
 			var types = components
-				.Select(component => (component, GetAllDependenciesOf(component)))
+				.Select(component => (component, GetAllDependenciesOf(component.GetType())))
 				.ToArray();
 
 			var resolved = CountAndSum(types, (c, t) => CanBeResolved(resolver, t, c));
-			var notResolved = CountAndSum(types, (c, t) => IsInjectable(c) && !CanBeResolved(resolver, t, c));
-			var notInjectable = types.Count(t => !IsInjectable(t.component));
+			var notResolved = CountAndSum(types, (c, t) => IsInjectable(c.GetType()) && !CanBeResolved(resolver, t, c));
+			var notInjectable = types.Count(t => !IsInjectable(t.component.GetType()));
 			return (resolved, notResolved, notInjectable);
 		}
 
@@ -51,8 +51,8 @@ namespace DELTation.DIFramework.Reporting
 
 			foreach (var (component, depth) in components)
 			{
-				var dependencies = GetAllDependenciesOf(component).ToArray();
-				var injectable = IsInjectable(component);
+				var dependencies = GetAllDependenciesOf(component.GetType()).ToArray();
+				var injectable = IsInjectable(component.GetType());
 				var resolvedDependencies = new List<(Type type, bool canBeResolved)>();
 
 				foreach (var dependency in dependencies)
