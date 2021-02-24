@@ -13,6 +13,7 @@ namespace DELTation.DIFramework.Resolution
 		{
 			InjectableParameters.Clear();
 			InjectableMethods.Clear();
+			ArgumentsArraysCache.Clear();
 		}
 		
 		public static void WarmUp([NotNull] GameObject gameObject)
@@ -162,5 +163,15 @@ namespace DELTation.DIFramework.Resolution
 
 		private static readonly IDictionary<MethodInfo, ParameterInfo[]> InjectableParameters =
 			new Dictionary<MethodInfo, ParameterInfo[]>();
+
+		internal static object[] GetArgumentsArray(int length)
+		{
+			if (ArgumentsArraysCache.TryGetValue(length, out var array))
+				return array;
+
+			return ArgumentsArraysCache[length] = new object[length];
+		}
+
+		private static readonly IDictionary<int, object[]> ArgumentsArraysCache = new Dictionary<int, object[]>();
 	}
 }

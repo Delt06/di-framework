@@ -146,7 +146,7 @@ namespace DELTation.DIFramework.Tests.Runtime
 					}
 					
 				})
-				.MeasurementCount(25)
+				.MeasurementCount(100)
 				.IterationsPerMeasurement(5)
 				.GC()
 				.Run();
