@@ -58,9 +58,9 @@ namespace DELTation.DIFramework.Resolution
 			if (componentType == null) throw new ArgumentNullException(nameof(componentType));
 			var methods = GetSuitableMethodsIn(componentType);
 
-			foreach (var method in methods)
+			for (var i = 0; i < methods.Count; i++)
 			{
-				if (!TryGetInjectableParameters(method, out _))
+				if (!TryGetInjectableParameters(methods[i], out _))
 					return false;
 			}
 
@@ -116,7 +116,7 @@ namespace DELTation.DIFramework.Resolution
 			return components;
 		}
 
-		internal static IEnumerable<MethodInfo> GetSuitableMethodsIn(Type type)
+		internal static IReadOnlyList<MethodInfo> GetSuitableMethodsIn(Type type)
 		{
 			if (InjectableMethods.TryGetValue(type, out var methods)) return methods;
 			
@@ -128,7 +128,7 @@ namespace DELTation.DIFramework.Resolution
 					suitableMethods.Add(method);
 			}
 
-			return InjectableMethods[type] = suitableMethods.ToArray();
+			return InjectableMethods[type] = suitableMethods;
 		}
 
 		internal static bool TryGetInjectableParameters(MethodInfo method, out IReadOnlyList<ParameterInfo> parameters)
@@ -157,8 +157,8 @@ namespace DELTation.DIFramework.Resolution
 
 		public const string Constructor = "Construct";
 
-		private static readonly IDictionary<Type, MethodInfo[]>
-			InjectableMethods = new Dictionary<Type, MethodInfo[]>();
+		private static readonly IDictionary<Type, List<MethodInfo>>
+			InjectableMethods = new Dictionary<Type, List<MethodInfo>>();
 
 		private static readonly IDictionary<MethodInfo, ParameterInfo[]> InjectableParameters =
 			new Dictionary<MethodInfo, ParameterInfo[]>();
