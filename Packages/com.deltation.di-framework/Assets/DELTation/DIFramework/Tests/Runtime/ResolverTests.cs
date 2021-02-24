@@ -1,7 +1,10 @@
-﻿using DELTation.DIFramework.Tests.Runtime.Components;
+﻿using DELTation.DIFramework.Resolution;
+using DELTation.DIFramework.Tests.Runtime.Components;
+using DELTation.DIFramework.Tests.Runtime.Components.Benchmark;
 using DELTation.DIFramework.Tests.Runtime.Containers;
 using NUnit.Framework;
 using Unity.PerformanceTesting;
+using UnityEngine;
 
 namespace DELTation.DIFramework.Tests.Runtime
 {
@@ -94,13 +97,45 @@ namespace DELTation.DIFramework.Tests.Runtime
 		[Test, Performance, TestCase(false), TestCase(true)]
 		public void Benchmark_CreateObject_WithDependenceOnSimpleTypeWithConstructor_ResolveRecursively(bool warmUp)
 		{
+			var prefab = NewInactiveGameObject();
+			prefab.AddComponent<CtorInjectionContainer.StringDependentComponent>();
+
+			prefab.AddComponent<Component1>();
+			prefab.AddComponent<Component2>();
+			prefab.AddComponent<Component3>();
+			prefab.AddComponent<Component4>();
+			prefab.AddComponent<Component5>();
+			prefab.AddComponent<Component6>();
+			prefab.AddComponent<Component7>();
+			prefab.AddComponent<Component8>();
+			prefab.AddComponent<Component9>();
+			prefab.AddComponent<Component10>();
+			prefab.AddComponent<Component11>();
+			prefab.AddComponent<Component12>();
+			prefab.AddComponent<Component13>();
+			prefab.AddComponent<Component14>();
+			prefab.AddComponent<Component15>();
+			prefab.AddComponent<Component16>();
+			prefab.AddComponent<Component17>();
+			prefab.AddComponent<Component18>();
+			prefab.AddComponent<Component19>();
+			prefab.AddComponent<Component20>();
+			
+			prefab.AddComponent<Resolver>();
+			
+			Injection.InvalidateCache();
+				
+			if (warmUp)
+			{
+				Injection.WarmUp(prefab);
+			}
+			
 			Measure.Method(() =>
 				{
-					for (var i = 0; i < 100; i++)
+					for (var i = 0; i < 10; i++)
 					{
-						var go = NewInactiveGameObject();
-						var component = go.AddComponent<CtorInjectionContainer.StringDependentComponent>();
-						go.AddComponent<Resolver>();
+						var go = Object.Instantiate(prefab);
+						var component = go.GetComponent<CtorInjectionContainer.StringDependentComponent>();
 						CreateContainerWith<CtorInjectionContainer>();
 
 						go.SetActive(true);
@@ -111,7 +146,7 @@ namespace DELTation.DIFramework.Tests.Runtime
 					}
 					
 				})
-				.MeasurementCount(10)
+				.MeasurementCount(25)
 				.IterationsPerMeasurement(5)
 				.GC()
 				.Run();

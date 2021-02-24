@@ -9,6 +9,41 @@ namespace DELTation.DIFramework.Resolution
 {
 	public static class Injection
 	{
+		public static void InvalidateCache()
+		{
+			InjectableParameters.Clear();
+			InjectableMethods.Clear();
+		}
+		
+		public static void WarmUp([NotNull] GameObject gameObject)
+		{
+			if (gameObject == null) throw new ArgumentNullException(nameof(gameObject));
+
+			var components = gameObject.GetComponents<MonoBehaviour>();
+			foreach (var component in components)
+			{
+				WarmUp(component.GetType());
+			}
+		}
+		
+		public static void WarmUp(params Type[] types)
+		{
+			foreach (var type in types)
+			{
+				WarmUp(type);
+			}
+		}
+		
+		public static void WarmUp([NotNull] Type type)
+		{
+			if (type == null) throw new ArgumentNullException(nameof(type));
+			
+			foreach (var methodInfo in GetSuitableMethodsIn(type))
+			{
+				TryGetInjectableParameters(methodInfo, out _);
+			}
+		}
+		
 		public static IEnumerable<Type> GetAllDependenciesOf([NotNull] Type componentType)
 		{
 			if (componentType == null) throw new ArgumentNullException(nameof(componentType));
