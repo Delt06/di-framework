@@ -96,16 +96,20 @@ namespace DELTation.DIFramework.Tests.Runtime
 		{
 			Measure.Method(() =>
 				{
-					var go = NewInactiveGameObject();
-					var component = go.AddComponent<CtorInjectionContainer.StringDependentComponent>();
-					go.AddComponent<Resolver>();
-					CreateContainerWith<CtorInjectionContainer>();
+					for (var i = 0; i < 100; i++)
+					{
+						var go = NewInactiveGameObject();
+						var component = go.AddComponent<CtorInjectionContainer.StringDependentComponent>();
+						go.AddComponent<Resolver>();
+						CreateContainerWith<CtorInjectionContainer>();
 
-					go.SetActive(true);
+						go.SetActive(true);
 
-					Assert.That(component.Dependent, Is.Not.Null);
-					Assert.That(component.Dependent.Dependent, Is.Not.Null);
-					Assert.That(component.Dependent.Dependent.S, Is.Not.Null);
+						Assert.That(component.Dependent, Is.Not.Null);
+						Assert.That(component.Dependent.Dependent, Is.Not.Null);
+						Assert.That(component.Dependent.Dependent.S, Is.Not.Null);
+					}
+					
 				})
 				.MeasurementCount(10)
 				.IterationsPerMeasurement(5)
