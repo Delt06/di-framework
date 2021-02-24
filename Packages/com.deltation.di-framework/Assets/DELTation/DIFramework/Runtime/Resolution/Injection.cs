@@ -119,11 +119,16 @@ namespace DELTation.DIFramework.Resolution
 		internal static IEnumerable<MethodInfo> GetSuitableMethodsIn(Type type)
 		{
 			if (InjectableMethods.TryGetValue(type, out var methods)) return methods;
+			
+			var suitableMethods = new List<MethodInfo>();
 
-			return InjectableMethods[type] = type
-				.GetMethods(BindingFlags.Public | BindingFlags.Instance)
-				.Where(IsSuitableMethod)
-				.ToArray();
+			foreach (var method in type.GetMethods(BindingFlags.Public | BindingFlags.Instance))
+			{
+				if (IsSuitableMethod(method))
+					suitableMethods.Add(method);
+			}
+
+			return InjectableMethods[type] = suitableMethods.ToArray();
 		}
 
 		internal static bool TryGetInjectableParameters(MethodInfo method, out IReadOnlyList<ParameterInfo> parameters)
