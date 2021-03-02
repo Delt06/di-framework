@@ -9,24 +9,59 @@ namespace DELTation.DIFramework.Resolution
 {
     public static class Injection
     {
-        public static IEnumerable<Type> GetAllDependenciesOf([NotNull] MonoBehaviour component)
+        public static void InvalidateCache()
         {
-            if (component == null) throw new ArgumentNullException(nameof(component));
-            return GetMethodsIn(component)
+            InjectableParameters.Clear();
+            InjectableMethods.Clear();
+            ArgumentsArraysCache.Clear();
+        }
+
+        public static void WarmUp([NotNull] GameObject gameObject)
+        {
+            if (gameObject == null) throw new ArgumentNullException(nameof(gameObject));
+
+            var components = gameObject.GetComponents<MonoBehaviour>();
+            foreach (var component in components)
+            {
+                WarmUp(component.GetType());
+            }
+        }
+
+        public static void WarmUp(params Type[] types)
+        {
+            foreach (var type in types)
+            {
+                WarmUp(type);
+            }
+        }
+
+        public static void WarmUp([NotNull] Type type)
+        {
+            if (type == null) throw new ArgumentNullException(nameof(type));
+
+            foreach (var methodInfo in GetSuitableMethodsIn(type))
+            {
+                TryGetInjectableParameters(methodInfo, out _);
+            }
+        }
+
+        public static IEnumerable<Type> GetAllDependenciesOf([NotNull] Type componentType)
+        {
+            if (componentType == null) throw new ArgumentNullException(nameof(componentType));
+            return GetSuitableMethodsIn(componentType)
                 .SelectMany(m => m.GetParameters())
                 .Select(p => p.ParameterType)
                 .Distinct();
         }
 
-        public static bool IsInjectable([NotNull] MonoBehaviour component)
+        public static bool IsInjectable([NotNull] Type componentType)
         {
-            if (component == null) throw new ArgumentNullException(nameof(component));
-            var methods = GetMethodsIn(component);
+            if (componentType == null) throw new ArgumentNullException(nameof(componentType));
+            var methods = GetSuitableMethodsIn(componentType);
 
-            foreach (var method in methods)
+            for (var i = 0; i < methods.Count; i++)
             {
-                var parameters = method.GetParameters();
-                if (!parameters.AreInjectable())
+                if (!TryGetInjectableParameters(methods[i], out _))
                     return false;
             }
 
@@ -82,15 +117,19 @@ namespace DELTation.DIFramework.Resolution
             return components;
         }
 
-        internal static IEnumerable<MethodInfo> GetMethodsIn(MonoBehaviour component)
+        internal static IReadOnlyList<MethodInfo> GetSuitableMethodsIn(Type type)
         {
-            var type = component.GetType();
             if (InjectableMethods.TryGetValue(type, out var methods)) return methods;
 
-            return InjectableMethods[type] = type
-                .GetMethods(BindingFlags.Public | BindingFlags.Instance)
-                .Where(IsSuitableMethod)
-                .ToArray();
+            var suitableMethods = new List<MethodInfo>();
+
+            foreach (var method in type.GetMethods(BindingFlags.Public | BindingFlags.Instance))
+            {
+                if (IsSuitableMethod(method))
+                    suitableMethods.Add(method);
+            }
+
+            return InjectableMethods[type] = suitableMethods;
         }
 
         internal static bool TryGetInjectableParameters(MethodInfo method, out IReadOnlyList<ParameterInfo> parameters)
@@ -119,10 +158,20 @@ namespace DELTation.DIFramework.Resolution
 
         public const string Constructor = "Construct";
 
-        private static readonly IDictionary<Type, MethodInfo[]>
-            InjectableMethods = new Dictionary<Type, MethodInfo[]>();
+        private static readonly IDictionary<Type, List<MethodInfo>>
+            InjectableMethods = new Dictionary<Type, List<MethodInfo>>();
 
         private static readonly IDictionary<MethodInfo, ParameterInfo[]> InjectableParameters =
             new Dictionary<MethodInfo, ParameterInfo[]>();
+
+        internal static object[] GetArgumentsArray(int length)
+        {
+            if (ArgumentsArraysCache.TryGetValue(length, out var array))
+                return array;
+
+            return ArgumentsArraysCache[length] = new object[length];
+        }
+
+        private static readonly IDictionary<int, object[]> ArgumentsArraysCache = new Dictionary<int, object[]>();
     }
 }

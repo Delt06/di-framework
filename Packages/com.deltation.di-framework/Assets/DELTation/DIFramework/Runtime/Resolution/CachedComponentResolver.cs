@@ -34,9 +34,11 @@ namespace DELTation.DIFramework.Resolution
 
         private void Inject(MonoBehaviour component)
         {
-            foreach (var method in Injection.GetMethodsIn(component))
+            var methods = Injection.GetSuitableMethodsIn(component.GetType());
+
+            for (var index = 0; index < methods.Count; index++)
             {
-                InjectThrough(component, method);
+                InjectThrough(component, methods[index]);
             }
         }
 
@@ -45,7 +47,7 @@ namespace DELTation.DIFramework.Resolution
             if (!Injection.TryGetInjectableParameters(method, out var parameters))
                 throw new InvalidOperationException($"{component}'s {Injection.Constructor} method is not injectable.");
 
-            var arguments = new object[parameters.Count];
+            var arguments = Injection.GetArgumentsArray(parameters.Count);
 
             for (var index = 0; index < parameters.Count; index++)
             {
@@ -54,6 +56,11 @@ namespace DELTation.DIFramework.Resolution
             }
 
             method.Invoke(component, arguments);
+
+            for (var index = 0; index < arguments.Length; index++)
+            {
+                arguments[index] = null;
+            }
         }
 
         private object Resolve(MonoBehaviour component, Type type)
