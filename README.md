@@ -1,6 +1,8 @@
 # Unity DI Framework
 ![Test and Build](https://github.com/Delt06/di-framework/workflows/Test%20and%20Build/badge.svg)
 
+[![Check code formatting](https://github.com/Delt06/di-framework/actions/workflows/linter.yml/badge.svg)](https://github.com/Delt06/di-framework/actions/workflows/linter.yml)
+
 A simple Unity framework to inject dependencies into your components.
 
 ## Installation
