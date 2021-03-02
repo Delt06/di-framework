@@ -4,47 +4,47 @@ using Object = UnityEngine.Object;
 
 namespace DELTation.DIFramework.Containers
 {
-	[DisallowMultipleComponent, AddComponentMenu("Dependency Container/Fallback Dependency Container")]
-	public sealed class FallbackDependencyContainer : MonoBehaviour, IDependencyContainer
-	{
-		public bool CanBeResolvedSafe(Type type)
-		{
-			if (type == null) throw new ArgumentNullException(nameof(type));
-			return TryFindObjectOfType(type, out _);
-		}
+    [DisallowMultipleComponent, AddComponentMenu("Dependency Container/Fallback Dependency Container")]
+    public sealed class FallbackDependencyContainer : MonoBehaviour, IDependencyContainer
+    {
+        public bool CanBeResolvedSafe(Type type)
+        {
+            if (type == null) throw new ArgumentNullException(nameof(type));
+            return TryFindObjectOfType(type, out _);
+        }
 
-		public bool TryResolve(Type type, out object dependency)
-		{
-			if (type == null) throw new ArgumentNullException(nameof(type));
-			if (_cache.TryGet(type, out dependency)) return true;
-			if (!TryFindObjectOfType(type, out dependency)) return false;
+        public bool TryResolve(Type type, out object dependency)
+        {
+            if (type == null) throw new ArgumentNullException(nameof(type));
+            if (_cache.TryGet(type, out dependency)) return true;
+            if (!TryFindObjectOfType(type, out dependency)) return false;
 
-			_cache.TryRegister(dependency, out _);
-			return true;
-		}
+            _cache.TryRegister(dependency, out _);
+            return true;
+        }
 
-		private static bool TryFindObjectOfType(Type type, out object dependency)
-		{
-			if (!typeof(Object).IsAssignableFrom(type))
-			{
-				dependency = default;
-				return false;
-			}
+        private static bool TryFindObjectOfType(Type type, out object dependency)
+        {
+            if (!typeof(Object).IsAssignableFrom(type))
+            {
+                dependency = default;
+                return false;
+            }
 
-			var dependencies = FindObjectsOfType(type);
+            var dependencies = FindObjectsOfType(type);
 
-			foreach (var d in dependencies)
-			{
-				if (d.ShouldBeIgnoredByContainer()) continue;
+            foreach (var d in dependencies)
+            {
+                if (d.ShouldBeIgnoredByContainer()) continue;
 
-				dependency = d;
-				return true;
-			}
+                dependency = d;
+                return true;
+            }
 
-			dependency = default;
-			return false;
-		}
+            dependency = default;
+            return false;
+        }
 
-		private readonly TypedCache _cache = new TypedCache();
-	}
+        private readonly TypedCache _cache = new TypedCache();
+    }
 }

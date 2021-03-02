@@ -5,92 +5,92 @@ using UnityEngine;
 
 namespace DELTation.DIFramework.Tests.Runtime
 {
-	[TestFixture]
-	public sealed class MultiplierRootContainersTests : TestFixtureBase
-	{
-		[Test]
-		public void CreateTwoContainers_BothWithCorrectDependency_TheLatterIsTheActualSource()
-		{
-			CreateRigidbodyWithinContainer();
-			var rigidbody2 = CreateRigidbodyWithinContainer();
+    [TestFixture]
+    public sealed class MultiplierRootContainersTests : TestFixtureBase
+    {
+        [Test]
+        public void CreateTwoContainers_BothWithCorrectDependency_TheLatterIsTheActualSource()
+        {
+            CreateRigidbodyWithinContainer();
+            var rigidbody2 = CreateRigidbodyWithinContainer();
 
-			var component = CreateAndResolveRigidbodyComponent();
+            var component = CreateAndResolveRigidbodyComponent();
 
-			Assert.That(component.Rigidbody != null);
-			Assert.That(component.Rigidbody, Is.EqualTo(rigidbody2));
-		}
+            Assert.That(component.Rigidbody != null);
+            Assert.That(component.Rigidbody, Is.EqualTo(rigidbody2));
+        }
 
-		[Test]
-		public void CreateTwoContainersOneAfterOther_BothWithCorrectDependency_SecondBecomesTheActualSource()
-		{
-			var rigidbody1 = CreateRigidbodyWithinContainer();
-			var component1 = CreateAndResolveRigidbodyComponent();
+        [Test]
+        public void CreateTwoContainersOneAfterOther_BothWithCorrectDependency_SecondBecomesTheActualSource()
+        {
+            var rigidbody1 = CreateRigidbodyWithinContainer();
+            var component1 = CreateAndResolveRigidbodyComponent();
 
-			var rigidbody2 = CreateRigidbodyWithinContainer();
-			var component2 = CreateAndResolveRigidbodyComponent();
+            var rigidbody2 = CreateRigidbodyWithinContainer();
+            var component2 = CreateAndResolveRigidbodyComponent();
 
-			Assert.That(component1.Rigidbody != null);
-			Assert.That(component1.Rigidbody, Is.EqualTo(rigidbody1));
-			Assert.That(component2.Rigidbody != null);
-			Assert.That(component2.Rigidbody, Is.EqualTo(rigidbody2));
-		}
+            Assert.That(component1.Rigidbody != null);
+            Assert.That(component1.Rigidbody, Is.EqualTo(rigidbody1));
+            Assert.That(component2.Rigidbody != null);
+            Assert.That(component2.Rigidbody, Is.EqualTo(rigidbody2));
+        }
 
-		private Rigidbody CreateRigidbodyWithinContainer()
-		{
-			var container = CreateContainerWith<ListDependencyContainer>();
-			var body = NewGameObject().AddComponent<Rigidbody>();
-			container.Add(body);
-			return body;
-		}
+        private Rigidbody CreateRigidbodyWithinContainer()
+        {
+            var container = CreateContainerWith<ListDependencyContainer>();
+            var body = NewGameObject().AddComponent<Rigidbody>();
+            container.Add(body);
+            return body;
+        }
 
-		private RigidbodyComponent CreateAndResolveRigidbodyComponent()
-		{
-			var component = NewGameObject().AddComponent<RigidbodyComponent>();
-			component.gameObject.AddComponent<Resolver>();
-			return component;
-		}
+        private RigidbodyComponent CreateAndResolveRigidbodyComponent()
+        {
+            var component = NewGameObject().AddComponent<RigidbodyComponent>();
+            component.gameObject.AddComponent<Resolver>();
+            return component;
+        }
 
-		[Test]
-		public void CreateTwoContainers_OnlyFirstWithCorrectDependency_FirstIsTheSource()
-		{
-			var rigidbody = CreateRigidbodyWithinContainer();
-			CreateContainerWith<ListDependencyContainer>();
+        [Test]
+        public void CreateTwoContainers_OnlyFirstWithCorrectDependency_FirstIsTheSource()
+        {
+            var rigidbody = CreateRigidbodyWithinContainer();
+            CreateContainerWith<ListDependencyContainer>();
 
-			var component = CreateAndResolveRigidbodyComponent();
+            var component = CreateAndResolveRigidbodyComponent();
 
-			Assert.That(component.Rigidbody != null);
-			Assert.That(component.Rigidbody, Is.EqualTo(rigidbody));
-		}
+            Assert.That(component.Rigidbody != null);
+            Assert.That(component.Rigidbody, Is.EqualTo(rigidbody));
+        }
 
-		[Test]
-		public void CreateTwoContainers_OnlySecondWithCorrectDependency_SecondIsTheSource()
-		{
-			CreateContainerWith<ListDependencyContainer>();
-			var rigidbody = CreateRigidbodyWithinContainer();
+        [Test]
+        public void CreateTwoContainers_OnlySecondWithCorrectDependency_SecondIsTheSource()
+        {
+            CreateContainerWith<ListDependencyContainer>();
+            var rigidbody = CreateRigidbodyWithinContainer();
 
-			var component = CreateAndResolveRigidbodyComponent();
+            var component = CreateAndResolveRigidbodyComponent();
 
-			Assert.That(component.Rigidbody != null);
-			Assert.That(component.Rigidbody, Is.EqualTo(rigidbody));
-		}
+            Assert.That(component.Rigidbody != null);
+            Assert.That(component.Rigidbody, Is.EqualTo(rigidbody));
+        }
 
-		[Test]
-		public void CreateManyContainers_OnlyOneWithCorrectDependency_ThatOneIsTheSource()
-		{
-			const int containerWithDependency = 2;
-			Rigidbody rigidbody = null;
-			for (var i = 0; i < 5; i++)
-			{
-				if (i == containerWithDependency)
-					rigidbody = CreateRigidbodyWithinContainer();
-				else
-					CreateContainerWith<ListDependencyContainer>();
-			}
+        [Test]
+        public void CreateManyContainers_OnlyOneWithCorrectDependency_ThatOneIsTheSource()
+        {
+            const int containerWithDependency = 2;
+            Rigidbody rigidbody = null;
+            for (var i = 0; i < 5; i++)
+            {
+                if (i == containerWithDependency)
+                    rigidbody = CreateRigidbodyWithinContainer();
+                else
+                    CreateContainerWith<ListDependencyContainer>();
+            }
 
-			var component = CreateAndResolveRigidbodyComponent();
+            var component = CreateAndResolveRigidbodyComponent();
 
-			Assert.That(component.Rigidbody != null);
-			Assert.That(component.Rigidbody, Is.EqualTo(rigidbody));
-		}
-	}
+            Assert.That(component.Rigidbody != null);
+            Assert.That(component.Rigidbody, Is.EqualTo(rigidbody));
+        }
+    }
 }

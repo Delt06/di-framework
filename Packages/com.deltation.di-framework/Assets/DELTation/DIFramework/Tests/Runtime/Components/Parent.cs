@@ -1,4 +1,4 @@
 ﻿namespace DELTation.DIFramework.Tests.Runtime.Components
 {
-	public class Parent { }
+    public class Parent { }
 }

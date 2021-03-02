@@ -2,7 +2,7 @@
 
 namespace DELTation.DIFramework.Containers
 {
-	public interface IIgnoreByContainer { }
+    public interface IIgnoreByContainer { }
 
-	public sealed class IgnoreByContainer : MonoBehaviour, IIgnoreByContainer { }
+    public sealed class IgnoreByContainer : MonoBehaviour, IIgnoreByContainer { }
 }
