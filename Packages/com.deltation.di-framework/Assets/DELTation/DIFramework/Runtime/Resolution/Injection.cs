@@ -7,171 +7,171 @@ using UnityEngine;
 
 namespace DELTation.DIFramework.Resolution
 {
-	public static class Injection
-	{
-		public static void InvalidateCache()
-		{
-			InjectableParameters.Clear();
-			InjectableMethods.Clear();
-			ArgumentsArraysCache.Clear();
-		}
-		
-		public static void WarmUp([NotNull] GameObject gameObject)
-		{
-			if (gameObject == null) throw new ArgumentNullException(nameof(gameObject));
+    public static class Injection
+    {
+        public static void InvalidateCache()
+        {
+            InjectableParameters.Clear();
+            InjectableMethods.Clear();
+            ArgumentsArraysCache.Clear();
+        }
 
-			var components = gameObject.GetComponents<MonoBehaviour>();
-			foreach (var component in components)
-			{
-				WarmUp(component.GetType());
-			}
-		}
-		
-		public static void WarmUp(params Type[] types)
-		{
-			foreach (var type in types)
-			{
-				WarmUp(type);
-			}
-		}
-		
-		public static void WarmUp([NotNull] Type type)
-		{
-			if (type == null) throw new ArgumentNullException(nameof(type));
-			
-			foreach (var methodInfo in GetSuitableMethodsIn(type))
-			{
-				TryGetInjectableParameters(methodInfo, out _);
-			}
-		}
-		
-		public static IEnumerable<Type> GetAllDependenciesOf([NotNull] Type componentType)
-		{
-			if (componentType == null) throw new ArgumentNullException(nameof(componentType));
-			return GetSuitableMethodsIn(componentType)
-				.SelectMany(m => m.GetParameters())
-				.Select(p => p.ParameterType)
-				.Distinct();
-		}
+        public static void WarmUp([NotNull] GameObject gameObject)
+        {
+            if (gameObject == null) throw new ArgumentNullException(nameof(gameObject));
 
-		public static bool IsInjectable([NotNull] Type componentType)
-		{
-			if (componentType == null) throw new ArgumentNullException(nameof(componentType));
-			var methods = GetSuitableMethodsIn(componentType);
+            var components = gameObject.GetComponents<MonoBehaviour>();
+            foreach (var component in components)
+            {
+                WarmUp(component.GetType());
+            }
+        }
 
-			for (var i = 0; i < methods.Count; i++)
-			{
-				if (!TryGetInjectableParameters(methods[i], out _))
-					return false;
-			}
+        public static void WarmUp(params Type[] types)
+        {
+            foreach (var type in types)
+            {
+                WarmUp(type);
+            }
+        }
 
-			return true;
-		}
+        public static void WarmUp([NotNull] Type type)
+        {
+            if (type == null) throw new ArgumentNullException(nameof(type));
 
-		internal static bool AreInjectable([NotNull] this ParameterInfo[] parameters)
-		{
-			if (parameters == null) throw new ArgumentNullException(nameof(parameters));
+            foreach (var methodInfo in GetSuitableMethodsIn(type))
+            {
+                TryGetInjectableParameters(methodInfo, out _);
+            }
+        }
 
-			foreach (var parameter in parameters)
-			{
-				if (!parameter.IsInjectable())
-					return false;
-			}
+        public static IEnumerable<Type> GetAllDependenciesOf([NotNull] Type componentType)
+        {
+            if (componentType == null) throw new ArgumentNullException(nameof(componentType));
+            return GetSuitableMethodsIn(componentType)
+                .SelectMany(m => m.GetParameters())
+                .Select(p => p.ParameterType)
+                .Distinct();
+        }
 
-			return true;
-		}
+        public static bool IsInjectable([NotNull] Type componentType)
+        {
+            if (componentType == null) throw new ArgumentNullException(nameof(componentType));
+            var methods = GetSuitableMethodsIn(componentType);
 
-		private static bool IsInjectable([NotNull] this ParameterInfo parameter)
-		{
-			if (parameter == null) throw new ArgumentNullException(nameof(parameter));
-			var parameterType = parameter.ParameterType;
-			return !parameterType.IsValueType && !parameter.IsOut &&
-			       !parameter.IsIn && !parameterType.IsByRef;
-		}
+            for (var i = 0; i < methods.Count; i++)
+            {
+                if (!TryGetInjectableParameters(methods[i], out _))
+                    return false;
+            }
 
-		internal static void GetAffectedComponents(List<(MonoBehaviour component, int depth)> affectedComponents,
-			Transform root,
-			int depth = 0)
-		{
-			var components = root.GetComponents<MonoBehaviour>();
+            return true;
+        }
 
-			foreach (var component in components)
-			{
-				if (component is Resolver) continue;
-				affectedComponents.Add((component, depth));
-			}
+        internal static bool AreInjectable([NotNull] this ParameterInfo[] parameters)
+        {
+            if (parameters == null) throw new ArgumentNullException(nameof(parameters));
 
-			foreach (Transform child in root)
-			{
-				if (child.TryGetComponent(out Resolver _)) continue;
+            foreach (var parameter in parameters)
+            {
+                if (!parameter.IsInjectable())
+                    return false;
+            }
 
-				GetAffectedComponents(affectedComponents, child, depth + 1);
-			}
-		}
+            return true;
+        }
 
-		public static IEnumerable<(MonoBehaviour component, int depth)> GetAffectedComponents(Transform root,
-			int depth = 0)
-		{
-			var components = new List<(MonoBehaviour, int)>();
-			GetAffectedComponents(components, root, depth);
-			return components;
-		}
+        private static bool IsInjectable([NotNull] this ParameterInfo parameter)
+        {
+            if (parameter == null) throw new ArgumentNullException(nameof(parameter));
+            var parameterType = parameter.ParameterType;
+            return !parameterType.IsValueType && !parameter.IsOut &&
+                   !parameter.IsIn && !parameterType.IsByRef;
+        }
 
-		internal static IReadOnlyList<MethodInfo> GetSuitableMethodsIn(Type type)
-		{
-			if (InjectableMethods.TryGetValue(type, out var methods)) return methods;
-			
-			var suitableMethods = new List<MethodInfo>();
+        internal static void GetAffectedComponents(List<(MonoBehaviour component, int depth)> affectedComponents,
+            Transform root,
+            int depth = 0)
+        {
+            var components = root.GetComponents<MonoBehaviour>();
 
-			foreach (var method in type.GetMethods(BindingFlags.Public | BindingFlags.Instance))
-			{
-				if (IsSuitableMethod(method))
-					suitableMethods.Add(method);
-			}
+            foreach (var component in components)
+            {
+                if (component is Resolver) continue;
+                affectedComponents.Add((component, depth));
+            }
 
-			return InjectableMethods[type] = suitableMethods;
-		}
+            foreach (Transform child in root)
+            {
+                if (child.TryGetComponent(out Resolver _)) continue;
 
-		internal static bool TryGetInjectableParameters(MethodInfo method, out IReadOnlyList<ParameterInfo> parameters)
-		{
-			if (InjectableParameters.TryGetValue(method, out var parametersInfo))
-			{
-				parameters = parametersInfo;
-				return true;
-			}
+                GetAffectedComponents(affectedComponents, child, depth + 1);
+            }
+        }
 
-			parametersInfo = method.GetParameters();
-			if (parametersInfo.AreInjectable())
-			{
-				InjectableParameters[method] = parametersInfo;
-				parameters = parametersInfo;
-				return true;
-			}
+        public static IEnumerable<(MonoBehaviour component, int depth)> GetAffectedComponents(Transform root,
+            int depth = 0)
+        {
+            var components = new List<(MonoBehaviour, int)>();
+            GetAffectedComponents(components, root, depth);
+            return components;
+        }
 
-			parameters = default;
-			return false;
-		}
+        internal static IReadOnlyList<MethodInfo> GetSuitableMethodsIn(Type type)
+        {
+            if (InjectableMethods.TryGetValue(type, out var methods)) return methods;
 
-		private static bool IsSuitableMethod(MethodInfo method) =>
-			method.Name == Constructor &&
-			method.IsPublic && method.ReturnType == typeof(void);
+            var suitableMethods = new List<MethodInfo>();
 
-		public const string Constructor = "Construct";
+            foreach (var method in type.GetMethods(BindingFlags.Public | BindingFlags.Instance))
+            {
+                if (IsSuitableMethod(method))
+                    suitableMethods.Add(method);
+            }
 
-		private static readonly IDictionary<Type, List<MethodInfo>>
-			InjectableMethods = new Dictionary<Type, List<MethodInfo>>();
+            return InjectableMethods[type] = suitableMethods;
+        }
 
-		private static readonly IDictionary<MethodInfo, ParameterInfo[]> InjectableParameters =
-			new Dictionary<MethodInfo, ParameterInfo[]>();
+        internal static bool TryGetInjectableParameters(MethodInfo method, out IReadOnlyList<ParameterInfo> parameters)
+        {
+            if (InjectableParameters.TryGetValue(method, out var parametersInfo))
+            {
+                parameters = parametersInfo;
+                return true;
+            }
 
-		internal static object[] GetArgumentsArray(int length)
-		{
-			if (ArgumentsArraysCache.TryGetValue(length, out var array))
-				return array;
+            parametersInfo = method.GetParameters();
+            if (parametersInfo.AreInjectable())
+            {
+                InjectableParameters[method] = parametersInfo;
+                parameters = parametersInfo;
+                return true;
+            }
 
-			return ArgumentsArraysCache[length] = new object[length];
-		}
+            parameters = default;
+            return false;
+        }
 
-		private static readonly IDictionary<int, object[]> ArgumentsArraysCache = new Dictionary<int, object[]>();
-	}
+        private static bool IsSuitableMethod(MethodInfo method) =>
+            method.Name == Constructor &&
+            method.IsPublic && method.ReturnType == typeof(void);
+
+        public const string Constructor = "Construct";
+
+        private static readonly IDictionary<Type, List<MethodInfo>>
+            InjectableMethods = new Dictionary<Type, List<MethodInfo>>();
+
+        private static readonly IDictionary<MethodInfo, ParameterInfo[]> InjectableParameters =
+            new Dictionary<MethodInfo, ParameterInfo[]>();
+
+        internal static object[] GetArgumentsArray(int length)
+        {
+            if (ArgumentsArraysCache.TryGetValue(length, out var array))
+                return array;
+
+            return ArgumentsArraysCache[length] = new object[length];
+        }
+
+        private static readonly IDictionary<int, object[]> ArgumentsArraysCache = new Dictionary<int, object[]>();
+    }
 }

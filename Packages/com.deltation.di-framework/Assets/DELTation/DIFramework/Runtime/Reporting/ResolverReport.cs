@@ -26,18 +26,18 @@ namespace DELTation.DIFramework.Reporting
                 GetResolutionStatistics(_resolver, components.Select(c => c.component));
         }
 
-		private static (int resolved, int notResolved, int notInjectable) GetResolutionStatistics(Resolver resolver,
-			IEnumerable<MonoBehaviour> components)
-		{
-			var types = components
-				.Select(component => (component, GetAllDependenciesOf(component.GetType())))
-				.ToArray();
+        private static (int resolved, int notResolved, int notInjectable) GetResolutionStatistics(Resolver resolver,
+            IEnumerable<MonoBehaviour> components)
+        {
+            var types = components
+                .Select(component => (component, GetAllDependenciesOf(component.GetType())))
+                .ToArray();
 
-			var resolved = CountAndSum(types, (c, t) => CanBeResolved(resolver, t, c));
-			var notResolved = CountAndSum(types, (c, t) => IsInjectable(c.GetType()) && !CanBeResolved(resolver, t, c));
-			var notInjectable = types.Count(t => !IsInjectable(t.component.GetType()));
-			return (resolved, notResolved, notInjectable);
-		}
+            var resolved = CountAndSum(types, (c, t) => CanBeResolved(resolver, t, c));
+            var notResolved = CountAndSum(types, (c, t) => IsInjectable(c.GetType()) && !CanBeResolved(resolver, t, c));
+            var notInjectable = types.Count(t => !IsInjectable(t.component.GetType()));
+            return (resolved, notResolved, notInjectable);
+        }
 
         private static int CountAndSum(IEnumerable<(MonoBehaviour component, IEnumerable<Type> types)> dependencies,
             Func<MonoBehaviour, Type, bool> predicate)
@@ -49,11 +49,11 @@ namespace DELTation.DIFramework.Reporting
         {
             _componentsData.Clear();
 
-			foreach (var (component, depth) in components)
-			{
-				var dependencies = GetAllDependenciesOf(component.GetType()).ToArray();
-				var injectable = IsInjectable(component.GetType());
-				var resolvedDependencies = new List<(Type type, bool canBeResolved)>();
+            foreach (var (component, depth) in components)
+            {
+                var dependencies = GetAllDependenciesOf(component.GetType()).ToArray();
+                var injectable = IsInjectable(component.GetType());
+                var resolvedDependencies = new List<(Type type, bool canBeResolved)>();
 
                 foreach (var dependency in dependencies)
                 {
