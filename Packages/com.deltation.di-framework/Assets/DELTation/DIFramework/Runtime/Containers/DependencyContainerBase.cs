@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
+using DELTation.DIFramework.Exceptions;
 using JetBrains.Annotations;
 using UnityEngine;
-using static DELTation.DIFramework.DependencyExceptionFactory;
 
 namespace DELTation.DIFramework.Containers
 {
@@ -49,7 +49,7 @@ namespace DELTation.DIFramework.Containers
                 return;
 
             var type = dependency.GetType();
-            throw AlreadyRegistered(type, registeredDependency);
+            throw new DependencyAlreadyRegistered(type, registeredDependency);
         }
 
         public bool TryResolve(Type type, out object dependency)

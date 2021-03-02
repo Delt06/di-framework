@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using DELTation.DIFramework.Exceptions;
 using UnityEngine;
 
 namespace DELTation.DIFramework.Resolution
@@ -45,7 +46,7 @@ namespace DELTation.DIFramework.Resolution
         private void InjectThrough(MonoBehaviour component, MethodInfo method)
         {
             if (!Injection.TryGetInjectableParameters(method, out var parameters))
-                throw new InvalidOperationException($"{component}'s {Injection.Constructor} method is not injectable.");
+                throw new NotInjectableException(component, method.Name);
 
             var arguments = Injection.GetArgumentsArray(parameters.Count);
 
@@ -76,12 +77,10 @@ namespace DELTation.DIFramework.Resolution
                 return dependency;
             }
 
-            throw Exception($"Did not resolve dependency of type {type}.");
+            throw new DependencyNotResolvedException(type);
         }
 
         private static bool IsCacheable(DependencySource source) => source != DependencySource.Local;
-
-        private static Exception Exception(string message) => new ArgumentException(message);
 
         private readonly MonoBehaviour _resolverComponent;
         private readonly DependencySource _dependencySource;

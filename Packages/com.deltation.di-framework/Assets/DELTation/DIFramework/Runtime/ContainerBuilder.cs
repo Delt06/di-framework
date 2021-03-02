@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using DELTation.DIFramework.Exceptions;
 using DELTation.DIFramework.Resolution;
 using JetBrains.Annotations;
-using static DELTation.DIFramework.DependencyExceptionFactory;
 
 namespace DELTation.DIFramework
 {
@@ -50,7 +50,7 @@ namespace DELTation.DIFramework
                 if (_container.TryResolve(parameterType, out var dependency))
                     arguments[index] = dependency;
                 else
-                    throw NotRegistered(type);
+                    throw new DependencyNotRegisteredException(type);
             }
 
             return Activator.CreateInstance(type, arguments);
