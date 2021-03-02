@@ -2,5 +2,5 @@
 
 namespace DELTation.DIFramework.Tests.Runtime.Components
 {
-	public class Ignored : IIgnoreByContainer { }
+    public class Ignored : IIgnoreByContainer { }
 }

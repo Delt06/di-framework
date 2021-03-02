@@ -2,13 +2,13 @@
 
 namespace DELTation.DIFramework.Tests.Runtime.Components
 {
-	public class LoopComponent2 : MonoBehaviour
-	{
-		public LoopComponent1 Component { get; private set; }
+    public class LoopComponent2 : MonoBehaviour
+    {
+        public LoopComponent1 Component { get; private set; }
 
-		public void Construct(LoopComponent1 component)
-		{
-			Component = component;
-		}
-	}
+        public void Construct(LoopComponent1 component)
+        {
+            Component = component;
+        }
+    }
 }

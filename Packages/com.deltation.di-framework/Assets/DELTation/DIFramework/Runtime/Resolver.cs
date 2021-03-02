@@ -4,37 +4,37 @@ using UnityEngine;
 
 namespace DELTation.DIFramework
 {
-	[DisallowMultipleComponent]
-	public sealed class Resolver : MonoBehaviour, IInitializable, IResolver
-	{
-		[SerializeField] private DependencySource _dependencySource = DependencySources.All;
-		[SerializeField] private bool _destroyWhenFinished = true;
+    [DisallowMultipleComponent]
+    public sealed class Resolver : MonoBehaviour, IInitializable, IResolver
+    {
+        [SerializeField] private DependencySource _dependencySource = DependencySources.All;
+        [SerializeField] private bool _destroyWhenFinished = true;
 
-		private void Awake()
-		{
-			Resolve();
-		}
+        private void Awake()
+        {
+            Resolve();
+        }
 
-		public void Resolve()
-		{
-			if (_resolved) return;
+        public void Resolve()
+        {
+            if (_resolved) return;
 
-			_resolved = true;
-			InnerResolver.Resolve();
+            _resolved = true;
+            InnerResolver.Resolve();
 
-			if (_destroyWhenFinished)
-				Destroy(this);
-		}
+            if (_destroyWhenFinished)
+                Destroy(this);
+        }
 
-		public bool CabBeResolvedSafe(MonoBehaviour component, Type type) =>
-			InnerResolver.CabBeResolvedSafe(component, type);
+        public bool CabBeResolvedSafe(MonoBehaviour component, Type type) =>
+            InnerResolver.CabBeResolvedSafe(component, type);
 
-		private IResolver InnerResolver =>
-			_implementation ?? (_implementation = new CachedComponentResolver(this, _dependencySource));
+        private IResolver InnerResolver =>
+            _implementation ?? (_implementation = new CachedComponentResolver(this, _dependencySource));
 
-		void IInitializable.EnsureInitialized() => Resolve();
+        void IInitializable.EnsureInitialized() => Resolve();
 
-		private IResolver _implementation;
-		private bool _resolved;
-	}
+        private IResolver _implementation;
+        private bool _resolved;
+    }
 }

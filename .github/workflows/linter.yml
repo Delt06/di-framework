@@ -1,0 +1,33 @@
+﻿name: Check code formatting
+on:
+    push:
+        branches:
+            - master
+            - dev
+    pull_request:
+        branches:
+            - master
+            - dev
+    workflow_dispatch:
+
+jobs:
+    dotnet-format:
+        name: 'Run dotnet-format'
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions/setup-dotnet@v1
+              with:
+                  dotnet-version: 3.1.101
+            - uses: xt0rted/dotnet-format-problem-matcher@v1
+            - run: dotnet tool install -g dotnet-format
+            - run: dotnet tool restore
+            - run: dotnet format 
+                    --include './Packages/com.deltation.di-framework/Assets/**/*.cs' 
+                    --include './Assets/Scripts/**/*.cs'
+                    --folder -v detailed
+            - uses: EndBug/add-and-commit@v7.0.0
+              with:
+                  author_name: 'Formatter Bot'
+                  message: 'Apply code formatting (${{ github.workflow }})'
+                  author_email: 41898282+formatter-bot[bot]@users.noreply.github.com
