@@ -22,9 +22,9 @@ jobs:
             - uses: xt0rted/dotnet-format-problem-matcher@v1
             - run: dotnet tool install -g dotnet-format
             - run: dotnet tool restore
-            - run: dotnet format \
-                    --include './Packages/com.deltation.di-framework/Assets/**/*.cs' \
-                    --include './Assets/Scripts/**/*.cs' \
+            - run: dotnet format 
+                    --include './Packages/com.deltation.di-framework/Assets/**/*.cs' 
+                    --include './Assets/Scripts/**/*.cs'
                     --folder -v detailed
             - uses: EndBug/add-and-commit@v7.0.0
               with:
