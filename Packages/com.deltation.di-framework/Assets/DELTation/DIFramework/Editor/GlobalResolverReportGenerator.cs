@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace DELTation.DIFramework.Editor
 {
-    public static class GlobalResolverReportGenerator
+    internal static class GlobalResolverReportGenerator
     {
         [MenuItem("DI/Generate Report", priority = 50)]
         public static void GenerateReport()

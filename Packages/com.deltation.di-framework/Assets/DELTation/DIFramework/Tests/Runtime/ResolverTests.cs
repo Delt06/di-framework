@@ -94,7 +94,7 @@ namespace DELTation.DIFramework.Tests.Runtime
             Assert.That(component.Dependent.Dependent.S, Is.Not.Null);
         }
 
-        [Test, Performance, TestCase(false), TestCase(true)]
+        [Test, Explicit, Performance, TestCase(false), TestCase(true)]
         public void Benchmark_CreateObject_WithDependenceOnSimpleTypeWithConstructor_ResolveRecursively(bool warmUp)
         {
             var prefab = NewInactiveGameObject();

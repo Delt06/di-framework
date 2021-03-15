@@ -1,5 +1,7 @@
-# Unity DI Framework
+#  ![Logo][logo] Unity DI Framework 
 ![Test and Build](https://github.com/Delt06/di-framework/workflows/Test%20and%20Build/badge.svg)
+
+[logo]: ./Packages/com.deltation.di-framework/Assets/DELTation/DIFramework/Editor/Graphics/resolver.png "Logo"
 
 [![Check code formatting](https://github.com/Delt06/di-framework/actions/workflows/linter.yml/badge.svg)](https://github.com/Delt06/di-framework/actions/workflows/linter.yml)
 
@@ -65,6 +67,11 @@ A `Resolver` is a component that injects the dependencies of the `GameObject` (a
 The Inspector menu of the Resolver allows to specify where to get the dependencies from.  
 Additionally, all the resolved/not resolved dependencies are displayed.
 
+![Resolver Inspector](Screenshots/resolver.jpg)
+
+## Rider Templates
+Useful Rider Templates (macros) can be found [here](./Macros).
+
 ## "Unused" code stripping 
 - The plugin was verified to work with `Managed Stripping Level` set to `Low`.  
 - A `link.xml` file in the `DI` folder root prevents the default Unity assembly (`Assembly-CSharp`) from stripping. 
@@ -72,4 +79,4 @@ Additionally, all the resolved/not resolved dependencies are displayed.
 - In case of any problems related to code stripping, refer to the [official manual](https://docs.unity3d.com/Manual/ManagedCodeStripping.html).
 
 ## Notes
-- Developed with Unity 2019 LTS
+- Developed with Unity 2019 LTS (2019.4.17f1)

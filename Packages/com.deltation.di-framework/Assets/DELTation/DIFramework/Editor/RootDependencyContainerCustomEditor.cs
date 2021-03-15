@@ -6,7 +6,7 @@ using UnityEngine;
 namespace DELTation.DIFramework.Editor
 {
     [CustomEditor(typeof(RootDependencyContainer))]
-    public sealed class RootDependencyContainerCustomEditor : UnityEditor.Editor
+    internal sealed class RootDependencyContainerCustomEditor : UnityEditor.Editor
     {
         private void OnEnable()
         {
