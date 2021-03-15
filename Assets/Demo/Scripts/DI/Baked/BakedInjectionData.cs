@@ -14,7 +14,6 @@ namespace Demo.Scripts.DI.Baked
 
         private static void InjectionFunction_Movement_Movement(MonoBehaviour component, ResolutionFunction resolve)
         {
-            Debug.Log("Inject");
             var obj = (Movement.Movement) component;
             obj.Construct((Rigidbody) resolve(component, typeof(Rigidbody)));
         }
