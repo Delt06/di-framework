@@ -67,6 +67,9 @@ Additionally, all the resolved/not resolved dependencies are displayed.
 
 ![Resolver Inspector](Screenshots/resolver.jpg)
 
+## Rider Templates
+Useful Rider Templates (macros) can be found [here](./Macros).
+
 ## "Unused" code stripping 
 - The plugin was verified to work with `Managed Stripping Level` set to `Low`.  
 - A `link.xml` file in the `DI` folder root prevents the default Unity assembly (`Assembly-CSharp`) from stripping. 
