@@ -1,5 +1,7 @@
-# Unity DI Framework
+#  ![Logo][logo] Unity DI Framework 
 ![Test and Build](https://github.com/Delt06/di-framework/workflows/Test%20and%20Build/badge.svg)
+
+[logo]: ./Packages/com.deltation.di-framework/Assets/DELTation/DIFramework/Editor/Graphics/resolver.png "Logo"
 
 [![Check code formatting](https://github.com/Delt06/di-framework/actions/workflows/linter.yml/badge.svg)](https://github.com/Delt06/di-framework/actions/workflows/linter.yml)
 
