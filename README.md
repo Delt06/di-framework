@@ -48,34 +48,6 @@ public sealed class Movement : MonoBehaviour, IMovement
 }
 ```
 
-## Injection rules
-- General rules:
-    - Value types, and `in`, `out`, `ref` parameters are not supported. 
-- Normal C# classes:
-    - injected through public constructors.
-- `MonoBehaviour`'s:
-    - injected through *ALL* public methods named `Construct`. For example:
-```c#
-public class Example : MonoBehaviour 
-{
-    public void Construct(Camera cam) 
-    {
-        _cam = cam;
-    }
-
-    private Camera _cam;
-}
-```
-
-## Resolvers
-A `Resolver` is a component that injects the dependencies of the `GameObject` (and its children) that it is attached to.  
-
-### Resolver Inspector
-The Inspector menu of the Resolver allows to specify where to get the dependencies from.  
-Additionally, all the resolved/not resolved dependencies are displayed.
-
-![Resolver Inspector](Screenshots/resolver_inspector.jpg)
-
 ## Rider Templates
 Useful Rider Templates (macros) can be found [here](./Macros).
 
