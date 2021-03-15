@@ -18,9 +18,9 @@ namespace DELTation.DIFramework.Editor
             {
                 normal = new GUIStyleState
                 {
-                    textColor = Color.white
+                    textColor = Color.white,
                 },
-                richText = true
+                richText = true,
             };
 
             _report = new ResolverReport((Resolver) serializedObject.targetObject);
@@ -59,7 +59,8 @@ namespace DELTation.DIFramework.Editor
             return new StringBuilder()
                 .Append(notResolved > 0 || notInjectable > 0 ? "<color=red>" : "<color=green>")
                 .AppendFormat("<b>{0} resolved, {1} failed to resolve, {2} not injectable</b>", resolved.ToString(),
-                    notResolved.ToString(), notInjectable.ToString())
+                    notResolved.ToString(), notInjectable.ToString()
+                )
                 .Append("</color>")
                 .ToString();
         }

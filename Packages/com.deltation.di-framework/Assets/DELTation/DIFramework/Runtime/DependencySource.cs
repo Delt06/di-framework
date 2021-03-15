@@ -8,6 +8,6 @@ namespace DELTation.DIFramework
         Local = 1 << 1,
         Children = 1 << 2,
         Parent = 1 << 3,
-        Global = 1 << 4
+        Global = 1 << 4,
     }
 }

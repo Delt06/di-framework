@@ -15,7 +15,8 @@ namespace DELTation.DIFramework
             if (index < 0) throw new ArgumentOutOfRangeException(nameof(index), index, "Index cannot be negative.");
             if (index >= InstancesCount)
                 throw new ArgumentOutOfRangeException(nameof(index), index,
-                    $"Index cannot be greater or equal to InstancesCount ({InstancesCount}).");
+                    $"Index cannot be greater or equal to InstancesCount ({InstancesCount})."
+                );
 
             return Containers[index];
         }

@@ -15,7 +15,7 @@ namespace DELTation.DIFramework
         /// <param name="dependency">Resolved dependency.</param>
         /// <returns>True if resolved, false otherwise.</returns>
         bool TryResolve([NotNull] Type type, out object dependency);
-        
+
         /// <summary>
         /// Checks whether the given type can be resolved via the container.
         /// Produces no side effects.

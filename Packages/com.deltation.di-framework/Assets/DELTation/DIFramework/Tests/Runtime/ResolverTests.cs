@@ -125,27 +125,24 @@ namespace DELTation.DIFramework.Tests.Runtime
 
             Injection.InvalidateCache();
 
-            if (warmUp)
-            {
-                Injection.WarmUp(prefab);
-            }
+            if (warmUp) Injection.WarmUp(prefab);
 
             Measure.Method(() =>
-                {
-                    for (var i = 0; i < 10; i++)
                     {
-                        var go = Object.Instantiate(prefab);
-                        var component = go.GetComponent<CtorInjectionContainer.StringDependentComponent>();
-                        CreateContainerWith<CtorInjectionContainer>();
+                        for (var i = 0; i < 10; i++)
+                        {
+                            var go = Object.Instantiate(prefab);
+                            var component = go.GetComponent<CtorInjectionContainer.StringDependentComponent>();
+                            CreateContainerWith<CtorInjectionContainer>();
 
-                        go.SetActive(true);
+                            go.SetActive(true);
 
-                        Assert.That(component.Dependent, Is.Not.Null);
-                        Assert.That(component.Dependent.Dependent, Is.Not.Null);
-                        Assert.That(component.Dependent.Dependent.S, Is.Not.Null);
+                            Assert.That(component.Dependent, Is.Not.Null);
+                            Assert.That(component.Dependent.Dependent, Is.Not.Null);
+                            Assert.That(component.Dependent.Dependent.S, Is.Not.Null);
+                        }
                     }
-
-                })
+                )
                 .MeasurementCount(100)
                 .IterationsPerMeasurement(5)
                 .GC()

@@ -21,7 +21,8 @@ namespace DELTation.DIFramework.Editor
                 var report = new ResolverReport(resolver);
                 report.Generate();
                 message = FormatMessage(resolver.gameObject.name, report.Resolved, report.NotResolved,
-                    report.NotInjectable);
+                    report.NotInjectable
+                );
                 logType = report.NotResolved > 0 || report.NotInjectable > 0 ? LogType.Error : LogType.Log;
                 Log(logType, message, resolver.gameObject);
 

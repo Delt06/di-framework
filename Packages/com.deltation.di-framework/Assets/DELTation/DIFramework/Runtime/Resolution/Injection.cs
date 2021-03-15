@@ -46,7 +46,7 @@ namespace DELTation.DIFramework.Resolution
         public static void WarmUp([NotNull] params Type[] types)
         {
             if (types == null) throw new ArgumentNullException(nameof(types));
-            
+
             foreach (var type in types)
             {
                 WarmUp(type);
