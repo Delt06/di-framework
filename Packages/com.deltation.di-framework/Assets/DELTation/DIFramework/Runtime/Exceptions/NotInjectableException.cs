@@ -8,7 +8,7 @@ namespace DELTation.DIFramework.Exceptions
     {
         public readonly MonoBehaviour Component;
         public readonly string ConstructorName;
-        
+
         public NotInjectableException([NotNull] MonoBehaviour component, [NotNull] string constructorName)
         {
             Component = component ? component : throw new ArgumentNullException(nameof(component));

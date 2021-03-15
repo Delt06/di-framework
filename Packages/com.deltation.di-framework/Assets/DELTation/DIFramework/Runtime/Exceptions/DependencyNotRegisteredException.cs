@@ -6,7 +6,7 @@ namespace DELTation.DIFramework.Exceptions
     internal class DependencyNotRegisteredException : Exception
     {
         public readonly Type Type;
-        
+
         public DependencyNotRegisteredException([NotNull] Type type)
         {
             Type = type ?? throw new ArgumentNullException(nameof(type));
