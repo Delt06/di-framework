@@ -6,7 +6,7 @@ using UnityEngine;
 namespace DELTation.DIFramework.Editor
 {
     [CustomEditor(typeof(ListDependencyContainer))]
-    public class ListDependencyContainerCustomEditor : UnityEditor.Editor
+    internal class ListDependencyContainerCustomEditor : UnityEditor.Editor
     {
         private GUILayoutOption _miniButton;
 

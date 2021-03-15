@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 namespace DELTation.DIFramework.Editor
 {
-    public static class RootContainerCreator
+    internal static class RootContainerCreator
     {
         [MenuItem("DI/Create Root Container", priority = 0)]
         public static void CreateRootContainer()

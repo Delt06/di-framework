@@ -6,7 +6,7 @@ using UnityEngine;
 namespace DELTation.DIFramework.Editor
 {
     [CustomEditor(typeof(Resolver))]
-    public sealed class ResolverCustomEditor : UnityEditor.Editor
+    internal sealed class ResolverCustomEditor : UnityEditor.Editor
     {
         private GUIStyle _headerStyle;
         private bool _foldout;
