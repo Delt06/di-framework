@@ -1,7 +1,7 @@
 #  ![Logo][logo] Unity DI Framework 
 ![Test and Build](https://github.com/Delt06/di-framework/workflows/Test%20and%20Build/badge.svg)
 
-[logo]: ./Packages/com.deltation.di-framework/Assets/DELTation/DIFramework/Editor/Graphics/resolver.png "Logo"
+[logo]: Packages/com.deltation.di-framework/Assets/DELTation/DIFramework/Editor/Graphics/resolver.png "Logo"
 
 [![Check code formatting](https://github.com/Delt06/di-framework/actions/workflows/linter.yml/badge.svg)](https://github.com/Delt06/di-framework/actions/workflows/linter.yml)
 
@@ -27,7 +27,27 @@ A simple Unity framework to inject dependencies into your components.
 - Create a `GameObject` and attach a `Root Dependency Container` component.
 - Using the menu of the attached `Root Dependency Container` (or manually), add the other container types. For detailed info on them, refer to the section [Container types](#container-types).
 - Define an injectable component according to the rules described in the section [Injection rules](#injection-rules).
-- Attach the created component to a `GameObject` and add a `Resolver` to it. Configure the `Resolver`, if needed: refer to [Resolvers](#resolvers). 
+- Attach the created component to a `GameObject` and add a `Resolver` to it. Configure the `Resolver`, if needed: refer to [Resolvers](#resolvers).
+
+Example:
+- Components structure: ![Resolver Example](Screenshots/resolver_example.jpg)
+- `Movement.cs`: 
+```c#
+using UnityEngine;
+
+public sealed class Movement : MonoBehaviour, IMovement
+{
+    [SerializeField, Min(0f)] private float _speed = 1f;
+
+    public void Construct(Rigidbody rigidbody)
+    {
+        _rigidbody = rigidbody;
+    }
+
+    private Rigidbody _rigidbody;
+}
+```
+
 
 ## Container types
 
@@ -77,7 +97,7 @@ A `Resolver` is a component that injects the dependencies of the `GameObject` (a
 The Inspector menu of the Resolver allows to specify where to get the dependencies from.  
 Additionally, all the resolved/not resolved dependencies are displayed.
 
-![Resolver Inspector](Screenshots/resolver.jpg)
+![Resolver Inspector](Screenshots/resolver_inspector.jpg)
 
 ## Rider Templates
 Useful Rider Templates (macros) can be found [here](./Macros).
