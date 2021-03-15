@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using DELTation.DIFramework.Baking;
 using DELTation.DIFramework.Exceptions;
 using UnityEngine;
 
@@ -35,6 +36,8 @@ namespace DELTation.DIFramework.Resolution
 
         private void Inject(MonoBehaviour component)
         {
+            if (BakedInjection.TryInject(component, Resolve)) return;
+            
             var methods = Injection.GetSuitableMethodsIn(component.GetType());
 
             for (var index = 0; index < methods.Count; index++)
