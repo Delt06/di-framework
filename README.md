@@ -5,7 +5,7 @@
 
 [![Check code formatting](https://github.com/Delt06/di-framework/actions/workflows/linter.yml/badge.svg)](https://github.com/Delt06/di-framework/actions/workflows/linter.yml)
 
-A simple Unity framework to inject dependencies into your components.
+A simple Unity framework to inject dependencies into your components. The project contains a simple demo game to demonstrate the framework in action.
 
 ## Table of contents
 - [Installation](#installation)
