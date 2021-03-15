@@ -7,8 +7,14 @@ using UnityEngine;
 
 namespace DELTation.DIFramework.Resolution
 {
+    /// <summary>
+    /// Contains methods related to injection of dependencies.
+    /// </summary>
     public static class Injection
     {
+        /// <summary>
+        /// Invalidates injection cache.
+        /// </summary>
         public static void InvalidateCache()
         {
             InjectableParameters.Clear();
@@ -16,6 +22,11 @@ namespace DELTation.DIFramework.Resolution
             ArgumentsArraysCache.Clear();
         }
 
+        /// <summary>
+        /// Generates cache to improve further performance.
+        /// </summary>
+        /// <param name="gameObject">GameObject to get optimized components from.</param>
+        /// <exception cref="ArgumentNullException">When the <paramref name="gameObject"/> is null.</exception>
         public static void WarmUp([NotNull] GameObject gameObject)
         {
             if (gameObject == null) throw new ArgumentNullException(nameof(gameObject));
@@ -27,14 +38,26 @@ namespace DELTation.DIFramework.Resolution
             }
         }
 
-        public static void WarmUp(params Type[] types)
+        /// <summary>
+        /// Generates cache to improve further performance.
+        /// </summary>
+        /// <param name="types">Types to optimize.</param>
+        /// <exception cref="ArgumentNullException">When the <paramref name="types"/> are null.</exception>
+        public static void WarmUp([NotNull] params Type[] types)
         {
+            if (types == null) throw new ArgumentNullException(nameof(types));
+            
             foreach (var type in types)
             {
                 WarmUp(type);
             }
         }
 
+        /// <summary>
+        /// Generates cache to improve further performance.
+        /// </summary>
+        /// <param name="type">Type to optimize.</param>
+        /// <exception cref="ArgumentNullException">When the <paramref name="type"/> is null.</exception>
         public static void WarmUp([NotNull] Type type)
         {
             if (type == null) throw new ArgumentNullException(nameof(type));
@@ -45,6 +68,12 @@ namespace DELTation.DIFramework.Resolution
             }
         }
 
+        /// <summary>
+        /// Returns all the dependencies of the type.
+        /// </summary>
+        /// <param name="componentType">Type to get dependencies of.</param>
+        /// <returns>An IEnumerable of dependencies.</returns>
+        /// <exception cref="ArgumentNullException">When the <paramref name="componentType"/> is null.</exception>
         public static IEnumerable<Type> GetAllDependenciesOf([NotNull] Type componentType)
         {
             if (componentType == null) throw new ArgumentNullException(nameof(componentType));
@@ -54,6 +83,12 @@ namespace DELTation.DIFramework.Resolution
                 .Distinct();
         }
 
+        /// <summary>
+        /// Checks whether the type is injectable.
+        /// </summary>
+        /// <param name="componentType">Type to check.</param>
+        /// <returns>True if type is injectable, false otherwise.</returns>
+        /// <exception cref="ArgumentNullException">When the <paramref name="componentType"/> is null.</exception>
         public static bool IsInjectable([NotNull] Type componentType)
         {
             if (componentType == null) throw new ArgumentNullException(nameof(componentType));
@@ -156,6 +191,9 @@ namespace DELTation.DIFramework.Resolution
             method.Name == Constructor &&
             method.IsPublic && method.ReturnType == typeof(void);
 
+        /// <summary>
+        /// The name of injected methods.
+        /// </summary>
         public const string Constructor = "Construct";
 
         private static readonly IDictionary<Type, List<MethodInfo>>

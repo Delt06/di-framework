@@ -7,14 +7,29 @@ using JetBrains.Annotations;
 
 namespace DELTation.DIFramework
 {
+    /// <summary>
+    /// Allows to build a custom container.
+    /// </summary>
     public sealed class ContainerBuilder
     {
+        /// <summary>
+        /// Registers a new dependency of the given type.
+        /// An instance of that type will be automatically created.
+        /// </summary>
+        /// <typeparam name="T">Type of the dependency.</typeparam>
+        /// <returns>The builder.</returns>
         public ContainerBuilder Register<T>() where T : class
         {
             _dependencies.Add(new Dependency(typeof(T)));
             return this;
         }
 
+        /// <summary>
+        /// Registers a new dependency from the given object.
+        /// </summary>
+        /// <param name="obj">Object to register as dependency.</param>
+        /// <returns>The builder.</returns>
+        /// <exception cref="ArgumentNullException">When the <paramref name="obj"/> is null.</exception>
         public ContainerBuilder Register([NotNull] object obj)
         {
             if (obj == null) throw new ArgumentNullException(nameof(obj));

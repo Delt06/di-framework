@@ -7,10 +7,23 @@ namespace DELTation.DIFramework
 {
     public static class ContainersExtensions
     {
+        /// <summary>
+        /// Specifies whether the given object should be ignored by a container.
+        /// </summary>
+        /// <param name="obj">Object to check.</param>
+        /// <returns>True is the <paramref name="obj"/> should be ignored, false otherwise.</returns>
         public static bool ShouldBeIgnoredByContainer(this object obj) =>
             obj is IIgnoreByContainer || obj is IDependencyContainer ||
             obj is Component c && c.TryGetComponent(out IIgnoreByContainer _);
 
+        /// <summary>
+        /// Tries to resolve a dependency via the given container.
+        /// </summary>
+        /// <param name="container">Container to get dependencies from.</param>
+        /// <param name="component">Resolved dependency (if found).</param>
+        /// <typeparam name="T">Type of the dependency.</typeparam>
+        /// <returns>True if resolved, false otherwise.</returns>
+        /// <exception cref="ArgumentNullException">When the <paramref name="container"/> is null.</exception>
         public static bool TryResolve<T>([NotNull] this IDependencyContainer container, out T component) where T : class
         {
             if (container == null) throw new ArgumentNullException(nameof(container));
