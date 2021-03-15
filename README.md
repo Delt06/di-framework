@@ -19,9 +19,9 @@ A simple Unity framework to inject dependencies into your components. The projec
 
 ## Setting up
 - Create a `GameObject` and attach a `Root Dependency Container` component.
-- Using the menu of the attached `Root Dependency Container` (or manually), add the other container types. For detailed info on them, refer to the section [Container types](#container-types).
-- Define an injectable component according to the rules described in the section [Injection rules](#injection-rules).
-- Attach the created component to a `GameObject` and add a `Resolver` to it. Configure the `Resolver`, if needed: refer to [Resolvers](#resolvers).
+- Using the menu of the attached `Root Dependency Container` (or manually), add the other container types. For detailed info on them, refer to the section [Container types](https://github.com/Delt06/di-framework/wiki/Containers).
+- Define an injectable component according to the rules described in the section [Injection rules](https://github.com/Delt06/di-framework/wiki/Injection-Rules).
+- Attach the created component to a `GameObject` and add a `Resolver` to it. Configure the `Resolver`, if needed: refer to [Resolvers](https://github.com/Delt06/di-framework/wiki/Resolver).
 
 Example:
 - Components structure: ![Resolver Example](Screenshots/resolver_example.jpg)
