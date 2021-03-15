@@ -48,29 +48,6 @@ public sealed class Movement : MonoBehaviour, IMovement
 }
 ```
 
-
-## Container types
-
-- `Children Dependency Container`: registers all active children.
-- `List Dependency Container`: registers all the objects specified via the Inspector. Given a `GameObject` is selected, it allows to specify the exact component on it.
-- `Fallback Dependency Container`: scans for all conforming objects on the active scenes. Since it relies on `FindObjectsOfType()`, it can only return objects deriving from `UnityEngine.Object`. 
-
-- Defining custom containers: allows to register any dependencies from code. Very useful if the registered types do not derive from `UnityEngine.Object`. 
-```c#
-public sealed class CompositionRoot : DependencyContainerBase
-{
-    protected override void ComposeDependencies(ContainerBuilder builder)
-    {
-        // Compose your dependencies here:
-        // builder.Register(new T());
-        // builder.Register<T>();
-    }
-}
-```
-
-*Note 1*: There is an order in which containers are queried. That is, if a container was not able to resolve the dependency, the next one will be queried. The order of containers is the same as in the Inspector.  
-*Note 2*: Multiple root containers **are** supported. Their priority is based on their registration time: the latter the higher. Root containers get registered and unregistered in `OnEnable` and `OnDisable` respectively.  
-
 ## Injection rules
 - General rules:
     - Value types, and `in`, `out`, `ref` parameters are not supported. 
