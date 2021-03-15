@@ -65,6 +65,8 @@ A `Resolver` is a component that injects the dependencies of the `GameObject` (a
 The Inspector menu of the Resolver allows to specify where to get the dependencies from.  
 Additionally, all the resolved/not resolved dependencies are displayed.
 
+![Resolver Inspector](Screenshots/resolver.jpg)
+
 ## "Unused" code stripping 
 - The plugin was verified to work with `Managed Stripping Level` set to `Low`.  
 - A `link.xml` file in the `DI` folder root prevents the default Unity assembly (`Assembly-CSharp`) from stripping. 
@@ -72,4 +74,4 @@ Additionally, all the resolved/not resolved dependencies are displayed.
 - In case of any problems related to code stripping, refer to the [official manual](https://docs.unity3d.com/Manual/ManagedCodeStripping.html).
 
 ## Notes
-- Developed with Unity 2019 LTS
+- Developed with Unity 2019 LTS (2019.4.17f1)
