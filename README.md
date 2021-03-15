@@ -10,13 +10,7 @@ A simple Unity framework to inject dependencies into your components.
 ## Table of contents
 - [Installation](#installation)
 - [Setting Up](#setting-up)
-- [Container Types](#container-types)
-- [Injection Rules](#injection-rules)
-- [Resolvers](#resolvers)
-    - [Resolver Inspector](#resolver-inspector)
-- [Rider Templates](#rider-templates)
-- ["Unused" Code Stripping](#unused-code-stripping)
-- [Notes](#notes)
+- [Documentation](#documentation)
 
 ## Installation
 - Open Package Manager through Window/Package Manager
@@ -48,5 +42,5 @@ public sealed class Movement : MonoBehaviour, IMovement
 }
 ```
 
-## Notes
-- Developed with Unity 2019 LTS (2019.4.17f1)
+## Documentation
+For more details, refer to the [Wiki](https://github.com/Delt06/di-framework/wiki).
