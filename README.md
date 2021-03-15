@@ -7,6 +7,17 @@
 
 A simple Unity framework to inject dependencies into your components.
 
+## Table of contents
+- [Installation](#installation)
+- [Setting Up](#setting-up)
+- [Container Types](#container-types)
+- [Injection Rules](#injection-rules)
+- [Resolvers](#resolvers)
+    - [Resolver Inspector](#resolver-inspector)
+- [Rider Templates](#rider-templates)
+- ["Unused" Code Stripping](#unused-code-stripping)
+- [Notes](#notes)
+
 ## Installation
 - Open Package Manager through Window/Package Manager
 - Click "+" and choose "Add package from git URL..."
@@ -19,7 +30,6 @@ A simple Unity framework to inject dependencies into your components.
 - Attach the created component to a `GameObject` and add a `Resolver` to it. Configure the `Resolver`, if needed: refer to [Resolvers](#resolvers). 
 
 ## Container types
- 
 
 - `Children Dependency Container`: registers all active children.
 - `List Dependency Container`: registers all the objects specified via the Inspector. Given a `GameObject` is selected, it allows to specify the exact component on it.
