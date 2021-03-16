@@ -14,11 +14,11 @@ namespace DELTation.DIFramework.Baking
 
             if (!BakedInjectionFunctions.TryGetValue(component.GetType(), out var injectionFunction))
                 // #if UNITY_EDITOR
-//                 if (BakedInjectionFunctions.Count > 0)
-//                     Debug.LogWarning(
-//                         $"Could not find baked DI data for {component.GetType()} (baked data may be outdated)."
-//                     );
-// #endif
+                //                 if (BakedInjectionFunctions.Count > 0)
+                //                     Debug.LogWarning(
+                //                         $"Could not find baked DI data for {component.GetType()} (baked data may be outdated)."
+                //                     );
+                // #endif
                 return false;
 
             injectionFunction(component, resolutionFunction);
