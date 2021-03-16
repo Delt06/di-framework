@@ -51,7 +51,7 @@ namespace DELTation.DIFramework.Resolution
             if (!Injection.TryGetInjectableParameters(method, out var parameters))
                 throw new NotInjectableException(component, method.Name);
 
-            var arguments = Injection.GetArgumentsArray(parameters.Count);
+            var arguments = Injection.RentArgumentsArray(parameters.Count);
 
             for (var index = 0; index < parameters.Count; index++)
             {
@@ -65,6 +65,8 @@ namespace DELTation.DIFramework.Resolution
             {
                 arguments[index] = null;
             }
+
+            Injection.ReturnArgumentsArray(arguments);
         }
 
         private object Resolve(MonoBehaviour component, Type type)
