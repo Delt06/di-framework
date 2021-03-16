@@ -183,7 +183,7 @@ namespace DELTation.DIFramework.Resolution
         {
             if (array == null) throw new ArgumentNullException(nameof(array));
             var arraysList = GetArgumentsArraysList(array.Length);
-            
+
             if (!arraysList.Contains(array))
                 arraysList.Add(array);
         }
@@ -191,7 +191,7 @@ namespace DELTation.DIFramework.Resolution
         private static List<object[]> GetArgumentsArraysList(int length)
         {
             if (FreeArgumentsArraysCache.TryGetValue(length, out var arraysList)) return arraysList;
-            return FreeArgumentsArraysCache[length] = new List<object[]>();;
+            return FreeArgumentsArraysCache[length] = new List<object[]>(); ;
         }
 
         private static readonly IDictionary<int, List<object[]>> FreeArgumentsArraysCache = new Dictionary<int, List<object[]>>();

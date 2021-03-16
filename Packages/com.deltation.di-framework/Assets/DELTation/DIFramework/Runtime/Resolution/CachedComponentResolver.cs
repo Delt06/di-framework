@@ -62,7 +62,7 @@ namespace DELTation.DIFramework.Resolution
             {
                 arguments[index] = null;
             }
-            
+
             Injection.ReturnArgumentsArray(arguments);
         }
 
