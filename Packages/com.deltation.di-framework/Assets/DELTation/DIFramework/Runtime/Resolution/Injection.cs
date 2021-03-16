@@ -13,7 +13,7 @@ namespace DELTation.DIFramework.Resolution
         {
             InjectableParameters.Clear();
             InjectableMethods.Clear();
-            ArgumentsArraysCache.Clear();
+            FreeArgumentsArraysCache.Clear();
         }
 
         public static void WarmUp([NotNull] GameObject gameObject)
@@ -164,14 +164,36 @@ namespace DELTation.DIFramework.Resolution
         private static readonly IDictionary<MethodInfo, ParameterInfo[]> InjectableParameters =
             new Dictionary<MethodInfo, ParameterInfo[]>();
 
-        internal static object[] GetArgumentsArray(int length)
+        internal static object[] RentArgumentsArray(int length)
         {
-            if (ArgumentsArraysCache.TryGetValue(length, out var array))
-                return array;
+            var arraysList = GetArgumentsArraysList(length);
 
-            return ArgumentsArraysCache[length] = new object[length];
+            if (arraysList.Count == 0)
+            {
+                return new object[length];
+            }
+
+            var lastIndex = arraysList.Count - 1;
+            var array = arraysList[lastIndex];
+            arraysList.RemoveAt(lastIndex);
+            return array;
         }
 
-        private static readonly IDictionary<int, object[]> ArgumentsArraysCache = new Dictionary<int, object[]>();
+        internal static void ReturnArgumentsArray([NotNull] object[] array)
+        {
+            if (array == null) throw new ArgumentNullException(nameof(array));
+            var arraysList = GetArgumentsArraysList(array.Length);
+            
+            if (!arraysList.Contains(array))
+                arraysList.Add(array);
+        }
+
+        private static List<object[]> GetArgumentsArraysList(int length)
+        {
+            if (FreeArgumentsArraysCache.TryGetValue(length, out var arraysList)) return arraysList;
+            return FreeArgumentsArraysCache[length] = new List<object[]>();;
+        }
+
+        private static readonly IDictionary<int, List<object[]>> FreeArgumentsArraysCache = new Dictionary<int, List<object[]>>();
     }
 }
