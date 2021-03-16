@@ -13,6 +13,8 @@ namespace DELTation.DIFramework.Resolution
         {
             _resolverComponent = resolverComponent;
             _dependencySource = dependencySource;
+            _resolutionFunction = Resolve;
+            _isAffectedExtraCondition = IsAffectedExtraCondition;
         }
 
         public bool CabBeResolvedSafe(MonoBehaviour component, Type type)
@@ -24,7 +26,7 @@ namespace DELTation.DIFramework.Resolution
         public void Resolve()
         {
             _affectedComponents.Clear();
-            Injection.GetAffectedComponents(_affectedComponents, _resolverComponent.transform);
+            Injection.GetAffectedComponents(_affectedComponents, _resolverComponent.transform, _isAffectedExtraCondition);
 
             foreach (var (component, _) in _affectedComponents)
             {
@@ -34,9 +36,14 @@ namespace DELTation.DIFramework.Resolution
             _cache.Clear();
         }
 
+        private static bool IsAffectedExtraCondition(MonoBehaviour mb)
+        {
+            return BakedInjection.IsBaked(mb.GetType());
+        }
+
         private void Inject(MonoBehaviour component)
         {
-            if (BakedInjection.TryInject(component, Resolve)) return;
+            if (BakedInjection.TryInject(component, _resolutionFunction)) return;
             
             var methods = Injection.GetConstructMethods(component.GetType());
 
@@ -87,6 +94,8 @@ namespace DELTation.DIFramework.Resolution
 
         private static bool IsCacheable(DependencySource source) => source != DependencySource.Local;
 
+        private readonly ResolutionFunction _resolutionFunction;
+        private readonly Func<MonoBehaviour, bool> _isAffectedExtraCondition;
         private readonly MonoBehaviour _resolverComponent;
         private readonly DependencySource _dependencySource;
         private readonly TypedCache _cache = new TypedCache();

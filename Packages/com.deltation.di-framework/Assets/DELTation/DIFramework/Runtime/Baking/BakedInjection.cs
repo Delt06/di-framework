@@ -37,6 +37,12 @@ namespace DELTation.DIFramework.Baking
             BakedInjectionFunctions.Clear();
         }
 
+        public static bool IsBaked([NotNull] Type type)
+        {
+            if (type == null) throw new ArgumentNullException(nameof(type));
+            return BakedInjectionFunctions.TryGetValue(type, out _);
+        }
+
         private static readonly Dictionary<Type, InjectionFunction> BakedInjectionFunctions =
             new Dictionary<Type, InjectionFunction>();
     }

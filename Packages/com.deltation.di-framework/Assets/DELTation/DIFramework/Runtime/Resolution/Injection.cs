@@ -125,7 +125,7 @@ namespace DELTation.DIFramework.Resolution
         }
 
         internal static void GetAffectedComponents(List<(MonoBehaviour component, int depth)> affectedComponents,
-            Transform root,
+            Transform root, [CanBeNull] Func<MonoBehaviour, bool> isAffectedExtraCondition = null,
             int depth = 0)
         {
             var components = root.GetComponents<MonoBehaviour>();
@@ -135,8 +135,8 @@ namespace DELTation.DIFramework.Resolution
                 if (component is null) continue;
                 if (component is Resolver) continue;
 
-                var hasAtLeastOneConstructor = GetConstructMethods(component.GetType()).Count > 0;
-                if (hasAtLeastOneConstructor)
+                var extraConditionIsMet = isAffectedExtraCondition != null && isAffectedExtraCondition(component);
+                if (extraConditionIsMet || HasAtLeastOneConstructor(component))
                     affectedComponents.Add((component, depth));
             }
 
@@ -144,15 +144,17 @@ namespace DELTation.DIFramework.Resolution
             {
                 if (child.TryGetComponent(out Resolver _)) continue;
 
-                GetAffectedComponents(affectedComponents, child, depth + 1);
+                GetAffectedComponents(affectedComponents, child, isAffectedExtraCondition, depth + 1);
             }
         }
 
-        public static IEnumerable<(MonoBehaviour component, int depth)> GetAffectedComponents(Transform root,
-            int depth = 0)
+        private static bool HasAtLeastOneConstructor(MonoBehaviour component) => GetConstructMethods(component.GetType()).Count > 0;
+
+        public static IEnumerable<(MonoBehaviour component, int depth)> GetAffectedComponents(Transform root, 
+            [CanBeNull] Func<MonoBehaviour, bool> isAffectedExtraCondition = null,int depth = 0)
         {
             var components = new List<(MonoBehaviour, int)>();
-            GetAffectedComponents(components, root, depth);
+            GetAffectedComponents(components, root, isAffectedExtraCondition, depth);
             return components;
         }
 
