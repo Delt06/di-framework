@@ -9,16 +9,19 @@ namespace DELTation.DIFramework.Resolution
 {
     internal sealed class CachedComponentResolver : IResolver
     {
-        public CachedComponentResolver(MonoBehaviour resolverComponent, DependencySource dependencySource)
+        public CachedComponentResolver(MonoBehaviour resolverComponent, DependencySource dependencySource,
+            bool useBakedData)
         {
             ResolverComponent = resolverComponent;
             DependencySource = dependencySource;
+            UseBakedData = useBakedData;
             _resolutionFunction = Resolve;
-            _isAffectedExtraCondition = IsAffectedExtraCondition;
+            _bakedIsAffectedExtraCondition = IsAffectedExtraCondition;
         }
 
         public MonoBehaviour ResolverComponent { get; set; }
         public DependencySource DependencySource { get; set; }
+        public bool UseBakedData { get; set; }
 
         public void Clear()
         {
@@ -35,8 +38,8 @@ namespace DELTation.DIFramework.Resolution
         public void Resolve()
         {
             _affectedComponents.Clear();
-            Injection.GetAffectedComponents(_affectedComponents, ResolverComponent.transform, _isAffectedExtraCondition
-            );
+            var extraCondition = UseBakedData ? _bakedIsAffectedExtraCondition : null; 
+            Injection.GetAffectedComponents(_affectedComponents, ResolverComponent.transform, extraCondition);
 
             foreach (var (component, _) in _affectedComponents)
             {
@@ -50,7 +53,7 @@ namespace DELTation.DIFramework.Resolution
 
         private void Inject(MonoBehaviour component)
         {
-            if (BakedInjection.TryInject(component, _resolutionFunction)) return;
+            if (UseBakedData && BakedInjection.TryInject(component, _resolutionFunction)) return;
 
             var methods = Injection.GetConstructMethods(component.GetType());
 
@@ -102,7 +105,7 @@ namespace DELTation.DIFramework.Resolution
         private static bool IsCacheable(DependencySource source) => source != DependencySource.Local;
 
         private readonly ResolutionFunction _resolutionFunction;
-        private readonly Func<MonoBehaviour, bool> _isAffectedExtraCondition;
+        private readonly Func<MonoBehaviour, bool> _bakedIsAffectedExtraCondition;
         private readonly TypedCache _cache = new TypedCache();
 
         private readonly List<(MonoBehaviour component, int depth)> _affectedComponents =
