@@ -18,7 +18,7 @@ namespace DELTation.DIFramework.Resolution
         public static void InvalidateCache()
         {
             InjectableParameters.Clear();
-            InjectableMethods.Clear();
+            ConstructMethods.Clear();
             FreeArgumentsArraysCache.Clear();
         }
 
@@ -132,8 +132,12 @@ namespace DELTation.DIFramework.Resolution
 
             foreach (var component in components)
             {
+                if (component is null) continue;
                 if (component is Resolver) continue;
-                affectedComponents.Add((component, depth));
+
+                var hasAtLeastOneConstructor = GetConstructMethods(component.GetType()).Count > 0;
+                if (hasAtLeastOneConstructor)
+                    affectedComponents.Add((component, depth));
             }
 
             foreach (Transform child in root)
@@ -154,7 +158,7 @@ namespace DELTation.DIFramework.Resolution
 
         public static IReadOnlyList<MethodInfo> GetConstructMethods(Type type)
         {
-            if (InjectableMethods.TryGetValue(type, out var methods)) return methods;
+            if (ConstructMethods.TryGetValue(type, out var methods)) return methods;
 
             var suitableMethods = new List<MethodInfo>();
 
@@ -164,7 +168,7 @@ namespace DELTation.DIFramework.Resolution
                     suitableMethods.Add(method);
             }
 
-            return InjectableMethods[type] = suitableMethods;
+            return ConstructMethods[type] = suitableMethods;
         }
 
         public static bool TryGetInjectableParameters([NotNull] MethodInfo method, out IReadOnlyList<ParameterInfo> parameters)
@@ -199,7 +203,7 @@ namespace DELTation.DIFramework.Resolution
         public const string Constructor = "Construct";
 
         private static readonly IDictionary<Type, List<MethodInfo>>
-            InjectableMethods = new Dictionary<Type, List<MethodInfo>>();
+            ConstructMethods = new Dictionary<Type, List<MethodInfo>>();
 
         private static readonly IDictionary<MethodInfo, ParameterInfo[]> InjectableParameters =
             new Dictionary<MethodInfo, ParameterInfo[]>();
