@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using DELTation.DIFramework.Pooling;
 using UnityEngine;
 
 namespace DELTation.DIFramework
@@ -76,12 +77,16 @@ namespace DELTation.DIFramework
         private static void EnsureInitialized(object dependency)
         {
             if (!(dependency is MonoBehaviour behaviour)) return;
-            var initializable = behaviour.GetComponents<IInitializable>();
 
-            foreach (var i in initializable)
+            var initializable = ListPool<IInitializable>.Rent();
+            behaviour.GetComponents(initializable);
+
+            for (var index = 0; index < initializable.Count; index++)
             {
-                i.EnsureInitialized();
+                initializable[index].EnsureInitialized();;
             }
+            
+            ListPool<IInitializable>.Return(initializable);
         }
 
         private void OnEnable()
