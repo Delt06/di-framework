@@ -10,8 +10,7 @@ namespace DELTation.DIFramework
         [SerializeField] private DependencySource _dependencySource = DependencySources.All;
         [SerializeField] private bool _destroyWhenFinished = true;
 
-        [HideInInspector]
-        public bool UseBakedData = true;
+        [HideInInspector] public bool UseBakedData = true;
 
         private void Awake()
         {
@@ -40,10 +39,7 @@ namespace DELTation.DIFramework
             return canBeResolvedSafe;
         }
 
-        private CachedComponentResolver RentResolver()
-        {
-            return ResolverPool.Rent(this, _dependencySource, UseBakedData);
-        }
+        private CachedComponentResolver RentResolver() => ResolverPool.Rent(this, _dependencySource, UseBakedData);
 
         void IInitializable.EnsureInitialized() => Resolve();
 

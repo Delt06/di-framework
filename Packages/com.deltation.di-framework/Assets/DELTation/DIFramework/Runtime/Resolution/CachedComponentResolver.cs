@@ -38,7 +38,7 @@ namespace DELTation.DIFramework.Resolution
         public void Resolve()
         {
             _affectedComponents.Clear();
-            var extraCondition = UseBakedData ? _bakedIsAffectedExtraCondition : null; 
+            var extraCondition = UseBakedData ? _bakedIsAffectedExtraCondition : null;
             Injection.GetAffectedComponents(_affectedComponents, ResolverComponent.transform, extraCondition);
 
             foreach (var (component, _) in _affectedComponents)

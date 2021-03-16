@@ -13,9 +13,7 @@ namespace DELTation.DIFramework.Resolution
             if (resolverComponent == null) throw new ArgumentNullException(nameof(resolverComponent));
 
             if (FreeResolvers.Count == 0)
-            {
                 return new CachedComponentResolver(resolverComponent, dependencySource, useBakedData);
-            }
 
             var lastIndex = FreeResolvers.Count - 1;
             var resolver = FreeResolvers[lastIndex];
@@ -35,12 +33,14 @@ namespace DELTation.DIFramework.Resolution
 
             resolver.Clear();
             if (FreeResolversSet.Contains(resolver)) return;
-            
+
             FreeResolvers.Add(resolver);
             FreeResolversSet.Add(resolver);
         }
-        
-        private static readonly HashSet<CachedComponentResolver> FreeResolversSet = new HashSet<CachedComponentResolver>();
+
+        private static readonly HashSet<CachedComponentResolver> FreeResolversSet =
+            new HashSet<CachedComponentResolver>();
+
         private static readonly List<CachedComponentResolver> FreeResolvers = new List<CachedComponentResolver>();
     }
 }

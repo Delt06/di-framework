@@ -94,10 +94,10 @@ namespace DELTation.DIFramework.Tests.Runtime
             Assert.That(component.Dependent.Dependent.S, Is.Not.Null);
         }
 
-        [Test, Explicit, Performance, 
-         TestCase(false, false), 
-         TestCase(false, true), 
-         TestCase(true, false), 
+        [Test, Explicit, Performance,
+         TestCase(false, false),
+         TestCase(false, true),
+         TestCase(true, false),
          TestCase(true, true)]
         public void Benchmark_CreateComplexObject_ResolveRecursively(bool warmUp, bool useBakedData)
         {
@@ -139,9 +139,9 @@ namespace DELTation.DIFramework.Tests.Runtime
                             var go = Object.Instantiate(prefab);
                             var component = go.GetComponent<CtorInjectionContainer.StringDependentComponent>();
                             CreateContainerWith<CtorInjectionContainer>();
-            
+
                             go.SetActive(true);
-            
+
                             Assert.That(component.Dependent, Is.Not.Null);
                             Assert.That(component.Dependent.Dependent, Is.Not.Null);
                             Assert.That(component.Dependent.Dependent.S, Is.Not.Null);

@@ -23,10 +23,10 @@ namespace DELTation.DIFramework.Resolution
         public static void Return([NotNull] List<MonoBehaviour> list)
         {
             if (list == null) throw new ArgumentNullException(nameof(list));
-            
+
             list.Clear();
             if (FreeListsSet.Contains(list)) return;
-            
+
             FreeLists.Add(list);
             FreeListsSet.Add(list);
         }
