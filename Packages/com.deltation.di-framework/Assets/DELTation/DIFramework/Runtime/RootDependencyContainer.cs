@@ -83,9 +83,10 @@ namespace DELTation.DIFramework
 
             for (var index = 0; index < initializable.Count; index++)
             {
-                initializable[index].EnsureInitialized();;
+                initializable[index].EnsureInitialized();
+                ;
             }
-            
+
             ListPool<IInitializable>.Return(initializable);
         }
 
