@@ -38,7 +38,7 @@ namespace DELTation.DIFramework.Resolution
         {
             if (BakedInjection.TryInject(component, Resolve)) return;
             
-            var methods = Injection.GetSuitableMethodsIn(component.GetType());
+            var methods = Injection.GetConstructMethods(component.GetType());
 
             for (var index = 0; index < methods.Count; index++)
             {

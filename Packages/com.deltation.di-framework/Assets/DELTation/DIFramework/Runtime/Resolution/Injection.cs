@@ -62,7 +62,7 @@ namespace DELTation.DIFramework.Resolution
         {
             if (type == null) throw new ArgumentNullException(nameof(type));
 
-            foreach (var methodInfo in GetSuitableMethodsIn(type))
+            foreach (var methodInfo in GetConstructMethods(type))
             {
                 TryGetInjectableParameters(methodInfo, out _);
             }
@@ -77,7 +77,7 @@ namespace DELTation.DIFramework.Resolution
         public static IEnumerable<Type> GetAllDependenciesOf([NotNull] Type componentType)
         {
             if (componentType == null) throw new ArgumentNullException(nameof(componentType));
-            return GetSuitableMethodsIn(componentType)
+            return GetConstructMethods(componentType)
                 .SelectMany(m => m.GetParameters())
                 .Select(p => p.ParameterType)
                 .Distinct();
@@ -92,7 +92,7 @@ namespace DELTation.DIFramework.Resolution
         public static bool IsInjectable([NotNull] Type componentType)
         {
             if (componentType == null) throw new ArgumentNullException(nameof(componentType));
-            var methods = GetSuitableMethodsIn(componentType);
+            var methods = GetConstructMethods(componentType);
 
             for (var i = 0; i < methods.Count; i++)
             {
@@ -152,7 +152,7 @@ namespace DELTation.DIFramework.Resolution
             return components;
         }
 
-        internal static IReadOnlyList<MethodInfo> GetSuitableMethodsIn(Type type)
+        public static IReadOnlyList<MethodInfo> GetConstructMethods(Type type)
         {
             if (InjectableMethods.TryGetValue(type, out var methods)) return methods;
 
@@ -160,15 +160,17 @@ namespace DELTation.DIFramework.Resolution
 
             foreach (var method in type.GetMethods(BindingFlags.Public | BindingFlags.Instance))
             {
-                if (IsSuitableMethod(method))
+                if (IsConstructMethod(method))
                     suitableMethods.Add(method);
             }
 
             return InjectableMethods[type] = suitableMethods;
         }
 
-        internal static bool TryGetInjectableParameters(MethodInfo method, out IReadOnlyList<ParameterInfo> parameters)
+        public static bool TryGetInjectableParameters([NotNull] MethodInfo method, out IReadOnlyList<ParameterInfo> parameters)
         {
+            if (method == null) throw new ArgumentNullException(nameof(method));
+            
             if (InjectableParameters.TryGetValue(method, out var parametersInfo))
             {
                 parameters = parametersInfo;
@@ -187,7 +189,7 @@ namespace DELTation.DIFramework.Resolution
             return false;
         }
 
-        private static bool IsSuitableMethod(MethodInfo method) =>
+        private static bool IsConstructMethod(MethodInfo method) =>
             method.Name == Constructor &&
             method.IsPublic && method.ReturnType == typeof(void);
 
