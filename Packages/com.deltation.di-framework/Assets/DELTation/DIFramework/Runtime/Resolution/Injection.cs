@@ -148,10 +148,11 @@ namespace DELTation.DIFramework.Resolution
             }
         }
 
-        private static bool HasAtLeastOneConstructor(MonoBehaviour component) => GetConstructMethods(component.GetType()).Count > 0;
+        private static bool HasAtLeastOneConstructor(MonoBehaviour component) =>
+            GetConstructMethods(component.GetType()).Count > 0;
 
-        public static IEnumerable<(MonoBehaviour component, int depth)> GetAffectedComponents(Transform root, 
-            [CanBeNull] Func<MonoBehaviour, bool> isAffectedExtraCondition = null,int depth = 0)
+        public static IEnumerable<(MonoBehaviour component, int depth)> GetAffectedComponents(Transform root,
+            [CanBeNull] Func<MonoBehaviour, bool> isAffectedExtraCondition = null, int depth = 0)
         {
             var components = new List<(MonoBehaviour, int)>();
             GetAffectedComponents(components, root, isAffectedExtraCondition, depth);
@@ -173,10 +174,11 @@ namespace DELTation.DIFramework.Resolution
             return ConstructMethods[type] = suitableMethods;
         }
 
-        public static bool TryGetInjectableParameters([NotNull] MethodInfo method, out IReadOnlyList<ParameterInfo> parameters)
+        public static bool TryGetInjectableParameters([NotNull] MethodInfo method,
+            out IReadOnlyList<ParameterInfo> parameters)
         {
             if (method == null) throw new ArgumentNullException(nameof(method));
-            
+
             if (InjectableParameters.TryGetValue(method, out var parametersInfo))
             {
                 parameters = parametersInfo;
@@ -214,10 +216,7 @@ namespace DELTation.DIFramework.Resolution
         {
             var arraysList = GetArgumentsArraysList(length);
 
-            if (arraysList.Count == 0)
-            {
-                return new object[length];
-            }
+            if (arraysList.Count == 0) return new object[length];
 
             var lastIndex = arraysList.Count - 1;
             var array = arraysList[lastIndex];
@@ -240,6 +239,7 @@ namespace DELTation.DIFramework.Resolution
             return FreeArgumentsArraysCache[length] = new List<object[]>();
         }
 
-        private static readonly IDictionary<int, List<object[]>> FreeArgumentsArraysCache = new Dictionary<int, List<object[]>>();
+        private static readonly IDictionary<int, List<object[]>> FreeArgumentsArraysCache =
+            new Dictionary<int, List<object[]>>();
     }
 }

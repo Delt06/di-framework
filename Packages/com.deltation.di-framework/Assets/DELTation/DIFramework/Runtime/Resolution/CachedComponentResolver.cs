@@ -26,7 +26,8 @@ namespace DELTation.DIFramework.Resolution
         public void Resolve()
         {
             _affectedComponents.Clear();
-            Injection.GetAffectedComponents(_affectedComponents, _resolverComponent.transform, _isAffectedExtraCondition);
+            Injection.GetAffectedComponents(_affectedComponents, _resolverComponent.transform, _isAffectedExtraCondition
+            );
 
             foreach (var (component, _) in _affectedComponents)
             {
@@ -36,15 +37,12 @@ namespace DELTation.DIFramework.Resolution
             _cache.Clear();
         }
 
-        private static bool IsAffectedExtraCondition(MonoBehaviour mb)
-        {
-            return BakedInjection.IsBaked(mb.GetType());
-        }
+        private static bool IsAffectedExtraCondition(MonoBehaviour mb) => BakedInjection.IsBaked(mb.GetType());
 
         private void Inject(MonoBehaviour component)
         {
             if (BakedInjection.TryInject(component, _resolutionFunction)) return;
-            
+
             var methods = Injection.GetConstructMethods(component.GetType());
 
             for (var index = 0; index < methods.Count; index++)

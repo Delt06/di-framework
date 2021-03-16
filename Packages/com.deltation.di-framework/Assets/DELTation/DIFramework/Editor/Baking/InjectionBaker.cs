@@ -26,7 +26,7 @@ namespace DELTation.DIFramework.Editor.Baking
         public void BakeData([NotNull] TextWriter writer)
         {
             if (writer == null) throw new ArgumentNullException(nameof(writer));
-            
+
             var index = 0;
             var bakeCalls = new StringBuilder();
             var injectionFunctionDeclarations = new StringBuilder();
@@ -47,7 +47,7 @@ namespace DELTation.DIFramework.Editor.Baking
             );
             writer.Write(dataText);
         }
-        
+
         private static string GetBakeCallText(Type type, int injectionFunctionIndex)
         {
             var methodName = $"{nameof(BakedInjection)}.{nameof(BakedInjection.Bake)}";
@@ -65,10 +65,10 @@ namespace DELTation.DIFramework.Editor.Baking
                 .AppendLine(");")
                 .ToString();
         }
-        
+
         private static string GetInjectionFunctionName(int injectionFunctionIndex) =>
             $"InjectionFunction_{injectionFunctionIndex}";
-        
+
         private static string GetInjectionFunctionDeclaration(Type type, int injectionFunctionIndex)
         {
             var stringBuilder = new StringBuilder();

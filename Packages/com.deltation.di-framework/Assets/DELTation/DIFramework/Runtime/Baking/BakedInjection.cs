@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace DELTation.DIFramework.Baking
 {
-     public static class BakedInjection
+    public static class BakedInjection
     {
         public static bool TryInject([NotNull] MonoBehaviour component, [NotNull] ResolutionFunction resolutionFunction)
         {
@@ -16,12 +16,13 @@ namespace DELTation.DIFramework.Baking
             {
 #if UNITY_EDITOR
                 if (BakedInjectionFunctions.Count > 0)
-                {
-                    Debug.LogWarning($"Could not find baked DI data for {component.GetType()} (baked data may be outdated).");
-                }
+                    Debug.LogWarning(
+                        $"Could not find baked DI data for {component.GetType()} (baked data may be outdated)."
+                    );
 #endif
                 return false;
             }
+
             injectionFunction(component, resolutionFunction);
             return true;
         }
@@ -29,7 +30,8 @@ namespace DELTation.DIFramework.Baking
         public static void Bake([NotNull] Type type, [NotNull] InjectionFunction injectionFunction)
         {
             if (type == null) throw new ArgumentNullException(nameof(type));
-            BakedInjectionFunctions[type] = injectionFunction ?? throw new ArgumentNullException(nameof(injectionFunction));
+            BakedInjectionFunctions[type] =
+                injectionFunction ?? throw new ArgumentNullException(nameof(injectionFunction));
         }
 
         public static void Clear()

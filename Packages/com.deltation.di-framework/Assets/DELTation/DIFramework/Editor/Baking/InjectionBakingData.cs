@@ -32,8 +32,8 @@ namespace {0}
 
         public static string ClassName => "BakedInjectionData";
 
-        public static string Namespace =>  string.Join(".", GetFoldersHierarchy().Skip(1));
-        
+        public static string Namespace => string.Join(".", GetFoldersHierarchy().Skip(1));
+
         public static IReadOnlyList<string> GetFoldersHierarchy() => FoldersHierarchy;
 
 

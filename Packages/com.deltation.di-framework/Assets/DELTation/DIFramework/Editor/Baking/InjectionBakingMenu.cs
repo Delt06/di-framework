@@ -13,8 +13,8 @@ namespace DELTation.DIFramework.Editor.Baking
 {
     internal static class InjectionBakingMenu
     {
-        private const string BakingMenuName = MenuHelper.MenuName + "/Baking"; 
-        
+        private const string BakingMenuName = MenuHelper.MenuName + "/Baking";
+
         [MenuItem(BakingMenuName + "/Clear Baked Data")]
         public static void Clear()
         {
@@ -49,10 +49,10 @@ namespace DELTation.DIFramework.Editor.Baking
             var bakedTypes = GetAllBakedTypes();
             var className = GetClassName();
             var baker = new InjectionBaker(className, bakedTypes);
-            
+
             var pathParts = GetFoldersHierarchy();
             var classPath = GetClassPath(pathParts, className);
-            
+
             using (var writer = File.CreateText(classPath))
             {
                 baker.BakeData(writer);
@@ -64,7 +64,7 @@ namespace DELTation.DIFramework.Editor.Baking
             AssetDatabase.ImportAsset(classPathInAssets);
         }
 
-        private static string GetClassName() => ClassName; 
+        private static string GetClassName() => ClassName;
 
         private static IEnumerable<Type> GetAllBakedTypes() =>
             AppDomain.CurrentDomain.GetAssemblies()

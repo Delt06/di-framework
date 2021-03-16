@@ -3,7 +3,7 @@ using JetBrains.Annotations;
 
 namespace DELTation.DIFramework.Editor.Baking
 {
-    internal static  class InjectionBakingTypesUtils
+    internal static class InjectionBakingTypesUtils
     {
         public static string GetFullyQualifiedName([NotNull] Type type)
         {
