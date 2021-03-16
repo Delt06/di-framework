@@ -10,6 +10,8 @@ namespace DELTation.DIFramework
         [SerializeField] private DependencySource _dependencySource = DependencySources.All;
         [SerializeField] private bool _destroyWhenFinished = true;
 
+        [HideInInspector] public bool UseBakedData = true;
+
         private void Awake()
         {
             Resolve();
@@ -20,21 +22,27 @@ namespace DELTation.DIFramework
             if (_resolved) return;
 
             _resolved = true;
-            InnerResolver.Resolve();
+
+            var resolver = RentResolver();
+            resolver.Resolve();
+            ResolverPool.Return(resolver);
 
             if (_destroyWhenFinished)
                 Destroy(this);
         }
 
-        public bool CabBeResolvedSafe(MonoBehaviour component, Type type) =>
-            InnerResolver.CabBeResolvedSafe(component, type);
+        public bool CanBeResolvedSafe(MonoBehaviour component, Type type)
+        {
+            var resolver = RentResolver();
+            var canBeResolvedSafe = resolver.CanBeResolvedSafe(component, type);
+            ResolverPool.Return(resolver);
+            return canBeResolvedSafe;
+        }
 
-        private IResolver InnerResolver =>
-            _implementation ?? (_implementation = new CachedComponentResolver(this, _dependencySource));
+        private CachedComponentResolver RentResolver() => ResolverPool.Rent(this, _dependencySource, UseBakedData);
 
         void IInitializable.EnsureInitialized() => Resolve();
 
-        private IResolver _implementation;
         private bool _resolved;
     }
 }

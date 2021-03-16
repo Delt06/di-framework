@@ -94,8 +94,12 @@ namespace DELTation.DIFramework.Tests.Runtime
             Assert.That(component.Dependent.Dependent.S, Is.Not.Null);
         }
 
-        [Test, Explicit, Performance, TestCase(false), TestCase(true)]
-        public void Benchmark_CreateObject_WithDependenceOnSimpleTypeWithConstructor_ResolveRecursively(bool warmUp)
+        [Test, Explicit, Performance,
+         TestCase(false, false),
+         TestCase(false, true),
+         TestCase(true, false),
+         TestCase(true, true)]
+        public void Benchmark_CreateComplexObject_ResolveRecursively(bool warmUp, bool useBakedData)
         {
             var prefab = NewInactiveGameObject();
             prefab.AddComponent<CtorInjectionContainer.StringDependentComponent>();
@@ -121,33 +125,30 @@ namespace DELTation.DIFramework.Tests.Runtime
             prefab.AddComponent<Component19>();
             prefab.AddComponent<Component20>();
 
-            prefab.AddComponent<Resolver>();
+            var resolver = prefab.AddComponent<Resolver>();
+            resolver.UseBakedData = useBakedData;
 
             Injection.InvalidateCache();
 
-            if (warmUp)
-            {
-                Injection.WarmUp(prefab);
-            }
+            if (warmUp) Injection.WarmUp(prefab);
 
             Measure.Method(() =>
-                {
-                    for (var i = 0; i < 10; i++)
                     {
-                        var go = Object.Instantiate(prefab);
-                        var component = go.GetComponent<CtorInjectionContainer.StringDependentComponent>();
-                        CreateContainerWith<CtorInjectionContainer>();
+                        for (var i = 0; i < 10; i++)
+                        {
+                            var go = Object.Instantiate(prefab);
+                            var component = go.GetComponent<CtorInjectionContainer.StringDependentComponent>();
+                            CreateContainerWith<CtorInjectionContainer>();
 
-                        go.SetActive(true);
+                            go.SetActive(true);
 
-                        Assert.That(component.Dependent, Is.Not.Null);
-                        Assert.That(component.Dependent.Dependent, Is.Not.Null);
-                        Assert.That(component.Dependent.Dependent.S, Is.Not.Null);
+                            Assert.That(component.Dependent, Is.Not.Null);
+                            Assert.That(component.Dependent.Dependent, Is.Not.Null);
+                            Assert.That(component.Dependent.Dependent.S, Is.Not.Null);
+                        }
                     }
-
-                })
-                .MeasurementCount(100)
-                .IterationsPerMeasurement(5)
+                )
+                .MeasurementCount(10)
                 .GC()
                 .Run();
         }

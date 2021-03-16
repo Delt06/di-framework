@@ -32,7 +32,8 @@ namespace DELTation.DIFramework.Containers
                 if (dependency is GameObject)
                 {
                     Debug.LogWarning($"Dependency at index {index} is a GameObject ({dependency}), it will be ignored.",
-                        this);
+                        this
+                    );
                     continue;
                 }
 

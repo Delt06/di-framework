@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Unity.Profiling;
+using UnityEngine;
 
 namespace PerformanceTest.Scripts
 {
@@ -15,12 +16,16 @@ namespace PerformanceTest.Scripts
 
 			for (int i = 0; i < Count; i++)
 			{
+                PreparePerfMarker.Begin();
 				Instantiate(Prefab);
+                PreparePerfMarker.End();
 			}
 			
 			_timeTillNextSpawn = Period;
 		}
 
 		private float _timeTillNextSpawn;
+
+        private static readonly ProfilerMarker PreparePerfMarker = new ProfilerMarker("Instantiate And Inject");
 	}
 }

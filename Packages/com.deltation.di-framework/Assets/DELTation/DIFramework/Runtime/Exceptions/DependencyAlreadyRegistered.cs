@@ -11,7 +11,8 @@ namespace DELTation.DIFramework.Exceptions
         public DependencyAlreadyRegistered([NotNull] Type type, [NotNull] object registeredDependency)
         {
             Type = type ?? throw new ArgumentNullException(nameof(type));
-            RegisteredDependency = registeredDependency ?? throw new ArgumentNullException(nameof(registeredDependency));
+            RegisteredDependency =
+                registeredDependency ?? throw new ArgumentNullException(nameof(registeredDependency));
             Message = $"Dependency of type {type} is already registered: {registeredDependency}.";
         }
 

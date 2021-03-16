@@ -7,15 +7,26 @@ using UnityEngine;
 
 namespace DELTation.DIFramework.Resolution
 {
+    /// <summary>
+    /// Contains methods related to injection of dependencies.
+    /// </summary>
     public static class Injection
     {
+        /// <summary>
+        /// Invalidates injection cache.
+        /// </summary>
         public static void InvalidateCache()
         {
             InjectableParameters.Clear();
-            InjectableMethods.Clear();
+            ConstructMethods.Clear();
             FreeArgumentsArraysCache.Clear();
         }
 
+        /// <summary>
+        /// Generates cache to improve further performance.
+        /// </summary>
+        /// <param name="gameObject">GameObject to get optimized components from.</param>
+        /// <exception cref="ArgumentNullException">When the <paramref name="gameObject"/> is null.</exception>
         public static void WarmUp([NotNull] GameObject gameObject)
         {
             if (gameObject == null) throw new ArgumentNullException(nameof(gameObject));
@@ -27,37 +38,61 @@ namespace DELTation.DIFramework.Resolution
             }
         }
 
-        public static void WarmUp(params Type[] types)
+        /// <summary>
+        /// Generates cache to improve further performance.
+        /// </summary>
+        /// <param name="types">Types to optimize.</param>
+        /// <exception cref="ArgumentNullException">When the <paramref name="types"/> are null.</exception>
+        public static void WarmUp([NotNull] params Type[] types)
         {
+            if (types == null) throw new ArgumentNullException(nameof(types));
+
             foreach (var type in types)
             {
                 WarmUp(type);
             }
         }
 
+        /// <summary>
+        /// Generates cache to improve further performance.
+        /// </summary>
+        /// <param name="type">Type to optimize.</param>
+        /// <exception cref="ArgumentNullException">When the <paramref name="type"/> is null.</exception>
         public static void WarmUp([NotNull] Type type)
         {
             if (type == null) throw new ArgumentNullException(nameof(type));
 
-            foreach (var methodInfo in GetSuitableMethodsIn(type))
+            foreach (var methodInfo in GetConstructMethods(type))
             {
                 TryGetInjectableParameters(methodInfo, out _);
             }
         }
 
+        /// <summary>
+        /// Returns all the dependencies of the type.
+        /// </summary>
+        /// <param name="componentType">Type to get dependencies of.</param>
+        /// <returns>An IEnumerable of dependencies.</returns>
+        /// <exception cref="ArgumentNullException">When the <paramref name="componentType"/> is null.</exception>
         public static IEnumerable<Type> GetAllDependenciesOf([NotNull] Type componentType)
         {
             if (componentType == null) throw new ArgumentNullException(nameof(componentType));
-            return GetSuitableMethodsIn(componentType)
+            return GetConstructMethods(componentType)
                 .SelectMany(m => m.GetParameters())
                 .Select(p => p.ParameterType)
                 .Distinct();
         }
 
+        /// <summary>
+        /// Checks whether the type is injectable.
+        /// </summary>
+        /// <param name="componentType">Type to check.</param>
+        /// <returns>True if type is injectable, false otherwise.</returns>
+        /// <exception cref="ArgumentNullException">When the <paramref name="componentType"/> is null.</exception>
         public static bool IsInjectable([NotNull] Type componentType)
         {
             if (componentType == null) throw new ArgumentNullException(nameof(componentType));
-            var methods = GetSuitableMethodsIn(componentType);
+            var methods = GetConstructMethods(componentType);
 
             for (var i = 0; i < methods.Count; i++)
             {
@@ -90,50 +125,65 @@ namespace DELTation.DIFramework.Resolution
         }
 
         internal static void GetAffectedComponents(List<(MonoBehaviour component, int depth)> affectedComponents,
-            Transform root,
+            Transform root, [CanBeNull] Func<MonoBehaviour, bool> isAffectedExtraCondition = null,
             int depth = 0)
         {
-            var components = root.GetComponents<MonoBehaviour>();
+            var tempComponentsList = ComponentListPool.Rent();
+            root.GetComponents(tempComponentsList);
 
-            foreach (var component in components)
+            for (var index = 0; index < tempComponentsList.Count; index++)
             {
+                var component = tempComponentsList[index];
+                if (component is null) continue;
                 if (component is Resolver) continue;
-                affectedComponents.Add((component, depth));
+
+                var extraConditionIsMet = isAffectedExtraCondition != null && isAffectedExtraCondition(component);
+                if (extraConditionIsMet || HasAtLeastOneConstructor(component))
+                    affectedComponents.Add((component, depth));
             }
 
-            foreach (Transform child in root)
+            ComponentListPool.Return(tempComponentsList);
+
+            for (var childIndex = 0; childIndex < root.childCount; childIndex++)
             {
+                var child = root.GetChild(childIndex);
                 if (child.TryGetComponent(out Resolver _)) continue;
 
-                GetAffectedComponents(affectedComponents, child, depth + 1);
+                GetAffectedComponents(affectedComponents, child, isAffectedExtraCondition, depth + 1);
             }
         }
 
+        private static bool HasAtLeastOneConstructor(MonoBehaviour component) =>
+            GetConstructMethods(component.GetType()).Count > 0;
+
         public static IEnumerable<(MonoBehaviour component, int depth)> GetAffectedComponents(Transform root,
-            int depth = 0)
+            [CanBeNull] Func<MonoBehaviour, bool> isAffectedExtraCondition = null, int depth = 0)
         {
             var components = new List<(MonoBehaviour, int)>();
-            GetAffectedComponents(components, root, depth);
+            GetAffectedComponents(components, root, isAffectedExtraCondition, depth);
             return components;
         }
 
-        internal static IReadOnlyList<MethodInfo> GetSuitableMethodsIn(Type type)
+        public static IReadOnlyList<MethodInfo> GetConstructMethods(Type type)
         {
-            if (InjectableMethods.TryGetValue(type, out var methods)) return methods;
+            if (ConstructMethods.TryGetValue(type, out var methods)) return methods;
 
             var suitableMethods = new List<MethodInfo>();
 
             foreach (var method in type.GetMethods(BindingFlags.Public | BindingFlags.Instance))
             {
-                if (IsSuitableMethod(method))
+                if (IsConstructMethod(method))
                     suitableMethods.Add(method);
             }
 
-            return InjectableMethods[type] = suitableMethods;
+            return ConstructMethods[type] = suitableMethods;
         }
 
-        internal static bool TryGetInjectableParameters(MethodInfo method, out IReadOnlyList<ParameterInfo> parameters)
+        public static bool TryGetInjectableParameters([NotNull] MethodInfo method,
+            out IReadOnlyList<ParameterInfo> parameters)
         {
+            if (method == null) throw new ArgumentNullException(nameof(method));
+
             if (InjectableParameters.TryGetValue(method, out var parametersInfo))
             {
                 parameters = parametersInfo;
@@ -152,14 +202,17 @@ namespace DELTation.DIFramework.Resolution
             return false;
         }
 
-        private static bool IsSuitableMethod(MethodInfo method) =>
+        private static bool IsConstructMethod(MethodInfo method) =>
             method.Name == Constructor &&
             method.IsPublic && method.ReturnType == typeof(void);
 
+        /// <summary>
+        /// The name of injected methods.
+        /// </summary>
         public const string Constructor = "Construct";
 
         private static readonly IDictionary<Type, List<MethodInfo>>
-            InjectableMethods = new Dictionary<Type, List<MethodInfo>>();
+            ConstructMethods = new Dictionary<Type, List<MethodInfo>>();
 
         private static readonly IDictionary<MethodInfo, ParameterInfo[]> InjectableParameters =
             new Dictionary<MethodInfo, ParameterInfo[]>();
@@ -168,10 +221,7 @@ namespace DELTation.DIFramework.Resolution
         {
             var arraysList = GetArgumentsArraysList(length);
 
-            if (arraysList.Count == 0)
-            {
-                return new object[length];
-            }
+            if (arraysList.Count == 0) return new object[length];
 
             var lastIndex = arraysList.Count - 1;
             var array = arraysList[lastIndex];
@@ -194,6 +244,7 @@ namespace DELTation.DIFramework.Resolution
             return FreeArgumentsArraysCache[length] = new List<object[]>();
         }
 
-        private static readonly IDictionary<int, List<object[]>> FreeArgumentsArraysCache = new Dictionary<int, List<object[]>>();
+        private static readonly IDictionary<int, List<object[]>> FreeArgumentsArraysCache =
+            new Dictionary<int, List<object[]>>();
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using DELTation.DIFramework.Baking;
 using DELTation.DIFramework.Exceptions;
 using UnityEngine;
 
@@ -8,22 +9,37 @@ namespace DELTation.DIFramework.Resolution
 {
     internal sealed class CachedComponentResolver : IResolver
     {
-        public CachedComponentResolver(MonoBehaviour resolverComponent, DependencySource dependencySource)
+        public CachedComponentResolver(MonoBehaviour resolverComponent, DependencySource dependencySource,
+            bool useBakedData)
         {
-            _resolverComponent = resolverComponent;
-            _dependencySource = dependencySource;
+            ResolverComponent = resolverComponent;
+            DependencySource = dependencySource;
+            UseBakedData = useBakedData;
+            _resolutionFunction = Resolve;
+            _bakedIsAffectedExtraCondition = IsAffectedExtraCondition;
         }
 
-        public bool CabBeResolvedSafe(MonoBehaviour component, Type type)
+        public MonoBehaviour ResolverComponent { get; set; }
+        public DependencySource DependencySource { get; set; }
+        public bool UseBakedData { get; set; }
+
+        public void Clear()
         {
-            var context = new ResolutionContext(_resolverComponent, component);
-            return _dependencySource.CanBeResolvedSafe(context, type);
+            _cache.Clear();
+            _affectedComponents.Clear();
+        }
+
+        public bool CanBeResolvedSafe(MonoBehaviour component, Type type)
+        {
+            var context = new ResolutionContext(ResolverComponent, component);
+            return DependencySource.CanBeResolvedSafe(context, type);
         }
 
         public void Resolve()
         {
             _affectedComponents.Clear();
-            Injection.GetAffectedComponents(_affectedComponents, _resolverComponent.transform);
+            var extraCondition = UseBakedData ? _bakedIsAffectedExtraCondition : null;
+            Injection.GetAffectedComponents(_affectedComponents, ResolverComponent.transform, extraCondition);
 
             foreach (var (component, _) in _affectedComponents)
             {
@@ -33,9 +49,13 @@ namespace DELTation.DIFramework.Resolution
             _cache.Clear();
         }
 
+        private static bool IsAffectedExtraCondition(MonoBehaviour mb) => BakedInjection.IsBaked(mb.GetType());
+
         private void Inject(MonoBehaviour component)
         {
-            var methods = Injection.GetSuitableMethodsIn(component.GetType());
+            if (UseBakedData && BakedInjection.TryInject(component, _resolutionFunction)) return;
+
+            var methods = Injection.GetConstructMethods(component.GetType());
 
             for (var index = 0; index < methods.Count; index++)
             {
@@ -70,8 +90,8 @@ namespace DELTation.DIFramework.Resolution
         {
             if (_cache.TryGet(type, out var dependency)) return dependency;
 
-            var context = new ResolutionContext(_resolverComponent, component);
-            if (_dependencySource.TryResolve(context, type, out dependency, out var actualSource))
+            var context = new ResolutionContext(ResolverComponent, component);
+            if (DependencySource.TryResolve(context, type, out dependency, out var actualSource))
             {
                 if (IsCacheable(actualSource))
                     _cache.TryRegister(dependency, out _);
@@ -84,8 +104,8 @@ namespace DELTation.DIFramework.Resolution
 
         private static bool IsCacheable(DependencySource source) => source != DependencySource.Local;
 
-        private readonly MonoBehaviour _resolverComponent;
-        private readonly DependencySource _dependencySource;
+        private readonly ResolutionFunction _resolutionFunction;
+        private readonly Func<MonoBehaviour, bool> _bakedIsAffectedExtraCondition;
         private readonly TypedCache _cache = new TypedCache();
 
         private readonly List<(MonoBehaviour component, int depth)> _affectedComponents =
