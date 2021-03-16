@@ -11,22 +11,31 @@ namespace DELTation.DIFramework.Resolution
     {
         public CachedComponentResolver(MonoBehaviour resolverComponent, DependencySource dependencySource)
         {
-            _resolverComponent = resolverComponent;
-            _dependencySource = dependencySource;
+            ResolverComponent = resolverComponent;
+            DependencySource = dependencySource;
             _resolutionFunction = Resolve;
             _isAffectedExtraCondition = IsAffectedExtraCondition;
         }
 
-        public bool CabBeResolvedSafe(MonoBehaviour component, Type type)
+        public MonoBehaviour ResolverComponent { get; set; }
+        public DependencySource DependencySource { get; set; }
+
+        public void Clear()
         {
-            var context = new ResolutionContext(_resolverComponent, component);
-            return _dependencySource.CanBeResolvedSafe(context, type);
+            _cache.Clear();
+            _affectedComponents.Clear();
+        }
+
+        public bool CanBeResolvedSafe(MonoBehaviour component, Type type)
+        {
+            var context = new ResolutionContext(ResolverComponent, component);
+            return DependencySource.CanBeResolvedSafe(context, type);
         }
 
         public void Resolve()
         {
             _affectedComponents.Clear();
-            Injection.GetAffectedComponents(_affectedComponents, _resolverComponent.transform, _isAffectedExtraCondition
+            Injection.GetAffectedComponents(_affectedComponents, ResolverComponent.transform, _isAffectedExtraCondition
             );
 
             foreach (var (component, _) in _affectedComponents)
@@ -78,8 +87,8 @@ namespace DELTation.DIFramework.Resolution
         {
             if (_cache.TryGet(type, out var dependency)) return dependency;
 
-            var context = new ResolutionContext(_resolverComponent, component);
-            if (_dependencySource.TryResolve(context, type, out dependency, out var actualSource))
+            var context = new ResolutionContext(ResolverComponent, component);
+            if (DependencySource.TryResolve(context, type, out dependency, out var actualSource))
             {
                 if (IsCacheable(actualSource))
                     _cache.TryRegister(dependency, out _);
@@ -94,8 +103,6 @@ namespace DELTation.DIFramework.Resolution
 
         private readonly ResolutionFunction _resolutionFunction;
         private readonly Func<MonoBehaviour, bool> _isAffectedExtraCondition;
-        private readonly MonoBehaviour _resolverComponent;
-        private readonly DependencySource _dependencySource;
         private readonly TypedCache _cache = new TypedCache();
 
         private readonly List<(MonoBehaviour component, int depth)> _affectedComponents =

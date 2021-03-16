@@ -20,21 +20,24 @@ namespace DELTation.DIFramework
             if (_resolved) return;
 
             _resolved = true;
-            InnerResolver.Resolve();
+            var resolver = ResolverPool.Rent(this, _dependencySource);
+            resolver.Resolve();
+            ResolverPool.Return(resolver);
 
             if (_destroyWhenFinished)
                 Destroy(this);
         }
 
-        public bool CabBeResolvedSafe(MonoBehaviour component, Type type) =>
-            InnerResolver.CabBeResolvedSafe(component, type);
-
-        private IResolver InnerResolver =>
-            _implementation ?? (_implementation = new CachedComponentResolver(this, _dependencySource));
+        public bool CanBeResolvedSafe(MonoBehaviour component, Type type)
+        {
+            var resolver = ResolverPool.Rent(this, _dependencySource);
+            var canBeResolvedSafe = resolver.CanBeResolvedSafe(component, type);
+            ResolverPool.Return(resolver);
+            return canBeResolvedSafe;
+        }
 
         void IInitializable.EnsureInitialized() => Resolve();
 
-        private IResolver _implementation;
         private bool _resolved;
     }
 }

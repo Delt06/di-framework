@@ -6,6 +6,6 @@ namespace DELTation.DIFramework
     internal interface IResolver
     {
         void Resolve();
-        bool CabBeResolvedSafe(MonoBehaviour component, Type type);
+        bool CanBeResolvedSafe(MonoBehaviour component, Type type);
     }
 }

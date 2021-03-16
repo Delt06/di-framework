@@ -67,7 +67,7 @@ namespace DELTation.DIFramework.Reporting
         }
 
         private static bool CanBeResolved(Resolver resolver, Type dependency, MonoBehaviour component) =>
-            resolver.CabBeResolvedSafe(component, dependency);
+            resolver.CanBeResolvedSafe(component, dependency);
 
         public ResolverReport(Resolver resolver) => _resolver = resolver;
 

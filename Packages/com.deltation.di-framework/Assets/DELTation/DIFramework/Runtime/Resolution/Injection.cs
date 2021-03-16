@@ -128,10 +128,12 @@ namespace DELTation.DIFramework.Resolution
             Transform root, [CanBeNull] Func<MonoBehaviour, bool> isAffectedExtraCondition = null,
             int depth = 0)
         {
-            var components = root.GetComponents<MonoBehaviour>();
+            var tempComponentsList = ComponentListPool.Rent();
+            root.GetComponents(tempComponentsList);
 
-            foreach (var component in components)
+            for (var index = 0; index < tempComponentsList.Count; index++)
             {
+                var component = tempComponentsList[index];
                 if (component is null) continue;
                 if (component is Resolver) continue;
 
@@ -140,8 +142,11 @@ namespace DELTation.DIFramework.Resolution
                     affectedComponents.Add((component, depth));
             }
 
-            foreach (Transform child in root)
+            ComponentListPool.Return(tempComponentsList);
+
+            for (var childIndex = 0; childIndex < root.childCount; childIndex++)
             {
+                var child = root.GetChild(childIndex);
                 if (child.TryGetComponent(out Resolver _)) continue;
 
                 GetAffectedComponents(affectedComponents, child, isAffectedExtraCondition, depth + 1);
