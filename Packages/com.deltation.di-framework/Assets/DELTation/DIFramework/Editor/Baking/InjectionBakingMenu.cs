@@ -53,6 +53,9 @@ namespace DELTation.DIFramework.Editor.Baking
             var pathParts = GetFoldersHierarchy();
             var classPath = GetClassPath(pathParts, className);
 
+            var classFolder = GetClassFolder(pathParts);
+            Directory.CreateDirectory(classFolder);
+
             using (var writer = File.CreateText(classPath))
             {
                 baker.BakeData(writer);
@@ -87,6 +90,14 @@ namespace DELTation.DIFramework.Editor.Baking
             var parts = pathParts
                 .Prepend(Application.dataPath)
                 .Append(className + ".cs")
+                .ToArray();
+            return Path.Combine(parts);
+        }
+
+        private static string GetClassFolder(IEnumerable<string> pathParts)
+        {
+            var parts = pathParts
+                .Prepend(Application.dataPath)
                 .ToArray();
             return Path.Combine(parts);
         }
