@@ -1,5 +1,6 @@
 ﻿using DELTation.DIFramework.Tests.Runtime.Components;
 using DELTation.DIFramework.Tests.Runtime.Containers;
+using FluentAssertions;
 using NUnit.Framework;
 
 namespace DELTation.DIFramework.Tests.Runtime
@@ -15,7 +16,7 @@ namespace DELTation.DIFramework.Tests.Runtime
             var component = NewGameObject().AddComponent<StringDependencyComponent>();
             component.gameObject.AddComponent<Resolver>();
 
-            Assert.That(component.String, Is.EqualTo(CustomContainer.String));
+            component.String.Should().BeEquivalentTo(CustomContainer.String);
         }
 
         [Test]
@@ -26,7 +27,7 @@ namespace DELTation.DIFramework.Tests.Runtime
             var component = NewGameObject().AddComponent<StringDependencyComponent>();
             component.gameObject.AddComponent<Resolver>();
 
-            Assert.That(component.String, Is.EqualTo(CustomContainer.String));
+            component.String.Should().BeEquivalentTo(CustomContainer.String);
         }
 
         [Test]
@@ -37,7 +38,7 @@ namespace DELTation.DIFramework.Tests.Runtime
             var component = NewGameObject().AddComponent<ParentDependencyComponent>();
             component.gameObject.AddComponent<Resolver>();
 
-            Assert.That(component.Parent, Is.InstanceOf<Child>());
+            component.Parent.Should().BeAssignableTo<Child>();
         }
     }
 }

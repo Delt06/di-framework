@@ -1,12 +1,13 @@
 ﻿using DELTation.DIFramework.Containers;
 using DELTation.DIFramework.Tests.Runtime.Components;
+using FluentAssertions;
 using NUnit.Framework;
 using UnityEngine;
 
 namespace DELTation.DIFramework.Tests.Runtime
 {
     [TestFixture]
-    public sealed class MultiplierRootContainersTests : TestFixtureBase
+    public sealed class MultipleRootContainersTests : TestFixtureBase
     {
         [Test]
         public void CreateTwoContainers_BothWithCorrectDependency_TheLatterIsTheActualSource()
@@ -16,8 +17,7 @@ namespace DELTation.DIFramework.Tests.Runtime
 
             var component = CreateAndResolveRigidbodyComponent();
 
-            Assert.That(component.Rigidbody != null);
-            Assert.That(component.Rigidbody, Is.EqualTo(rigidbody2));
+            component.Rigidbody.Should().Be(rigidbody2);
         }
 
         [Test]
@@ -29,10 +29,8 @@ namespace DELTation.DIFramework.Tests.Runtime
             var rigidbody2 = CreateRigidbodyWithinContainer();
             var component2 = CreateAndResolveRigidbodyComponent();
 
-            Assert.That(component1.Rigidbody != null);
-            Assert.That(component1.Rigidbody, Is.EqualTo(rigidbody1));
-            Assert.That(component2.Rigidbody != null);
-            Assert.That(component2.Rigidbody, Is.EqualTo(rigidbody2));
+            component1.Rigidbody.Should().Be(rigidbody1);
+            component2.Rigidbody.Should().Be(rigidbody2);
         }
 
         private Rigidbody CreateRigidbodyWithinContainer()
@@ -58,8 +56,7 @@ namespace DELTation.DIFramework.Tests.Runtime
 
             var component = CreateAndResolveRigidbodyComponent();
 
-            Assert.That(component.Rigidbody != null);
-            Assert.That(component.Rigidbody, Is.EqualTo(rigidbody));
+            component.Rigidbody.Should().Be(rigidbody);
         }
 
         [Test]
@@ -70,8 +67,7 @@ namespace DELTation.DIFramework.Tests.Runtime
 
             var component = CreateAndResolveRigidbodyComponent();
 
-            Assert.That(component.Rigidbody != null);
-            Assert.That(component.Rigidbody, Is.EqualTo(rigidbody));
+            component.Rigidbody.Should().Be(rigidbody);
         }
 
         [Test]
@@ -89,8 +85,7 @@ namespace DELTation.DIFramework.Tests.Runtime
 
             var component = CreateAndResolveRigidbodyComponent();
 
-            Assert.That(component.Rigidbody != null);
-            Assert.That(component.Rigidbody, Is.EqualTo(rigidbody));
+            component.Rigidbody.Should().Be(rigidbody);
         }
     }
 }

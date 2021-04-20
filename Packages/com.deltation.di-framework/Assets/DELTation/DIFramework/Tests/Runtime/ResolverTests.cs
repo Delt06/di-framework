@@ -2,6 +2,7 @@
 using DELTation.DIFramework.Tests.Runtime.Components;
 using DELTation.DIFramework.Tests.Runtime.Components.Benchmark;
 using DELTation.DIFramework.Tests.Runtime.Containers;
+using FluentAssertions;
 using NUnit.Framework;
 using Unity.PerformanceTesting;
 using UnityEngine;
@@ -20,7 +21,7 @@ namespace DELTation.DIFramework.Tests.Runtime
 
             go.SetActive(true);
 
-            Assert.That(checker.Constructed, Is.True);
+            checker.Constructed.Should().BeTrue();
         }
 
         [Test]
@@ -33,8 +34,8 @@ namespace DELTation.DIFramework.Tests.Runtime
 
             go.SetActive(true);
 
-            Assert.That(componentBefore.AwakenWhenConstructed, Is.False);
-            Assert.That(componentAfter.AwakenWhenConstructed, Is.False);
+            componentBefore.AwakenWhenConstructed.Should().BeFalse();
+            componentAfter.AwakenWhenConstructed.Should().BeFalse();
         }
 
         [Test]
@@ -49,7 +50,7 @@ namespace DELTation.DIFramework.Tests.Runtime
 
             root.SetActive(true);
 
-            Assert.That(counter.Count, Is.EqualTo(1));
+            counter.Count.Should().Be(1);
         }
 
         [Test]
@@ -62,7 +63,7 @@ namespace DELTation.DIFramework.Tests.Runtime
 
             go.SetActive(true);
 
-            Assert.That(component.Dependency, Is.EqualTo(implementation));
+            component.Dependency.Should().Be(implementation);
         }
 
         [Test]
@@ -75,8 +76,8 @@ namespace DELTation.DIFramework.Tests.Runtime
 
             go.SetActive(true);
 
-            Assert.That(component.FirstCalled);
-            Assert.That(component.SecondCalled);
+            component.FirstCalled.Should().BeTrue();
+            component.SecondCalled.Should().BeTrue();
         }
 
         [Test]
@@ -89,9 +90,9 @@ namespace DELTation.DIFramework.Tests.Runtime
 
             go.SetActive(true);
 
-            Assert.That(component.Dependent, Is.Not.Null);
-            Assert.That(component.Dependent.Dependent, Is.Not.Null);
-            Assert.That(component.Dependent.Dependent.S, Is.Not.Null);
+            component.Dependent.Should().NotBeNull();
+            component.Dependent.Dependent.Should().NotBeNull();
+            component.Dependent.Dependent.S.Should().NotBeNull();
         }
 
         [Test, Explicit, Performance,

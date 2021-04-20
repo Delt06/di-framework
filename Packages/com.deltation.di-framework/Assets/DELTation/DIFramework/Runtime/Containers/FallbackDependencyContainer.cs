@@ -35,6 +35,7 @@ namespace DELTation.DIFramework.Containers
 
             foreach (var d in dependencies)
             {
+                if (d == null) continue;
                 if (d.ShouldBeIgnoredByContainer()) continue;
 
                 dependency = d;
