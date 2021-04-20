@@ -20,7 +20,7 @@ jobs:
               with:
                   dotnet-version: 3.1.101
             - uses: xt0rted/dotnet-format-problem-matcher@v1
-            - run: dotnet tool install -g dotnet-format
+            - run: dotnet tool install -g dotnet-format --version 5.0.211103
             - run: dotnet tool restore
             - run: dotnet format 
                     --include './Packages/com.deltation.di-framework/Assets/**/*.cs' 
