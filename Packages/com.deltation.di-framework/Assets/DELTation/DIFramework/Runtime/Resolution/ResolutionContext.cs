@@ -14,7 +14,8 @@ namespace DELTation.DIFramework.Resolution
             Component = component;
         }
 
-        public bool Equals(ResolutionContext other) => Equals(Resolver, other.Resolver) && Equals(Component, other.Component);
+        public bool Equals(ResolutionContext other) =>
+            Equals(Resolver, other.Resolver) && Equals(Component, other.Component);
 
         public override bool Equals(object obj) => obj is ResolutionContext other && Equals(other);
 
@@ -22,7 +23,8 @@ namespace DELTation.DIFramework.Resolution
         {
             unchecked
             {
-                return ((Resolver != null ? Resolver.GetHashCode() : 0) * 397) ^ (Component != null ? Component.GetHashCode() : 0);
+                return ((Resolver != null ? Resolver.GetHashCode() : 0) * 397) ^
+                       (Component != null ? Component.GetHashCode() : 0);
             }
         }
     }
