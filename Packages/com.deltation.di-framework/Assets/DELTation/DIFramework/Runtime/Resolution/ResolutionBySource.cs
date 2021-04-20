@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using JetBrains.Annotations;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -98,39 +99,47 @@ namespace DELTation.DIFramework.Resolution
             return false;
         }
 
-        private static bool TryResolveGlobally(this DependencySource source, Type type, out object result,
-            out DependencySource dependencySource)
+        internal static bool TryResolveGlobally(this DependencySource source, [NotNull] Type type, out object result,
+            out DependencySource actualSource)
         {
+            if (type == null) throw new ArgumentNullException(nameof(type));
+
             for (var index = RootDependencyContainer.InstancesCount - 1; index >= 0; index--)
             {
                 var container = RootDependencyContainer.GetInstance(index);
-                if (source.TryResolveGlobally(container, type, out result, out dependencySource))
+                if (source.TryResolveGlobally(container, type, out result, out actualSource))
                     return true;
             }
 
             result = default;
-            dependencySource = default;
+            actualSource = default;
             return false;
         }
 
-        private static bool TryResolveGlobally(this DependencySource source, RootDependencyContainer container,
-            Type type, out object result,
-            out DependencySource dependencySource)
+        internal static bool TryResolveGlobally(this DependencySource source,
+            [NotNull] RootDependencyContainer container,
+            [NotNull] Type type, out object result,
+            out DependencySource actualSource)
         {
+            if (container == null) throw new ArgumentNullException(nameof(container));
+            if (type == null) throw new ArgumentNullException(nameof(type));
+
             if (source.Includes(DependencySource.Global) && container && container.TryResolve(type, out result))
             {
-                dependencySource = DependencySource.Global;
+                actualSource = DependencySource.Global;
                 return true;
             }
 
             result = default;
-            dependencySource = default;
+            actualSource = default;
             return false;
         }
 
-        private static bool CanBeResolvedGloballySafe(this DependencySource source, Type type,
+        internal static bool CanBeResolvedGloballySafe(this DependencySource source, [NotNull] Type type,
             out DependencySource actualSource)
         {
+            if (type == null) throw new ArgumentNullException(nameof(type));
+
             if (!source.Includes(DependencySource.Global))
             {
                 actualSource = default;
