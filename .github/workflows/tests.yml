@@ -64,6 +64,8 @@ jobs:
           testMode: all
           customParameters: "-nographics"
           unityVersion: ${{ env.UNITY_VERSION }}
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          checkName: ${{ matrix.testMode }} Test Results
       - uses: actions/upload-artifact@v2
         with:
           name: Test results (all modes)
