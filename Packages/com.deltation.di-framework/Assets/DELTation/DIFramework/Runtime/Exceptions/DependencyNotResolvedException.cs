@@ -3,7 +3,7 @@ using JetBrains.Annotations;
 
 namespace DELTation.DIFramework.Exceptions
 {
-    internal class DependencyNotResolvedException : Exception
+    public class DependencyNotResolvedException : Exception
     {
         public readonly Type Type;
 

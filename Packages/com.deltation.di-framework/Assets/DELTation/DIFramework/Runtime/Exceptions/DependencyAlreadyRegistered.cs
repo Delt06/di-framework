@@ -3,7 +3,7 @@ using JetBrains.Annotations;
 
 namespace DELTation.DIFramework.Exceptions
 {
-    internal class DependencyAlreadyRegistered : Exception
+    public class DependencyAlreadyRegistered : Exception
     {
         public readonly Type Type;
         public readonly object RegisteredDependency;

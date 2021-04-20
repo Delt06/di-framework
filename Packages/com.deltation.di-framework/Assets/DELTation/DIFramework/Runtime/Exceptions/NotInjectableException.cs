@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace DELTation.DIFramework.Exceptions
 {
-    internal class NotInjectableException : Exception
+    public class NotInjectableException : Exception
     {
         public readonly MonoBehaviour Component;
         public readonly string ConstructorName;
