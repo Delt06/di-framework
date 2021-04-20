@@ -31,10 +31,10 @@ namespace DELTation.DIFramework
                 Destroy(this);
         }
 
-        public bool CanBeResolvedSafe(MonoBehaviour component, Type type)
+        public bool CanBeResolvedSafe(MonoBehaviour component, Type type, out DependencySource actualSource)
         {
             var resolver = RentResolver();
-            var canBeResolvedSafe = resolver.CanBeResolvedSafe(component, type);
+            var canBeResolvedSafe = resolver.CanBeResolvedSafe(component, type, out actualSource);
             ResolverPool.Return(resolver);
             return canBeResolvedSafe;
         }

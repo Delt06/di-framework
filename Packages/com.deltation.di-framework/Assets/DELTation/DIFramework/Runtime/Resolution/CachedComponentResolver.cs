@@ -29,10 +29,10 @@ namespace DELTation.DIFramework.Resolution
             _affectedComponents.Clear();
         }
 
-        public bool CanBeResolvedSafe(MonoBehaviour component, Type type)
+        public bool CanBeResolvedSafe(MonoBehaviour component, Type type, out DependencySource actualSource)
         {
             var context = new ResolutionContext(ResolverComponent, component);
-            return DependencySource.CanBeResolvedSafe(context, type);
+            return DependencySource.CanBeResolvedSafe(context, type, out actualSource);
         }
 
         public void Resolve()

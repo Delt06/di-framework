@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using DELTation.DIFramework.Reporting;
 using UnityEditor;
 using UnityEngine;
@@ -88,7 +89,7 @@ namespace DELTation.DIFramework.Editor
             }
             else
             {
-                DrawBox("Not injectable", false);
+                DrawDependencyBox("Not injectable");
             }
 
             GUILayout.EndHorizontal();
@@ -105,17 +106,48 @@ namespace DELTation.DIFramework.Editor
 
         private static void DrawDependencies(ComponentResolutionData componentData)
         {
-            foreach (var (dependency, canBeResolved) in componentData.Dependencies)
+            foreach (var (dependency, source) in componentData.Dependencies)
             {
                 var dependencyText = dependency.Name;
-                DrawBox(dependencyText, canBeResolved);
+                DrawDependencyBox(dependencyText, source);
             }
         }
 
-        private static void DrawBox(string text, bool success)
+        private static void DrawDependencyBox(string text, DependencySource? source = null)
         {
-            GUI.color = success ? Color.green : Color.red;
-            GUILayout.Box(text);
+            GUI.color = source.HasValue ? Color.green : Color.red;
+
+            StringBuilder.Clear().Append(text);
+            if (source.HasValue)
+            {
+                var sourceIndicator = GetDependencySourceIndicator(source.Value);
+                StringBuilder.Append(" (").Append(sourceIndicator).Append(")");
+            }
+
+            var content = new GUIContent(StringBuilder.ToString());
+            if (source.HasValue)
+                content.tooltip = source.Value.ToString();
+
+            GUILayout.Box(content);
+        }
+
+        private static readonly StringBuilder StringBuilder = new StringBuilder();
+
+        private static string GetDependencySourceIndicator(DependencySource source)
+        {
+            switch (source)
+            {
+                case DependencySource.Local:
+                    return "L";
+                case DependencySource.Children:
+                    return "C";
+                case DependencySource.Parent:
+                    return "P";
+                case DependencySource.Global:
+                    return "G";
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(source), source, null);
+            }
         }
     }
 }
