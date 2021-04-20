@@ -1,4 +1,5 @@
-﻿using DELTation.DIFramework.Containers;
+﻿using System.Collections.Generic;
+using DELTation.DIFramework.Containers;
 using DELTation.DIFramework.Tests.Runtime.Components;
 using NUnit.Framework;
 using UnityEngine;

@@ -1,5 +1,4 @@
-﻿using UnityEditor;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace DELTation.DIFramework
 {
@@ -33,12 +32,16 @@ namespace DELTation.DIFramework
 
         private static DiSettings CreateSettings()
         {
-            if (!AssetDatabase.IsValidFolder(FullFolderName))
-                AssetDatabase.CreateFolder(ParentFolder, Folder);
-
             var settings = CreateInstance<DiSettings>();
-            AssetDatabase.CreateAsset(settings, AssetPath);
-            AssetDatabase.SaveAssets();
+
+#if UNITY_EDITOR
+            if (UnityEditor.AssetDatabase.IsValidFolder(FullFolderName))
+                UnityEditor.AssetDatabase.CreateFolder(ParentFolder, Folder);
+
+            UnityEditor.AssetDatabase.CreateAsset(settings, AssetPath);
+            UnityEditor.AssetDatabase.SaveAssets();
+#endif
+
             return settings;
         }
 
