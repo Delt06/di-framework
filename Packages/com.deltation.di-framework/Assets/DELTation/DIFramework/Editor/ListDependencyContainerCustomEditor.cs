@@ -61,7 +61,7 @@ namespace DELTation.DIFramework.Editor
                 {
                     var size = GUILayout.Width(150);
                     var components = go.GetComponents<Component>()
-                        .Where(c => !(c is Transform) && !c.ShouldBeIgnoredByContainer())
+                        .Where(c => c && !(c is Transform) && !c.ShouldBeIgnoredByContainer())
                         .ToArray();
 
                     var options = components.Select(c => c.GetType().Name).Prepend("<Select Component>").ToArray();

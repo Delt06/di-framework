@@ -135,7 +135,7 @@ namespace DELTation.DIFramework.Resolution
             for (var index = 0; index < tempComponentsList.Count; index++)
             {
                 var component = tempComponentsList[index];
-                if (component is null) continue;
+                if (component == null) continue;
                 if (component is Resolver) continue;
 
                 var extraConditionIsMet = isAffectedExtraCondition != null && isAffectedExtraCondition(component);

@@ -13,7 +13,7 @@ namespace Demo.Scripts
         {
             _rigidbody2D = rigidbody2D;
         }
-        
+
         private Rigidbody _rigidbody;
         private Rigidbody2D _rigidbody2D;
     }

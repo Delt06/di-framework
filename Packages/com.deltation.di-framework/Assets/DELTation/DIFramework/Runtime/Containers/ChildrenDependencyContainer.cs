@@ -10,6 +10,7 @@ namespace DELTation.DIFramework.Containers
         {
             foreach (var component in GetComponentsInChildren<Component>())
             {
+                if (component == null) continue; // if a script is missing
                 if (IsIgnored(component)) continue;
                 builder.Register(component);
             }
