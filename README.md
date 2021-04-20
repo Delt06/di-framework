@@ -4,6 +4,7 @@
 ![Test and Build](https://github.com/Delt06/di-framework/workflows/Test%20and%20Build/badge.svg)
 [![Check code formatting](https://github.com/Delt06/di-framework/actions/workflows/linter.yml/badge.svg)](https://github.com/Delt06/di-framework/actions/workflows/linter.yml)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/48d8273db00a4d93a124ed4e6736d729)](https://www.codacy.com/gh/Delt06/di-framework/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Delt06/di-framework&amp;utm_campaign=Badge_Grade)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A simple Unity framework to inject dependencies into your components. The project contains a simple demo game to demonstrate the framework in action.
 
