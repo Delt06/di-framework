@@ -1,11 +1,12 @@
 ﻿using System;
+using DELTation.DIFramework.Editor;
 using DELTation.DIFramework.Resolution;
 using UnityEngine;
 
 namespace DELTation.DIFramework
 {
     [DisallowMultipleComponent]
-    public sealed class Resolver : MonoBehaviour, IInitializable, IResolver
+    public sealed class Resolver : MonoBehaviour, IInitializable, IResolver, IShowIconInHierarchy
     {
         [SerializeField] private DependencySource _dependencySource = DependencySources.All;
         [SerializeField] private bool _destroyWhenFinished = true;

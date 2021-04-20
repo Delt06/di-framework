@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using DELTation.DIFramework.Editor;
 using DELTation.DIFramework.Pooling;
 using UnityEngine;
 
 namespace DELTation.DIFramework
 {
     [AddComponentMenu("Dependency Container/Root Dependency Container"), DisallowMultipleComponent]
-    public sealed class RootDependencyContainer : MonoBehaviour, IDependencyContainer
+    public sealed class RootDependencyContainer : MonoBehaviour, IDependencyContainer, IShowIconInHierarchy
     {
         [SerializeField] private bool _dontDestroyOnLoad = false;
 
