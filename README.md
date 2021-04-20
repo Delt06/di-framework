@@ -3,6 +3,7 @@
 
 [logo]: Packages/com.deltation.di-framework/Assets/DELTation/DIFramework/Editor/Graphics/resolver.png "Logo"
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/484ca7c787ed4a57b24985c0bb3b5bc4)](https://app.codacy.com/gh/Delt06/di-framework?utm_source=github.com&utm_medium=referral&utm_content=Delt06/di-framework&utm_campaign=Badge_Grade_Settings)
 [![Check code formatting](https://github.com/Delt06/di-framework/actions/workflows/linter.yml/badge.svg)](https://github.com/Delt06/di-framework/actions/workflows/linter.yml)
 
 A simple Unity framework to inject dependencies into your components. The project contains a simple demo game to demonstrate the framework in action.
