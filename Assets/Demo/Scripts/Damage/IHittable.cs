@@ -1,7 +1,7 @@
 ﻿namespace Demo.Scripts.Damage
 {
-	public interface IHittable
-	{
-		void Hit();
-	}
+    public interface IHittable
+    {
+        void Hit();
+    }
 }
