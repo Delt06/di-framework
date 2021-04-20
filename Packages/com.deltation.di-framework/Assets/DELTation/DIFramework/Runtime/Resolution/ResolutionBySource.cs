@@ -7,9 +7,10 @@ namespace DELTation.DIFramework.Resolution
 {
     internal static class ResolutionBySource
     {
-        public static bool CanBeResolvedSafe(this DependencySource source, ResolutionContext context, Type type) =>
-            source.TryResolveInGameObject(context, type, out _, out _) ||
-            source.CanBeResolvedGloballySafe(type);
+        public static bool CanBeResolvedSafe(this DependencySource source, ResolutionContext context, Type type,
+            out DependencySource actualSource) =>
+            source.TryResolveInGameObject(context, type, out _, out actualSource) ||
+            source.CanBeResolvedGloballySafe(type, out actualSource);
 
         public static bool TryResolve(this DependencySource source, ResolutionContext context, Type type,
             out object result,
@@ -127,12 +128,19 @@ namespace DELTation.DIFramework.Resolution
             return false;
         }
 
-        private static bool CanBeResolvedGloballySafe(this DependencySource source, Type type)
+        private static bool CanBeResolvedGloballySafe(this DependencySource source, Type type,
+            out DependencySource actualSource)
         {
-            if (!source.Includes(DependencySource.Global)) return false;
+            if (!source.Includes(DependencySource.Global))
+            {
+                actualSource = default;
+                return false;
+            }
 
             var containers = Object.FindObjectsOfType<RootDependencyContainer>();
-            return containers.Any(container => container.CanBeResolvedSafe(type));
+            var canBeResolved = containers.Any(container => container.CanBeResolvedSafe(type));
+            actualSource = canBeResolved ? DependencySource.Global : default;
+            return canBeResolved;
         }
 
         private static bool Includes(this DependencySource source, DependencySource other) => (source & other) != 0;

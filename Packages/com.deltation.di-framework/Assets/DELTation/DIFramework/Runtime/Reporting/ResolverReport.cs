@@ -33,8 +33,10 @@ namespace DELTation.DIFramework.Reporting
                 .Select(component => (component, GetAllDependenciesOf(component.GetType())))
                 .ToArray();
 
-            var resolved = CountAndSum(types, (c, t) => CanBeResolved(resolver, t, c));
-            var notResolved = CountAndSum(types, (c, t) => IsInjectable(c.GetType()) && !CanBeResolved(resolver, t, c));
+            var resolved = CountAndSum(types, (c, t) => CanBeResolved(resolver, t, c, out _));
+            var notResolved = CountAndSum(types,
+                (c, t) => IsInjectable(c.GetType()) && !CanBeResolved(resolver, t, c, out _)
+            );
             var notInjectable = types.Count(t => !IsInjectable(t.component.GetType()));
             return (resolved, notResolved, notInjectable);
         }
@@ -53,12 +55,12 @@ namespace DELTation.DIFramework.Reporting
             {
                 var dependencies = GetAllDependenciesOf(component.GetType()).ToArray();
                 var injectable = IsInjectable(component.GetType());
-                var resolvedDependencies = new List<(Type type, bool canBeResolved)>();
+                var resolvedDependencies = new List<(Type type, DependencySource? source)>();
 
                 foreach (var dependency in dependencies)
                 {
-                    var canBeResolved = CanBeResolved(_resolver, dependency, component);
-                    resolvedDependencies.Add((dependency, canBeResolved));
+                    var canBeResolved = CanBeResolved(_resolver, dependency, component, out var source);
+                    resolvedDependencies.Add((dependency, canBeResolved ? source : (DependencySource?) null));
                 }
 
                 var data = new ComponentResolutionData(component, depth, injectable, resolvedDependencies.ToArray());
@@ -66,8 +68,9 @@ namespace DELTation.DIFramework.Reporting
             }
         }
 
-        private static bool CanBeResolved(Resolver resolver, Type dependency, MonoBehaviour component) =>
-            resolver.CanBeResolvedSafe(component, dependency);
+        private static bool CanBeResolved(Resolver resolver, Type dependency, MonoBehaviour component,
+            out DependencySource source) =>
+            resolver.CanBeResolvedSafe(component, dependency, out source);
 
         public ResolverReport(Resolver resolver) => _resolver = resolver;
 
