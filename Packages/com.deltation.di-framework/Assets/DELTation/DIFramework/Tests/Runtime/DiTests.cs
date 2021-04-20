@@ -1,4 +1,6 @@
-﻿using DELTation.DIFramework.Containers;
+﻿using System;
+using DELTation.DIFramework.Containers;
+using FluentAssertions;
 using NUnit.Framework;
 using UnityEngine;
 
@@ -20,8 +22,8 @@ namespace DELTation.DIFramework.Tests.Runtime
             var resolved = Di.TryResolveGlobally<Rigidbody>(out var resolvedDependency);
 
             // Assert
-            Assert.That(resolved);
-            Assert.That(resolvedDependency, Is.EqualTo(dependency));
+            resolved.Should().BeTrue();
+            resolvedDependency.Should().Be(dependency);
         }
 
         [Test]
@@ -38,18 +40,19 @@ namespace DELTation.DIFramework.Tests.Runtime
             var resolved = Di.TryResolveGlobally<BoxCollider>(out _);
 
             // Assert
-            Assert.That(resolved, Is.False);
+            resolved.Should().BeFalse();
         }
 
         [Test]
         public void GivenDi_WhenTryingToResolveGloballyNullType_ThenThrowsArgumentNullException()
         {
             // Arrange
+            Action action = () => Di.TryResolveGlobally(null, out _);
 
             // Act
 
             // Assert
-            Assert.That(() => Di.TryResolveGlobally(null, out _), Throws.ArgumentNullException);
+            action.Should().Throw<ArgumentNullException>();
         }
 
         [Test]
@@ -66,7 +69,7 @@ namespace DELTation.DIFramework.Tests.Runtime
             var resolved = Di.CanBeResolvedGloballySafe<Rigidbody>();
 
             // Assert
-            Assert.That(resolved);
+            resolved.Should().BeTrue();
         }
 
         [Test]
@@ -84,18 +87,19 @@ namespace DELTation.DIFramework.Tests.Runtime
             var resolved = Di.CanBeResolvedGloballySafe<BoxCollider>();
 
             // Assert
-            Assert.That(resolved, Is.False);
+            resolved.Should().BeFalse();
         }
 
         [Test]
         public void GivenDi_WhenCheckingWhetherCanResolveGloballySafeNullType_ThenThrowsArgumentNullException()
         {
             // Arrange
+            Action action = () => Di.CanBeResolvedGloballySafe(null);
 
             // Act
 
             // Assert
-            Assert.That(() => Di.CanBeResolvedGloballySafe(null), Throws.ArgumentNullException);
+            action.Should().Throw<ArgumentNullException>();
         }
     }
 }
