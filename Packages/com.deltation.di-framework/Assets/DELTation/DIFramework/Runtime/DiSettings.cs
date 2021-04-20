@@ -35,7 +35,7 @@ namespace DELTation.DIFramework
             var settings = CreateInstance<DiSettings>();
 
 #if UNITY_EDITOR
-            if (UnityEditor.AssetDatabase.IsValidFolder(FullFolderName))
+            if (!UnityEditor.AssetDatabase.IsValidFolder(FullFolderName))
                 UnityEditor.AssetDatabase.CreateFolder(ParentFolder, Folder);
 
             UnityEditor.AssetDatabase.CreateAsset(settings, AssetPath);
