@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using DELTation.DIFramework.Pooling;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -128,7 +129,7 @@ namespace DELTation.DIFramework.Resolution
             Transform root, [CanBeNull] Func<MonoBehaviour, bool> isAffectedExtraCondition = null,
             int depth = 0)
         {
-            var tempComponentsList = ComponentListPool.Rent();
+            var tempComponentsList = ListPool<MonoBehaviour>.Rent();
             root.GetComponents(tempComponentsList);
 
             for (var index = 0; index < tempComponentsList.Count; index++)
@@ -142,7 +143,7 @@ namespace DELTation.DIFramework.Resolution
                     affectedComponents.Add((component, depth));
             }
 
-            ComponentListPool.Return(tempComponentsList);
+            ListPool<MonoBehaviour>.Return(tempComponentsList);
 
             for (var childIndex = 0; childIndex < root.childCount; childIndex++)
             {
