@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using DELTation.DIFramework.Exceptions;
+using DELTation.DIFramework.Pooling;
 using DELTation.DIFramework.Sorting;
 using JetBrains.Annotations;
 using static DELTation.DIFramework.Resolution.PocoInjection;
@@ -41,11 +42,11 @@ namespace DELTation.DIFramework
 
         public void SortTopologically()
         {
-            var graph = new List<int>[_dependencies.Count];
+            var graph = ListPool<List<int>>.Rent();
 
             for (var i = 0; i < _dependencies.Count; i++)
             {
-                graph[i] = new List<int>();
+                graph.Add(new List<int>());
             }
 
             for (var i = 0; i < _dependencies.Count; i++)
@@ -63,12 +64,66 @@ namespace DELTation.DIFramework
                 }
             }
 
-            var result = new LinkedList<int>();
-            TopologicalSorting.Sort(graph, _dependencies.Count, result, out var loop);
-            if (loop)
-                throw new InvalidOperationException("Dependencies contain a loop.");
+            var result = ListPool<int>.Rent();
+            SortTopologically(result, out var loop);
 
-            _dependencies = result.Select(i => _dependencies[i]).ToList();
+            if (loop)
+            {
+                ListPool<int>.Return(result);
+                throw new InvalidOperationException("Dependencies contain a loop.");
+            }
+
+            var sortedDependencies = ListPool<Dependency>.Rent();
+
+            for (var resultIndex = result.Count - 1; resultIndex >= 0; resultIndex--)
+            {
+                var index = result[resultIndex];
+                sortedDependencies.Add(_dependencies[index]);
+            }
+
+            _dependencies.Clear();
+
+            foreach (var dependency in sortedDependencies)
+            {
+                _dependencies.Add(dependency);
+            }
+
+            ListPool<Dependency>.Return(sortedDependencies);
+            ListPool<int>.Return(result);
+        }
+
+        private void SortTopologically(ICollection<int> result, out bool loop)
+        {
+            var graph = ListPool<List<int>>.Rent();
+
+            for (var i = 0; i < _dependencies.Count; i++)
+            {
+                graph.Add(ListPool<int>.Rent());
+            }
+
+            for (var i = 0; i < _dependencies.Count; i++)
+            {
+                for (var j = 0; j < _dependencies.Count; j++)
+                {
+                    var dependency1 = _dependencies[i];
+                    var dependency2 = _dependencies[j];
+
+                    var type1 = dependency1.GetTypeOrObjectType();
+                    var type2 = dependency2.GetTypeOrObjectType();
+                    if (!Dependency.DependsOn(type2, type1)) continue;
+
+                    graph[i].Add(j);
+                }
+            }
+
+            TopologicalSorting.Sort(graph, _dependencies.Count, result, out loop);
+
+            foreach (var graphList in graph)
+            {
+                ListPool<int>.Return(graphList);
+            }
+
+            ListPool<List<int>>.Return(graph);
         }
 
         public object GetOrCreateObject(int index)
@@ -137,7 +192,7 @@ namespace DELTation.DIFramework
             _container = container ?? throw new ArgumentNullException(nameof(container));
 
         private readonly IDependencyContainer _container;
-        private List<Dependency> _dependencies = new List<Dependency>();
+        private readonly List<Dependency> _dependencies = new List<Dependency>();
 
         private readonly struct Dependency
         {

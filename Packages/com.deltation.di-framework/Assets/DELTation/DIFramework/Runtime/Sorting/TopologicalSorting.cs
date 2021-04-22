@@ -7,7 +7,7 @@ namespace DELTation.DIFramework.Sorting
     public static class TopologicalSorting
     {
         public static void Sort([NotNull] IReadOnlyList<IReadOnlyList<int>> graph, int nodesCount,
-            [NotNull] LinkedList<int> result, out bool loop)
+            [NotNull] ICollection<int> result, out bool loop)
         {
             if (graph == null) throw new ArgumentNullException(nameof(graph));
             if (result == null) throw new ArgumentNullException(nameof(result));
@@ -29,7 +29,7 @@ namespace DELTation.DIFramework.Sorting
         }
 
         private static void SortStep([NotNull] NodeColor[] colors, int index,
-            [NotNull] IReadOnlyList<IReadOnlyList<int>> graph, [NotNull] LinkedList<int> result, out bool loop)
+            [NotNull] IReadOnlyList<IReadOnlyList<int>> graph, [NotNull] ICollection<int> result, out bool loop)
         {
             var color = colors[index];
             loop = false;
@@ -53,7 +53,7 @@ namespace DELTation.DIFramework.Sorting
                     }
 
                     colors[index] = NodeColor.Black;
-                    result.AddFirst(index);
+                    result.Add(index);
                     break;
             }
         }
