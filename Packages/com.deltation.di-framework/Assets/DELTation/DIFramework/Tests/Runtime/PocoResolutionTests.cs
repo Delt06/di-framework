@@ -120,5 +120,30 @@ namespace DELTation.DIFramework.Tests.Runtime
             Action action = () => container.TryResolve(typeof(PocoLoop1), out _);
             action.Should().Throw<Exception>();
         }
+
+        [Test]
+        public void
+            GivenDependencyContainerWithSomePocosWithInterface_WhenGettingObjectObject_ThenItIsCreatedAndInitialized()
+        {
+            // Arrange
+            var container = new ConfigurableDependencyContainer(builder =>
+                {
+                    builder.Register<InterfaceDependant>();
+                    builder.Register<InterfaceImpl>();
+                }
+            );
+
+            // Act
+            var resolved = container.TryResolve(typeof(InterfaceDependant), out var pocoObject);
+            var dependant = (InterfaceDependant) pocoObject;
+
+            // Assert
+            resolved.Should().BeTrue();
+            dependant.Should().NotBeNull();
+
+            dependant.Interface.Should().NotBeNull();
+            container.TryResolve(typeof(InterfaceImpl), out var impl);
+            dependant.Interface.Should().Be(impl);
+        }
     }
 }
