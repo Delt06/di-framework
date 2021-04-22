@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using DELTation.DIFramework.Exceptions;
+using DELTation.DIFramework.Pooling;
 using DELTation.DIFramework.Resolution;
+using DELTation.DIFramework.Sorting;
 using JetBrains.Annotations;
+using static DELTation.DIFramework.Resolution.PocoInjection;
 
 namespace DELTation.DIFramework
 {
@@ -37,9 +41,93 @@ namespace DELTation.DIFramework
             return this;
         }
 
-        internal void SortTopologically() => _dependencies.Sort();
+        public void SortTopologically()
+        {
+            var graph = ListPool<List<int>>.Rent();
 
-        internal object GetOrCreateObject(int index)
+            for (var i = 0; i < _dependencies.Count; i++)
+            {
+                graph.Add(new List<int>());
+            }
+
+            for (var i = 0; i < _dependencies.Count; i++)
+            {
+                for (var j = 0; j < _dependencies.Count; j++)
+                {
+                    var dependency1 = _dependencies[i];
+                    var dependency2 = _dependencies[j];
+
+                    var type1 = dependency1.GetTypeOrObjectType();
+                    var type2 = dependency2.GetTypeOrObjectType();
+                    if (!Dependency.DependsOn(type2, type1)) continue;
+
+                    graph[i].Add(j);
+                }
+            }
+
+            var result = ListPool<int>.Rent();
+            SortTopologically(result, out var loop);
+
+            if (loop)
+            {
+                ListPool<int>.Return(result);
+                throw new InvalidOperationException("Dependencies contain a loop.");
+            }
+
+            var sortedDependencies = ListPool<Dependency>.Rent();
+
+            for (var resultIndex = result.Count - 1; resultIndex >= 0; resultIndex--)
+            {
+                var index = result[resultIndex];
+                sortedDependencies.Add(_dependencies[index]);
+            }
+
+            _dependencies.Clear();
+
+            foreach (var dependency in sortedDependencies)
+            {
+                _dependencies.Add(dependency);
+            }
+
+            ListPool<Dependency>.Return(sortedDependencies);
+            ListPool<int>.Return(result);
+        }
+
+        private void SortTopologically(ICollection<int> result, out bool loop)
+        {
+            var graph = ListPool<List<int>>.Rent();
+
+            for (var i = 0; i < _dependencies.Count; i++)
+            {
+                graph.Add(ListPool<int>.Rent());
+            }
+
+            for (var i = 0; i < _dependencies.Count; i++)
+            {
+                for (var j = 0; j < _dependencies.Count; j++)
+                {
+                    var dependency1 = _dependencies[i];
+                    var dependency2 = _dependencies[j];
+
+                    var type1 = dependency1.GetTypeOrObjectType();
+                    var type2 = dependency2.GetTypeOrObjectType();
+                    if (!Dependency.DependsOn(type2, type1)) continue;
+
+                    graph[i].Add(j);
+                }
+            }
+
+            TopologicalSorting.Sort(graph, _dependencies.Count, result, out loop);
+
+            foreach (var graphList in graph)
+            {
+                ListPool<int>.Return(graphList);
+            }
+
+            ListPool<List<int>>.Return(graph);
+        }
+
+        public object GetOrCreateObject(int index)
         {
             ValidateIndex(index);
 
@@ -47,7 +135,10 @@ namespace DELTation.DIFramework
                 return obj;
 
             if (TryGetType(index, out var type))
-                return CreateInstance(type);
+            {
+                var instance = CreateInstance(type);
+                return instance;
+            }
 
             throw InvalidStateException();
         }
@@ -57,38 +148,25 @@ namespace DELTation.DIFramework
             if (!TryGetInjectableConstructorParameters(type, out var parameters))
                 throw new ArgumentException($"Type {type} does not have an injectable constructor.");
 
-            var arguments = new object[parameters.Length];
+            var arguments = Injection.RentArgumentsArray(parameters.Length);
 
             for (var index = 0; index < parameters.Length; index++)
             {
                 var parameterType = parameters[index].ParameterType;
                 if (_container.TryResolve(parameterType, out var dependency))
+                {
                     arguments[index] = dependency;
+                }
                 else
-                    throw new DependencyNotRegisteredException(type);
+                {
+                    Injection.ReturnArgumentsArray(arguments);
+                    throw new DependencyNotRegisteredException(parameterType);
+                }
             }
 
-            return Activator.CreateInstance(type, arguments);
-        }
-
-        private static bool TryGetInjectableConstructorParameters(Type type, out ParameterInfo[] parameters)
-        {
-            var constructors = type.GetConstructors(BindingFlags.Instance | BindingFlags.Public);
-            ParameterInfo[] foundParameters = null;
-
-            foreach (var constructor in constructors)
-            {
-                parameters = constructor.GetParameters();
-                if (!parameters.AreInjectable()) continue;
-
-                if (foundParameters == null)
-                    foundParameters = parameters;
-                else
-                    return false;
-            }
-
-            parameters = foundParameters;
-            return foundParameters != null;
+            var instance = Activator.CreateInstance(type, arguments);
+            Injection.ReturnArgumentsArray(arguments);
+            return instance;
         }
 
         internal Type GetType(int index)
@@ -124,7 +202,7 @@ namespace DELTation.DIFramework
         private readonly IDependencyContainer _container;
         private readonly List<Dependency> _dependencies = new List<Dependency>();
 
-        private readonly struct Dependency : IEquatable<Dependency>, IComparable<Dependency>
+        private readonly struct Dependency
         {
             [CanBeNull] private readonly object _object;
             [CanBeNull] private readonly Type _type;
@@ -141,6 +219,8 @@ namespace DELTation.DIFramework
                 _type = type ?? throw new ArgumentNullException(nameof(type));
             }
 
+            public Type GetTypeOrObjectType() => _object != null ? _object.GetType() : _type;
+
             public bool TryGetObject(out object obj)
             {
                 obj = _object;
@@ -153,41 +233,10 @@ namespace DELTation.DIFramework
                 return type != null;
             }
 
-            public override bool Equals(object obj) => obj is Dependency other && Equals(other);
-
-            public bool Equals(Dependency other) => Equals(_object, other._object) && _type == other._type;
-
-            public override int GetHashCode()
+            public static bool DependsOn([NotNull] Type type1, [NotNull] Type type2)
             {
-                unchecked
-                {
-                    return ((_object != null ? _object.GetHashCode() : 0) * 397) ^
-                           (_type != null ? _type.GetHashCode() : 0);
-                }
-            }
-
-            public int CompareTo(Dependency other)
-            {
-                if (TryGetObject(out _) && !other.TryGetObject(out _))
-                    return -1;
-
-                if (!TryGetObject(out _) && other.TryGetObject(out _))
-                    return 1;
-
-                if (TryGetObject(out _) && other.TryGetObject(out _))
-                    return 0;
-
-                if (!TryGetType(out var type1)) return 0;
-                if (!TryGetType(out var type2)) return 0;
-
-                if (DependsOn(type1, type2)) return -1;
-                if (DependsOn(type2, type1)) return 1;
-
-                return 0;
-            }
-
-            private static bool DependsOn(Type type1, Type type2)
-            {
+                if (type1 == null) throw new ArgumentNullException(nameof(type1));
+                if (type2 == null) throw new ArgumentNullException(nameof(type2));
                 if (!TryGetInjectableConstructorParameters(type1, out var parameters)) return false;
 
                 foreach (var parameter in parameters)
