@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using DELTation.DIFramework.Exceptions;
-using DELTation.DIFramework.Resolution;
 using DELTation.DIFramework.Sorting;
 using JetBrains.Annotations;
+using static DELTation.DIFramework.Resolution.PocoInjection;
 
 namespace DELTation.DIFramework
 {
@@ -104,26 +104,6 @@ namespace DELTation.DIFramework
             }
 
             return Activator.CreateInstance(type, arguments);
-        }
-
-        private static bool TryGetInjectableConstructorParameters(Type type, out ParameterInfo[] parameters)
-        {
-            var constructors = type.GetConstructors(BindingFlags.Instance | BindingFlags.Public);
-            ParameterInfo[] foundParameters = null;
-
-            foreach (var constructor in constructors)
-            {
-                parameters = constructor.GetParameters();
-                if (!parameters.AreInjectable()) continue;
-
-                if (foundParameters == null)
-                    foundParameters = parameters;
-                else
-                    return false;
-            }
-
-            parameters = foundParameters;
-            return foundParameters != null;
         }
 
         internal Type GetType(int index)
