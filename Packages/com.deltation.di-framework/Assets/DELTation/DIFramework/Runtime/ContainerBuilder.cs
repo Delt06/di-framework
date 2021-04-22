@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using DELTation.DIFramework.Exceptions;
 using DELTation.DIFramework.Resolution;
+using DELTation.DIFramework.Sorting;
 using JetBrains.Annotations;
 
 namespace DELTation.DIFramework
@@ -37,9 +39,39 @@ namespace DELTation.DIFramework
             return this;
         }
 
-        internal void SortTopologically() => _dependencies.Sort();
+        public void SortTopologically()
+        {
+            var graph = new List<int>[_dependencies.Count];
 
-        internal object GetOrCreateObject(int index)
+            for (var i = 0; i < _dependencies.Count; i++)
+            {
+                graph[i] = new List<int>();
+            }
+
+            for (var i = 0; i < _dependencies.Count; i++)
+            {
+                for (var j = 0; j < _dependencies.Count; j++)
+                {
+                    var dependency1 = _dependencies[i];
+                    var dependency2 = _dependencies[j];
+
+                    var type1 = dependency1.GetTypeOrObjectType();
+                    var type2 = dependency2.GetTypeOrObjectType();
+                    if (!Dependency.DependsOn(type2, type1)) continue;
+
+                    graph[i].Add(j);
+                }
+            }
+
+            var result = new LinkedList<int>();
+            TopologicalSorting.Sort(graph, _dependencies.Count, result, out var loop);
+            if (loop)
+                throw new InvalidOperationException("Dependencies contain a loop.");
+
+            _dependencies = result.Select(i => _dependencies[i]).ToList();
+        }
+
+        public object GetOrCreateObject(int index)
         {
             ValidateIndex(index);
 
@@ -47,7 +79,10 @@ namespace DELTation.DIFramework
                 return obj;
 
             if (TryGetType(index, out var type))
-                return CreateInstance(type);
+            {
+                var instance = CreateInstance(type);
+                return instance;
+            }
 
             throw InvalidStateException();
         }
@@ -65,7 +100,7 @@ namespace DELTation.DIFramework
                 if (_container.TryResolve(parameterType, out var dependency))
                     arguments[index] = dependency;
                 else
-                    throw new DependencyNotRegisteredException(type);
+                    throw new DependencyNotRegisteredException(parameterType);
             }
 
             return Activator.CreateInstance(type, arguments);
@@ -122,9 +157,9 @@ namespace DELTation.DIFramework
             _container = container ?? throw new ArgumentNullException(nameof(container));
 
         private readonly IDependencyContainer _container;
-        private readonly List<Dependency> _dependencies = new List<Dependency>();
+        private List<Dependency> _dependencies = new List<Dependency>();
 
-        private readonly struct Dependency : IEquatable<Dependency>, IComparable<Dependency>
+        private readonly struct Dependency
         {
             [CanBeNull] private readonly object _object;
             [CanBeNull] private readonly Type _type;
@@ -141,6 +176,8 @@ namespace DELTation.DIFramework
                 _type = type ?? throw new ArgumentNullException(nameof(type));
             }
 
+            public Type GetTypeOrObjectType() => _object != null ? _object.GetType() : _type;
+
             public bool TryGetObject(out object obj)
             {
                 obj = _object;
@@ -153,41 +190,10 @@ namespace DELTation.DIFramework
                 return type != null;
             }
 
-            public override bool Equals(object obj) => obj is Dependency other && Equals(other);
-
-            public bool Equals(Dependency other) => Equals(_object, other._object) && _type == other._type;
-
-            public override int GetHashCode()
+            public static bool DependsOn([NotNull] Type type1, [NotNull] Type type2)
             {
-                unchecked
-                {
-                    return ((_object != null ? _object.GetHashCode() : 0) * 397) ^
-                           (_type != null ? _type.GetHashCode() : 0);
-                }
-            }
-
-            public int CompareTo(Dependency other)
-            {
-                if (TryGetObject(out _) && !other.TryGetObject(out _))
-                    return -1;
-
-                if (!TryGetObject(out _) && other.TryGetObject(out _))
-                    return 1;
-
-                if (TryGetObject(out _) && other.TryGetObject(out _))
-                    return 0;
-
-                if (!TryGetType(out var type1)) return 0;
-                if (!TryGetType(out var type2)) return 0;
-
-                if (DependsOn(type1, type2)) return -1;
-                if (DependsOn(type2, type1)) return 1;
-
-                return 0;
-            }
-
-            private static bool DependsOn(Type type1, Type type2)
-            {
+                if (type1 == null) throw new ArgumentNullException(nameof(type1));
+                if (type2 == null) throw new ArgumentNullException(nameof(type2));
                 if (!TryGetInjectableConstructorParameters(type1, out var parameters)) return false;
 
                 foreach (var parameter in parameters)
