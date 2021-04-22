@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using DELTation.DIFramework.Exceptions;
 using DELTation.DIFramework.Pooling;
+using DELTation.DIFramework.Resolution;
 using DELTation.DIFramework.Sorting;
 using JetBrains.Annotations;
 using static DELTation.DIFramework.Resolution.PocoInjection;
@@ -147,18 +148,25 @@ namespace DELTation.DIFramework
             if (!TryGetInjectableConstructorParameters(type, out var parameters))
                 throw new ArgumentException($"Type {type} does not have an injectable constructor.");
 
-            var arguments = new object[parameters.Length];
+            var arguments = Injection.RentArgumentsArray(parameters.Length);
 
             for (var index = 0; index < parameters.Length; index++)
             {
                 var parameterType = parameters[index].ParameterType;
                 if (_container.TryResolve(parameterType, out var dependency))
+                {
                     arguments[index] = dependency;
+                }
                 else
+                {
+                    Injection.ReturnArgumentsArray(arguments);
                     throw new DependencyNotRegisteredException(parameterType);
+                }
             }
 
-            return Activator.CreateInstance(type, arguments);
+            var instance = Activator.CreateInstance(type, arguments);
+            Injection.ReturnArgumentsArray(arguments);
+            return instance;
         }
 
         internal Type GetType(int index)
