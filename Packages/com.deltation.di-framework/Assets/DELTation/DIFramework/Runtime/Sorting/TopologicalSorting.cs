@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using DELTation.DIFramework.Pooling;
 using JetBrains.Annotations;
 
 namespace DELTation.DIFramework.Sorting
@@ -12,23 +13,27 @@ namespace DELTation.DIFramework.Sorting
             if (graph == null) throw new ArgumentNullException(nameof(graph));
             if (result == null) throw new ArgumentNullException(nameof(result));
 
-            var colors = new NodeColor[nodesCount];
+            var colors = ListPool<NodeColor>.Rent();
             loop = false;
 
             for (var i = 0; i < nodesCount; i++)
             {
-                colors[i] = NodeColor.White;
+                colors.Add(NodeColor.White);
             }
 
             for (var i = 0; i < nodesCount; i++)
             {
                 SortStep(colors, i, graph, result, out loop);
-                if (loop)
-                    return;
+                if (!loop) continue;
+
+                ListPool<NodeColor>.Return(colors);
+                return;
             }
+
+            ListPool<NodeColor>.Return(colors);
         }
 
-        private static void SortStep([NotNull] NodeColor[] colors, int index,
+        private static void SortStep([NotNull] List<NodeColor> colors, int index,
             [NotNull] IReadOnlyList<IReadOnlyList<int>> graph, [NotNull] ICollection<int> result, out bool loop)
         {
             var color = colors[index];
