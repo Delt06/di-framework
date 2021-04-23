@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using DELTation.DIFramework.Resolution;
 using JetBrains.Annotations;
 
@@ -58,6 +59,23 @@ namespace DELTation.DIFramework
         {
             if (type == null) throw new ArgumentNullException(nameof(type));
             return DependencySource.Global.CanBeResolvedGloballySafe(type, out _);
+        }
+
+        /// <summary>
+        /// Returns a collection of all (unique) objects registered in containers.
+        /// </summary>
+        /// <returns>A collection of all registered objects.</returns>
+        public static IEnumerable<object> GetAllRegisteredObjects()
+        {
+            var objects = new HashSet<object>();
+
+            for (var index = 0; index < RootDependencyContainer.InstancesCount; index++)
+            {
+                var rootContainer = RootDependencyContainer.GetInstance(index);
+                rootContainer.GetAllRegisteredObjects(objects);
+            }
+
+            return objects;
         }
     }
 }

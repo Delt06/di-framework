@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using DELTation.DIFramework.Containers;
 using FluentAssertions;
 using NUnit.Framework;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace DELTation.DIFramework.Tests.Runtime
 {
@@ -100,6 +104,113 @@ namespace DELTation.DIFramework.Tests.Runtime
 
             // Assert
             action.Should().Throw<ArgumentNullException>();
+        }
+
+        [Test]
+        public void GivenDi_WhenGettingAllRegisteredObjects_ThenItIsNotNull()
+        {
+            // Arrange
+
+            // Act
+            var allRegisteredObjects = Di.GetAllRegisteredObjects();
+
+            // Assert
+            allRegisteredObjects.Should().NotBeNull();
+        }
+
+        [Test]
+        public void GivenDiWithNoRootContainers_WhenGettingAllRegisteredObjects_ThenItIsEmpty()
+        {
+            // Arrange
+
+            // Act
+            var allRegisteredObjects = Di.GetAllRegisteredObjects();
+
+            // Assert
+            allRegisteredObjects.Should().BeEmpty();
+        }
+
+        [Test]
+        public void GivenDiWithOneRootContainer_WhenGettingAllRegisteredObjects_ThenReturnsAllObjectsFromContainer()
+        {
+            // Arrange
+            var objects = new List<Object>
+            {
+                NewGameObject().AddComponent<Rigidbody>(),
+                NewGameObject().AddComponent<SphereCollider>(),
+                NewGameObject().AddComponent<BoxCollider>(),
+            };
+
+            var listDependencyContainer = CreateContainerWith<ListDependencyContainer>();
+            objects.ForEach(o => listDependencyContainer.Add(o));
+
+            // Act
+            var allRegisteredObjects = Di.GetAllRegisteredObjects();
+
+            // Assert
+            allRegisteredObjects.Should().BeEquivalentTo(objects);
+        }
+
+        [Test]
+        public void
+            GivenDiWithOneRootContainerAndTwoSubContainers_WhenGettingAllRegisteredObjects_ThenReturnsAllObjectsFromBothSubContainers()
+        {
+            // Arrange
+            var objects1 = new List<Object>
+            {
+                NewGameObject().AddComponent<Rigidbody>(),
+                NewGameObject().AddComponent<SphereCollider>(),
+                NewGameObject().AddComponent<BoxCollider>(),
+            };
+
+            var objects2 = new List<Object>
+            {
+                NewGameObject().AddComponent<BoxCollider2D>(),
+                NewGameObject().AddComponent<CharacterController>(),
+            };
+
+            var listDependencyContainer1 = CreateContainerWith<ListDependencyContainer>();
+            var listDependencyContainer2 = listDependencyContainer1.gameObject.AddComponent<ListDependencyContainer>();
+            objects1.ForEach(o => listDependencyContainer1.Add(o));
+            objects2.ForEach(o => listDependencyContainer2.Add(o));
+
+            // Act
+            var allRegisteredObjects = Di.GetAllRegisteredObjects();
+
+            // Assert
+            var allObjects = objects1.Concat(objects2).Distinct().ToArray();
+            allRegisteredObjects.Should().BeEquivalentTo(allObjects);
+        }
+
+        [Test]
+        public void
+            GivenDiWithTwoRootContainers_WhenGettingAllRegisteredObjects_ThenReturnsAllObjectsFromBothRootContainers()
+        {
+            // Arrange
+            var objects1 = new List<Object>
+            {
+                NewGameObject().AddComponent<Rigidbody>(),
+                NewGameObject().AddComponent<SphereCollider>(),
+                NewGameObject().AddComponent<BoxCollider>(),
+            };
+
+            var objects2 = new List<Object>
+            {
+                NewGameObject().AddComponent<BoxCollider2D>(),
+                NewGameObject().AddComponent<CharacterController>(),
+            };
+
+            var listDependencyContainer1 = CreateContainerWith<ListDependencyContainer>();
+            var listDependencyContainer2 = CreateContainerWith<ListDependencyContainer>();
+            objects1.ForEach(o => listDependencyContainer1.Add(o));
+            objects2.ForEach(o => listDependencyContainer2.Add(o));
+
+            // Act
+            var allRegisteredObjects = Di.GetAllRegisteredObjects();
+
+            // Assert
+            var allObjects = objects1.Concat(objects2).Distinct().ToArray();
+            allRegisteredObjects.Should().BeEquivalentTo(allObjects);
         }
     }
 }
