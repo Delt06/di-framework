@@ -1,7 +1,4 @@
-#  ![Logo][logo] Unity DI Framework
-
-
-[logo]: https://github.com/Delt06/di-framework/blob/master/Packages/com.deltation.di-framework/Assets/DELTation/DIFramework/Editor/Graphics/resolver.png?raw=true "Logo"
+#  Unity DI Framework
 
 [![Tests](https://github.com/Delt06/di-framework/actions/workflows/tests.yml/badge.svg)](https://github.com/Delt06/di-framework/actions/workflows/tests.yml)
 [![Check code formatting](https://github.com/Delt06/di-framework/actions/workflows/linter.yml/badge.svg)](https://github.com/Delt06/di-framework/actions/workflows/linter.yml)
@@ -36,7 +33,8 @@ Add the following line to `Packages/manifest.json`:
 - Attach the created component to a `GameObject` and add a `Resolver` to it. Configure the `Resolver`, if needed: refer to [Resolvers](https://github.com/Delt06/di-framework/wiki/Resolver).
 
 Example:
-- Components structure: ![Resolver Example](https://github.com/Delt06/di-framework/blob/master/Screenshots/resolver_example.jpg?raw=true)
+- Components structure:  
+![Resolver Example](https://github.com/Delt06/di-framework/blob/master/Screenshots/resolver_example.jpg?raw=true)
 - `Movement.cs`: 
 ```c#
 using UnityEngine;

@@ -1,4 +1,4 @@
-﻿# Doxyfile 1.9.1
+# Doxyfile 1.9.1
 
 # This file describes the settings to be used by the documentation system
 # doxygen (www.doxygen.org) for a project.
@@ -1206,7 +1206,7 @@ HTML_FILE_EXTENSION    = .html
 # of the possible markers and block names see the documentation.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_HEADER            =
+HTML_HEADER            = "Documentation/static/header.html"
 
 # The HTML_FOOTER tag can be used to specify a user-defined HTML footer for each
 # generated HTML page. If the tag is left blank doxygen will generate a standard
@@ -1253,7 +1253,8 @@ HTML_EXTRA_STYLESHEET  = Documentation/static/doxygen-style.css
 
 HTML_EXTRA_FILES       = "Documentation/static/closed-folder.png" \
                          "Documentation/static/document.png" \
-                         "Documentation/static/opened-folder.png"
+                         "Documentation/static/opened-folder.png" \
+                         "Documentation/static/favicon.ico"
 
 # The HTML_COLORSTYLE_HUE tag controls the color of the HTML output. Doxygen
 # will adjust the colors in the style sheet and background images according to
