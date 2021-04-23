@@ -200,7 +200,7 @@ namespace DELTation.DIFramework
         private readonly IDependencyContainer _container;
         private readonly List<Dependency> _dependencies = new List<Dependency>();
 
-        private readonly struct Dependency
+        private readonly struct Dependency : IEquatable<Dependency>
         {
             [CanBeNull] private readonly object _object;
             [CanBeNull] private readonly Type _type;
@@ -245,6 +245,19 @@ namespace DELTation.DIFramework
                 }
 
                 return false;
+            }
+
+            public bool Equals(Dependency other) => Equals(_object, other._object) && _type == other._type;
+
+            public override bool Equals(object obj) => obj is Dependency other && Equals(other);
+
+            public override int GetHashCode()
+            {
+                unchecked
+                {
+                    return ((_object != null ? _object.GetHashCode() : 0) * 397) ^
+                           (_type != null ? _type.GetHashCode() : 0);
+                }
             }
         }
     }
