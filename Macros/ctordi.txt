@@ -1,6 +1,0 @@
-﻿public void Construct($IService$ $service$)
-{
-    _$service$ = $service$;
-}
-
-private $IService$ _$service$;
