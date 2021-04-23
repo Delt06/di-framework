@@ -1,6 +1,5 @@
 ﻿using DELTation.DIFramework.Containers;
 using DELTation.DIFramework.Tests.Runtime.Components;
-using FluentAssertions;
 using NUnit.Framework;
 using UnityEngine;
 
@@ -17,7 +16,7 @@ namespace DELTation.DIFramework.Tests.Runtime
 
             var component = CreateAndResolveRigidbodyComponent();
 
-            component.Rigidbody.Should().Be(rigidbody2);
+            Assert.That(component.Rigidbody, Is.EqualTo(rigidbody2));
         }
 
         [Test]
@@ -29,8 +28,8 @@ namespace DELTation.DIFramework.Tests.Runtime
             var rigidbody2 = CreateRigidbodyWithinContainer();
             var component2 = CreateAndResolveRigidbodyComponent();
 
-            component1.Rigidbody.Should().Be(rigidbody1);
-            component2.Rigidbody.Should().Be(rigidbody2);
+            Assert.That(component1.Rigidbody, Is.EqualTo(rigidbody1));
+            Assert.That(component2.Rigidbody, Is.EqualTo(rigidbody2));
         }
 
         private Rigidbody CreateRigidbodyWithinContainer()
@@ -56,7 +55,7 @@ namespace DELTation.DIFramework.Tests.Runtime
 
             var component = CreateAndResolveRigidbodyComponent();
 
-            component.Rigidbody.Should().Be(rigidbody);
+            Assert.That(component.Rigidbody, Is.EqualTo(rigidbody));
         }
 
         [Test]
@@ -67,7 +66,7 @@ namespace DELTation.DIFramework.Tests.Runtime
 
             var component = CreateAndResolveRigidbodyComponent();
 
-            component.Rigidbody.Should().Be(rigidbody);
+            Assert.That(component.Rigidbody, Is.EqualTo(rigidbody));
         }
 
         [Test]
@@ -85,7 +84,7 @@ namespace DELTation.DIFramework.Tests.Runtime
 
             var component = CreateAndResolveRigidbodyComponent();
 
-            component.Rigidbody.Should().Be(rigidbody);
+            Assert.That(component.Rigidbody, Is.EqualTo(rigidbody));
         }
     }
 }

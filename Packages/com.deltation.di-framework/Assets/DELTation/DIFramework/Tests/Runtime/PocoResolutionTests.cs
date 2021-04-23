@@ -1,7 +1,6 @@
 ﻿using System;
 using DELTation.DIFramework.Containers;
 using DELTation.DIFramework.Tests.Runtime.Pocos;
-using FluentAssertions;
 using NUnit.Framework;
 
 namespace DELTation.DIFramework.Tests.Runtime
@@ -27,15 +26,15 @@ namespace DELTation.DIFramework.Tests.Runtime
             var poco = (Poco) pocoObject;
 
             // Assert
-            resolved.Should().BeTrue();
-            poco.Should().NotBeNull();
+            Assert.That(resolved);
+            Assert.That(poco, Is.Not.Null);
 
-            poco.Dep1.Should().NotBeNull();
-            poco.Dep2.Should().NotBeNull();
-            poco.Dep3.Should().NotBeNull();
+            Assert.That(poco.Dep1, Is.Not.Null);
+            Assert.That(poco.Dep2, Is.Not.Null);
+            Assert.That(poco.Dep3, Is.Not.Null);
 
-            poco.Dep1.Dep.Should().Be(poco.Dep2);
-            poco.Dep3.Dep.Should().NotBeNull();
+            Assert.That(poco.Dep1.Dep, Is.EqualTo(poco.Dep2));
+            Assert.That(poco.Dep3.Dep, Is.Not.Null);
         }
 
         [Test]
@@ -50,8 +49,8 @@ namespace DELTation.DIFramework.Tests.Runtime
             var poco = (PocoDep4) pocoObject;
 
             // Assert
-            resolved.Should().BeTrue();
-            poco.Should().NotBeNull();
+            Assert.That(resolved);
+            Assert.That(poco, Is.Not.Null);
         }
 
         [Test]
@@ -70,12 +69,12 @@ namespace DELTation.DIFramework.Tests.Runtime
             var poco = (PocoDep3) pocoObject;
 
             // Assert
-            resolved.Should().BeTrue();
-            poco.Should().NotBeNull();
+            Assert.That(resolved);
+            Assert.That(poco, Is.Not.Null);
 
-            poco.Dep.Should().NotBeNull();
+            Assert.That(poco.Dep, Is.Not.Null);
             container.TryResolve(typeof(PocoDep4), out var dep4);
-            poco.Dep.Should().Be(dep4);
+            Assert.That(poco.Dep, Is.EqualTo(dep4));
         }
 
         [Test]
@@ -95,12 +94,12 @@ namespace DELTation.DIFramework.Tests.Runtime
             var poco = (PocoDep3) pocoObject;
 
             // Assert
-            resolved.Should().BeTrue();
-            poco.Should().NotBeNull();
+            Assert.That(resolved);
+            Assert.That(pocoObject, Is.Not.Null);
 
-            poco.Dep.Should().NotBeNull();
+            Assert.That(poco.Dep, Is.Not.Null);
             container.TryResolve(typeof(PocoDep4), out var dep4);
-            poco.Dep.Should().Be(dep4);
+            Assert.That(poco.Dep, Is.EqualTo(dep4));
         }
 
         [Test]
@@ -117,8 +116,7 @@ namespace DELTation.DIFramework.Tests.Runtime
             // Act
 
             // Assert
-            Action action = () => container.TryResolve(typeof(PocoLoop1), out _);
-            action.Should().Throw<Exception>();
+            Assert.That(() => container.TryResolve(typeof(PocoLoop1), out _), Throws.Exception);
         }
 
         [Test]
@@ -138,12 +136,12 @@ namespace DELTation.DIFramework.Tests.Runtime
             var dependant = (InterfaceDependant) pocoObject;
 
             // Assert
-            resolved.Should().BeTrue();
-            dependant.Should().NotBeNull();
+            Assert.That(resolved);
+            Assert.That(dependant, Is.Not.Null);
 
-            dependant.Interface.Should().NotBeNull();
+            Assert.That(dependant.Interface, Is.Not.Null);
             container.TryResolve(typeof(InterfaceImpl), out var impl);
-            dependant.Interface.Should().Be(impl);
+            Assert.That(dependant.Interface, Is.EqualTo(impl));
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using DELTation.DIFramework.Tests.Runtime.Components;
-using FluentAssertions;
 using NUnit.Framework;
 using UnityEngine;
 
@@ -17,7 +16,7 @@ namespace DELTation.DIFramework.Tests.Runtime
             var dependency = go.AddComponent<RigidbodyComponent>();
             go.AddComponent<Resolver>();
 
-            dependency.Rigidbody.Should().Be(body);
+            Assert.That(dependency.Rigidbody, Is.EqualTo(body));
         }
 
         [Test]
@@ -31,7 +30,7 @@ namespace DELTation.DIFramework.Tests.Runtime
             var dependency = child.AddComponent<RigidbodyComponent>();
             go.AddComponent<Resolver>();
 
-            dependency.Rigidbody.Should().Be(body);
+            Assert.That(dependency.Rigidbody, Is.EqualTo(body));
         }
 
         [Test]
@@ -45,7 +44,7 @@ namespace DELTation.DIFramework.Tests.Runtime
             var dependency = go.AddComponent<RigidbodyComponent>();
             go.AddComponent<Resolver>();
 
-            dependency.Rigidbody.Should().Be(body);
+            Assert.That(dependency.Rigidbody, Is.EqualTo(body));
         }
 
         [Test]
@@ -65,8 +64,8 @@ namespace DELTation.DIFramework.Tests.Runtime
 
             parent.AddComponent<Resolver>();
 
-            rigidbodyComponent1.Rigidbody.Should().Be(rigidbody1);
-            rigidbodyComponent2.Rigidbody.Should().Be(rigidbody2);
+            Assert.That(rigidbodyComponent1.Rigidbody, Is.EqualTo(rigidbody1));
+            Assert.That(rigidbodyComponent2.Rigidbody, Is.EqualTo(rigidbody2));
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using DELTation.DIFramework.Containers;
 using DELTation.DIFramework.Tests.Runtime.Components;
-using FluentAssertions;
 using NUnit.Framework;
 using UnityEngine;
 
@@ -20,7 +19,7 @@ namespace DELTation.DIFramework.Tests.Runtime
             var dependency = go.AddComponent<RigidbodyComponent>();
             go.AddComponent<Resolver>();
 
-            dependency.Rigidbody.Should().Be(body);
+            Assert.That(dependency.Rigidbody, Is.EqualTo(body));
         }
 
         [Test]
@@ -34,7 +33,7 @@ namespace DELTation.DIFramework.Tests.Runtime
 
             var resolved = container.TryResolve(out Rigidbody _);
 
-            resolved.Should().BeFalse();
+            Assert.That(resolved, Is.False);
         }
 
         [Test]
@@ -55,8 +54,8 @@ namespace DELTation.DIFramework.Tests.Runtime
             go1.SetActive(true);
             go2.SetActive(true);
 
-            component1.Component.Should().Be(component2);
-            component2.Component.Should().Be(component1);
+            Assert.That(component1.Component, Is.EqualTo(component2));
+            Assert.That(component2.Component, Is.EqualTo(component1));
         }
     }
 }

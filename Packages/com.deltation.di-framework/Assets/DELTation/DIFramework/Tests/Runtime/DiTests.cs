@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using DELTation.DIFramework.Containers;
-using FluentAssertions;
 using NUnit.Framework;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -25,8 +24,8 @@ namespace DELTation.DIFramework.Tests.Runtime
             var resolved = Di.TryResolveGlobally<Rigidbody>(out var resolvedDependency);
 
             // Assert
-            resolved.Should().BeTrue();
-            resolvedDependency.Should().Be(dependency);
+            Assert.That(resolved);
+            Assert.That(resolvedDependency, Is.EqualTo(dependency));
         }
 
         [Test]
@@ -43,19 +42,18 @@ namespace DELTation.DIFramework.Tests.Runtime
             var resolved = Di.TryResolveGlobally<BoxCollider>(out _);
 
             // Assert
-            resolved.Should().BeFalse();
+            Assert.That(resolved, Is.False);
         }
 
         [Test]
         public void GivenDi_WhenTryingToResolveGloballyNullType_ThenThrowsArgumentNullException()
         {
             // Arrange
-            Action action = () => Di.TryResolveGlobally(null, out _);
 
             // Act
 
             // Assert
-            action.Should().Throw<ArgumentNullException>();
+            Assert.That(() => Di.TryResolveGlobally(null, out _), Throws.ArgumentNullException);
         }
 
         [Test]
@@ -72,7 +70,7 @@ namespace DELTation.DIFramework.Tests.Runtime
             var resolved = Di.CanBeResolvedGloballySafe<Rigidbody>();
 
             // Assert
-            resolved.Should().BeTrue();
+            Assert.That(resolved);
         }
 
         [Test]
@@ -90,19 +88,18 @@ namespace DELTation.DIFramework.Tests.Runtime
             var resolved = Di.CanBeResolvedGloballySafe<BoxCollider>();
 
             // Assert
-            resolved.Should().BeFalse();
+            Assert.That(resolved, Is.False);
         }
 
         [Test]
         public void GivenDi_WhenCheckingWhetherCanResolveGloballySafeNullType_ThenThrowsArgumentNullException()
         {
             // Arrange
-            Action action = () => Di.CanBeResolvedGloballySafe(null);
 
             // Act
 
             // Assert
-            action.Should().Throw<ArgumentNullException>();
+            Assert.That(() => Di.CanBeResolvedGloballySafe(null), Throws.ArgumentNullException);
         }
 
         [Test]
@@ -114,7 +111,7 @@ namespace DELTation.DIFramework.Tests.Runtime
             var allRegisteredObjects = Di.GetAllRegisteredObjects();
 
             // Assert
-            allRegisteredObjects.Should().NotBeNull();
+            Assert.That(allRegisteredObjects, Is.Not.Null);
         }
 
         [Test]
@@ -126,7 +123,7 @@ namespace DELTation.DIFramework.Tests.Runtime
             var allRegisteredObjects = Di.GetAllRegisteredObjects();
 
             // Assert
-            allRegisteredObjects.Should().BeEmpty();
+            Assert.That(allRegisteredObjects, Is.Empty);
         }
 
         [Test]
@@ -147,7 +144,7 @@ namespace DELTation.DIFramework.Tests.Runtime
             var allRegisteredObjects = Di.GetAllRegisteredObjects();
 
             // Assert
-            allRegisteredObjects.Should().BeEquivalentTo(objects);
+            Assert.That(allRegisteredObjects, Is.EquivalentTo(objects));
         }
 
         [Test]
@@ -178,7 +175,7 @@ namespace DELTation.DIFramework.Tests.Runtime
 
             // Assert
             var allObjects = objects1.Concat(objects2).Distinct().ToArray();
-            allRegisteredObjects.Should().BeEquivalentTo(allObjects);
+            Assert.That(allRegisteredObjects, Is.EquivalentTo(allObjects));
         }
 
         [Test]
@@ -209,7 +206,7 @@ namespace DELTation.DIFramework.Tests.Runtime
 
             // Assert
             var allObjects = objects1.Concat(objects2).Distinct().ToArray();
-            allRegisteredObjects.Should().BeEquivalentTo(allObjects);
+            Assert.That(allRegisteredObjects, Is.EquivalentTo(allObjects));
         }
     }
 }
