@@ -210,7 +210,7 @@ namespace DELTation.DIFramework.Resolution
         /// <summary>
         /// The name of injected methods.
         /// </summary>
-        public const string Constructor = "Construct";
+        public static readonly string Constructor = "Construct";
 
         private static readonly IDictionary<Type, List<MethodInfo>>
             ConstructMethods = new Dictionary<Type, List<MethodInfo>>();
