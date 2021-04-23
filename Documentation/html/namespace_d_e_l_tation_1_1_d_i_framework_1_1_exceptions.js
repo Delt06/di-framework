@@ -1,0 +1,7 @@
+var namespace_d_e_l_tation_1_1_d_i_framework_1_1_exceptions =
+[
+    [ "DependencyAlreadyRegistered", "class_d_e_l_tation_1_1_d_i_framework_1_1_exceptions_1_1_dependency_already_registered.html", "class_d_e_l_tation_1_1_d_i_framework_1_1_exceptions_1_1_dependency_already_registered" ],
+    [ "DependencyNotRegisteredException", "class_d_e_l_tation_1_1_d_i_framework_1_1_exceptions_1_1_dependency_not_registered_exception.html", "class_d_e_l_tation_1_1_d_i_framework_1_1_exceptions_1_1_dependency_not_registered_exception" ],
+    [ "DependencyNotResolvedException", "class_d_e_l_tation_1_1_d_i_framework_1_1_exceptions_1_1_dependency_not_resolved_exception.html", "class_d_e_l_tation_1_1_d_i_framework_1_1_exceptions_1_1_dependency_not_resolved_exception" ],
+    [ "NotInjectableException", "class_d_e_l_tation_1_1_d_i_framework_1_1_exceptions_1_1_not_injectable_exception.html", "class_d_e_l_tation_1_1_d_i_framework_1_1_exceptions_1_1_not_injectable_exception" ]
+];
