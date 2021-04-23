@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['object_77',['Object',['../_fallback_dependency_container_8cs.html#aef19bab18b9814edeef255c43e4f6bbc',1,'Object():&#160;FallbackDependencyContainer.cs'],['../_list_dependency_container_8cs.html#aef19bab18b9814edeef255c43e4f6bbc',1,'Object():&#160;ListDependencyContainer.cs'],['../_resolution_by_source_8cs.html#aef19bab18b9814edeef255c43e4f6bbc',1,'Object():&#160;ResolutionBySource.cs']]]
+  ['parent_77',['Parent',['../namespace_d_e_l_tation_1_1_d_i_framework.html#ac6f453b41c84b3e7ee519a4432d219d1a30269022e9d8f51beaabb52e5d0de2b7',1,'DELTation::DIFramework']]],
+  ['pocoinjection_2ecs_78',['PocoInjection.cs',['../_poco_injection_8cs.html',1,'']]]
 ];
