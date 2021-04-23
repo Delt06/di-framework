@@ -54,6 +54,18 @@ namespace DELTation.DIFramework
 
         public bool CanBeResolvedSafe(Type type) => GetChildContainers().Any(c => c.CanBeResolvedSafe(type));
 
+        /// <inheritdoc />
+        public void GetAllRegisteredObjects(HashSet<object> objects)
+        {
+            if (objects == null) throw new ArgumentNullException(nameof(objects));
+            EnsureInitialized();
+
+            foreach (var subContainer in _subContainers)
+            {
+                subContainer.GetAllRegisteredObjects(objects);
+            }
+        }
+
         public bool TryResolve(Type type, out object dependency)
         {
             if (type == null) throw new ArgumentNullException(nameof(type));

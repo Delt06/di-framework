@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace DELTation.DIFramework.Containers
@@ -15,6 +16,12 @@ namespace DELTation.DIFramework.Containers
         {
             if (type == null) throw new ArgumentNullException(nameof(type));
             return InnerContainer.CanBeResolvedSafe(type);
+        }
+
+        public void GetAllRegisteredObjects(HashSet<object> objects)
+        {
+            if (objects == null) throw new ArgumentNullException(nameof(objects));
+            InnerContainer.GetAllRegisteredObjects(objects);
         }
 
         protected abstract void ComposeDependencies(ContainerBuilder builder);

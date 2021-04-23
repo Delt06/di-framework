@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using JetBrains.Annotations;
 
 namespace DELTation.DIFramework
@@ -23,5 +24,13 @@ namespace DELTation.DIFramework
         /// <param name="type">Type to check.</param>
         /// <returns>True if the type can be resolved, false otherwise.</returns>
         bool CanBeResolvedSafe([NotNull] Type type);
+
+
+        /// <summary>
+        /// Populates the provided set with a collection of all objects registered in the container.
+        /// <seealso cref="Di.GetAllRegisteredObjects"/>
+        /// </summary>
+        /// <param name="objects">Set to put registered objects into.</param>
+        void GetAllRegisteredObjects([NotNull] HashSet<object> objects);
     }
 }

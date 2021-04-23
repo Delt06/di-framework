@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -11,6 +12,11 @@ namespace DELTation.DIFramework.Containers
         {
             if (type == null) throw new ArgumentNullException(nameof(type));
             return TryFindObjectOfType(type, out _);
+        }
+
+        void IDependencyContainer.GetAllRegisteredObjects(HashSet<object> objects)
+        {
+            if (objects == null) throw new ArgumentNullException(nameof(objects));
         }
 
         public bool TryResolve(Type type, out object dependency)
