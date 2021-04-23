@@ -1,9 +1,9 @@
 <map id="DELTation.DIFramework.IDependencyContainer" name="DELTation.DIFramework.IDependencyContainer">
-<area shape="rect" id="node1" title="Represents a container with registered dependencies." alt="" coords="5,104,248,145"/>
-<area shape="rect" id="node2" href="$class_d_e_l_tation_1_1_d_i_framework_1_1_containers_1_1_configurable_dependency_container.html" title=" " alt="" coords="296,5,528,47"/>
-<area shape="rect" id="node3" href="$class_d_e_l_tation_1_1_d_i_framework_1_1_containers_1_1_dependency_container_base.html" title=" " alt="" coords="296,71,528,112"/>
-<area shape="rect" id="node6" href="$class_d_e_l_tation_1_1_d_i_framework_1_1_containers_1_1_fallback_dependency_container.html" title=" " alt="" coords="296,136,528,177"/>
-<area shape="rect" id="node7" href="$class_d_e_l_tation_1_1_d_i_framework_1_1_root_dependency_container.html" title=" " alt="" coords="315,201,509,243"/>
-<area shape="rect" id="node4" href="$class_d_e_l_tation_1_1_d_i_framework_1_1_containers_1_1_children_dependency_container.html" title=" " alt="" coords="576,39,808,80"/>
-<area shape="rect" id="node5" href="$class_d_e_l_tation_1_1_d_i_framework_1_1_containers_1_1_list_dependency_container.html" title=" " alt="" coords="576,104,808,145"/>
+<area shape="rect" id="node1" title="Represents a container with registered dependencies." alt="" coords="5,104,247,145"/>
+<area shape="rect" id="node2" href="$class_d_e_l_tation_1_1_d_i_framework_1_1_containers_1_1_configurable_dependency_container.html" title=" " alt="" coords="295,5,527,47"/>
+<area shape="rect" id="node3" href="$class_d_e_l_tation_1_1_d_i_framework_1_1_containers_1_1_dependency_container_base.html" title=" " alt="" coords="295,71,527,112"/>
+<area shape="rect" id="node6" href="$class_d_e_l_tation_1_1_d_i_framework_1_1_containers_1_1_fallback_dependency_container.html" title=" " alt="" coords="295,136,527,177"/>
+<area shape="rect" id="node7" href="$class_d_e_l_tation_1_1_d_i_framework_1_1_root_dependency_container.html" title=" " alt="" coords="314,201,507,243"/>
+<area shape="rect" id="node4" href="$class_d_e_l_tation_1_1_d_i_framework_1_1_containers_1_1_children_dependency_container.html" title=" " alt="" coords="575,39,807,80"/>
+<area shape="rect" id="node5" href="$class_d_e_l_tation_1_1_d_i_framework_1_1_containers_1_1_list_dependency_container.html" title=" " alt="" coords="575,104,807,145"/>
 </map>
