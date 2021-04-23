@@ -16,9 +16,16 @@ A simple Unity framework to inject dependencies into your components. The projec
 - [Documentation](#documentation)
 
 ## Installation
+### Option 1
 - Open Package Manager through Window/Package Manager
 - Click "+" and choose "Add package from git URL..."
 - Insert the URL: https://github.com/Delt06/di-framework.git?path=Packages/com.deltation.di-framework
+
+### Option 2  
+Add the following line to `Packages/manifest.json`:
+```
+"com.deltation.di-framework": "https://github.com/Delt06/di-framework.git?path=Packages/com.deltation.di-framework",
+```
 
 ## Setting up
 - Create a `GameObject` and attach a `Root Dependency Container` component.
