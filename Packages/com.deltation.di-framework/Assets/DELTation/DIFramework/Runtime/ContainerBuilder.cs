@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using DELTation.DIFramework.Exceptions;
 using DELTation.DIFramework.Pooling;
 using DELTation.DIFramework.Resolution;
