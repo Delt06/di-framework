@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using DELTation.DIFramework.Containers;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -36,6 +37,19 @@ namespace DELTation.DIFramework
 
             component = default;
             return false;
+        }
+
+        /// <summary>
+        /// Returns a collection of all (unique) objects registered in the container.
+        /// </summary>
+        /// <returns>A collection of all registered objects.</returns>
+        /// <exception cref="ArgumentNullException">If <paramref name="container"/> is null.</exception>
+        public static IEnumerable<object> GetAllRegisteredObjects([NotNull] this IDependencyContainer container)
+        {
+            if (container == null) throw new ArgumentNullException(nameof(container));
+            var objects = new HashSet<object>();
+            container.GetAllRegisteredObjects(objects);
+            return objects;
         }
     }
 }
