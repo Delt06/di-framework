@@ -233,6 +233,13 @@ namespace DELTation.DIFramework.Resolution
         internal static void ReturnArgumentsArray([NotNull] object[] array)
         {
             if (array == null) throw new ArgumentNullException(nameof(array));
+
+            // Wipe the array to remove potential memory leaks
+            for (var i = 0; i < array.Length; i++)
+            {
+                array[i] = null;
+            }
+
             var arraysList = GetArgumentsArraysList(array.Length);
 
             if (!arraysList.Contains(array))
