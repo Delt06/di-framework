@@ -44,4 +44,5 @@ public sealed class Movement : MonoBehaviour
 ```
 
 ## Documentation
-For more details, refer to the [Wiki](https://github.com/Delt06/di-framework/wiki).
+- [Wiki](https://github.com/Delt06/di-framework/wiki)  
+- [API](https://delt06.github.io/di-framework/)
