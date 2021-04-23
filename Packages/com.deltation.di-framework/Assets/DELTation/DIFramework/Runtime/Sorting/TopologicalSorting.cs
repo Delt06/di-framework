@@ -60,6 +60,8 @@ namespace DELTation.DIFramework.Sorting
                     colors[index] = NodeColor.Black;
                     result.Add(index);
                     break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 
