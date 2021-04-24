@@ -1,5 +1,6 @@
 var NAVTREEINDEX1 =
 {
+"namespace_d_e_l_tation_1_1_d_i_framework_1_1_editor.html":[1,0,0,0,2],
 "namespace_d_e_l_tation_1_1_d_i_framework_1_1_exceptions.html":[1,0,0,0,3],
 "namespace_d_e_l_tation_1_1_d_i_framework_1_1_pooling.html":[1,0,0,0,4],
 "namespace_d_e_l_tation_1_1_d_i_framework_1_1_reporting.html":[1,0,0,0,5],

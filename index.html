@@ -96,24 +96,38 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 <h1><a class="anchor" id="autotoc_md1"></a>
 Table of contents</h1>
 <ul>
+<li><a href="#key-features">Key Features</a></li>
 <li><a href="#installation">Installation</a></li>
 <li><a href="#setting-up">Setting Up</a></li>
 <li><a href="#projects-using-di-framework">Projects using DI Framework</a></li>
 <li><a href="#documentation">Documentation</a></li>
 </ul>
 <h1><a class="anchor" id="autotoc_md2"></a>
+Key Features</h1>
+<ul>
+<li>Simple and consistent injection mechanisms<ul>
+<li>Method injection for <code><a class="el" href="class_mono_behaviour.html">MonoBehaviour</a></code>s</li>
+<li>Constructor injection for standard C# classes (a.k.a. POCO)</li>
+</ul>
+</li>
+<li>Can inject anytime, not only on scene start</li>
+<li>Context-aware injection: dependencies can be automatically fulfilled with components found in children and parents</li>
+<li>Baking: to avoid reflection (and to improve performance), injection can be baked via automatic code generation</li>
+<li>General-purpose API: <code>Di</code> class contains convenience methods that provide access to explicit injection and object instantiation.</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md3"></a>
 Installation</h1>
-<h2><a class="anchor" id="autotoc_md3"></a>
+<h2><a class="anchor" id="autotoc_md4"></a>
 Option 1</h2>
 <ul>
 <li>Open Package Manager through Window/Package Manager</li>
 <li>Click "+" and choose "Add package from git URL..."</li>
 <li>Insert the URL: <a href="https://github.com/Delt06/di-framework.git?path=Packages/com.deltation.di-framework">https://github.com/Delt06/di-framework.git?path=Packages/com.deltation.di-framework</a></li>
 </ul>
-<h2><a class="anchor" id="autotoc_md4"></a>
+<h2><a class="anchor" id="autotoc_md5"></a>
 Option 2</h2>
 <p>Add the following line to <code>Packages/manifest.json</code>: </p><div class="fragment"><div class="line">&quot;com.deltation.di-framework&quot;: &quot;https://github.com/Delt06/di-framework.git?path=Packages/com.deltation.di-framework&quot;,</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md5"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md6"></a>
 Setting up</h1>
 <ul>
 <li>Create a <code>GameObject</code> and attach a <code>Root Dependency Container</code> component.</li>
@@ -138,12 +152,12 @@ Setting up</h1>
 <div class="line">}</div>
 </div><!-- fragment --></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md6"></a>
+<h1><a class="anchor" id="autotoc_md7"></a>
 Projects using DI Framework</h1>
 <ul>
 <li><a href="https://github.com/Delt06/fps-roguelike">https://github.com/Delt06/fps-roguelike</a></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md7"></a>
+<h1><a class="anchor" id="autotoc_md8"></a>
 Documentation</h1>
 <ul>
 <li><a href="https://github.com/Delt06/di-framework/wiki">Wiki</a> <br  />

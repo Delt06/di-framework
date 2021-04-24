@@ -27,13 +27,14 @@ var NAVTREE =
   [ "DI Framework", "index.html", [
     [ "Unity DI Framework", "index.html", [
       [ "Table of contents", "index.html#autotoc_md1", null ],
-      [ "Installation", "index.html#autotoc_md2", [
-        [ "Option 1", "index.html#autotoc_md3", null ],
-        [ "Option 2", "index.html#autotoc_md4", null ]
+      [ "Key Features", "index.html#autotoc_md2", null ],
+      [ "Installation", "index.html#autotoc_md3", [
+        [ "Option 1", "index.html#autotoc_md4", null ],
+        [ "Option 2", "index.html#autotoc_md5", null ]
       ] ],
-      [ "Setting up", "index.html#autotoc_md5", null ],
-      [ "Projects using DI Framework", "index.html#autotoc_md6", null ],
-      [ "Documentation", "index.html#autotoc_md7", null ]
+      [ "Setting up", "index.html#autotoc_md6", null ],
+      [ "Projects using DI Framework", "index.html#autotoc_md7", null ],
+      [ "Documentation", "index.html#autotoc_md8", null ]
     ] ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
@@ -67,7 +68,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "_baked_injection_8cs.html",
-"namespace_d_e_l_tation_1_1_d_i_framework_1_1_exceptions.html"
+"namespace_d_e_l_tation_1_1_d_i_framework_1_1_editor.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
