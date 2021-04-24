@@ -114,11 +114,17 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a65b6fd34e14cfb468816ad5111b3cc64"><td class="memItemLeft" align="right" valign="top">static T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_d_e_l_tation_1_1_d_i_framework_1_1_di.html#a65b6fd34e14cfb468816ad5111b3cc64">Create&lt; T &gt;</a> ()</td></tr>
 <tr class="memdesc:a65b6fd34e14cfb468816ad5111b3cc64"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create an instance and injects its dependencies via a constructor.  <a href="class_d_e_l_tation_1_1_d_i_framework_1_1_di.html#a65b6fd34e14cfb468816ad5111b3cc64">More...</a><br /></td></tr>
 <tr class="separator:a65b6fd34e14cfb468816ad5111b3cc64"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a762c4b811356cc1943ee4973926ce585"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_d_e_l_tation_1_1_d_i_framework_1_1_di.html#a762c4b811356cc1943ee4973926ce585">Inject</a> ([NotNull] GameObject gameObject, <a class="el" href="namespace_d_e_l_tation_1_1_d_i_framework.html#ac6f453b41c84b3e7ee519a4432d219d1">DependencySource</a> sources)</td></tr>
+<tr class="memdesc:a762c4b811356cc1943ee4973926ce585"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inject dependencies into components of the provided Game Object (from the specified sources).  <a href="class_d_e_l_tation_1_1_d_i_framework_1_1_di.html#a762c4b811356cc1943ee4973926ce585">More...</a><br /></td></tr>
+<tr class="separator:a762c4b811356cc1943ee4973926ce585"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e680a4168994bdd99f654b7be75b02c"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_d_e_l_tation_1_1_d_i_framework_1_1_di.html#a3e680a4168994bdd99f654b7be75b02c">Inject</a> ([NotNull] GameObject gameObject)</td></tr>
+<tr class="memdesc:a3e680a4168994bdd99f654b7be75b02c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inject dependencies into components of the provided Game Object (from all sources).  <a href="class_d_e_l_tation_1_1_d_i_framework_1_1_di.html#a3e680a4168994bdd99f654b7be75b02c">More...</a><br /></td></tr>
+<tr class="separator:a3e680a4168994bdd99f654b7be75b02c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Facade for the generic dependency resolution functions </p>
 
-<p class="definition">Definition at line <a class="el" href="_di_8cs_source.html#l00011">11</a> of file <a class="el" href="_di_8cs_source.html">Di.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_di_8cs_source.html#l00012">12</a> of file <a class="el" href="_di_8cs_source.html">Di.cs</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a7c56e7e71355829787ea857734153635"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7c56e7e71355829787ea857734153635">&#9670;&nbsp;</a></span>CanBeResolvedGloballySafe()</h2>
@@ -159,7 +165,7 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_di_8cs_source.html#l00058">58</a> of file <a class="el" href="_di_8cs_source.html">Di.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_di_8cs_source.html#l00059">59</a> of file <a class="el" href="_di_8cs_source.html">Di.cs</a>.</p>
 
 </div>
 </div>
@@ -237,7 +243,7 @@ Static Public Member Functions</h2></td></tr>
 </dl>
 </div>
 
-<p class="definition">Definition at line <a class="el" href="_di_8cs_source.html#l00086">86</a> of file <a class="el" href="_di_8cs_source.html">Di.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_di_8cs_source.html#l00087">87</a> of file <a class="el" href="_di_8cs_source.html">Di.cs</a>.</p>
 
 </div>
 </div>
@@ -267,7 +273,102 @@ Static Public Member Functions</h2></td></tr>
 <p>Return a collection of all objects registered in containers. </p>
 <dl class="section return"><dt>Returns</dt><dd>A collection of all registered objects.</dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_di_8cs_source.html#l00068">68</a> of file <a class="el" href="_di_8cs_source.html">Di.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_di_8cs_source.html#l00069">69</a> of file <a class="el" href="_di_8cs_source.html">Di.cs</a>.</p>
+
+</div>
+</div>
+<a id="a3e680a4168994bdd99f654b7be75b02c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e680a4168994bdd99f654b7be75b02c">&#9670;&nbsp;</a></span>Inject() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void DELTation.DIFramework.Di.Inject </td>
+          <td>(</td>
+          <td class="paramtype">[NotNull] GameObject&#160;</td>
+          <td class="paramname"><em>gameObject</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Inject dependencies into components of the provided Game Object (from all sources). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">gameObject</td><td>Injected Game Object.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">ArgumentNullException</td><td>If <em>gameObject</em>  is null.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="_di_8cs_source.html#l00121">121</a> of file <a class="el" href="_di_8cs_source.html">Di.cs</a>.</p>
+
+</div>
+</div>
+<a id="a762c4b811356cc1943ee4973926ce585"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a762c4b811356cc1943ee4973926ce585">&#9670;&nbsp;</a></span>Inject() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void DELTation.DIFramework.Di.Inject </td>
+          <td>(</td>
+          <td class="paramtype">[NotNull] GameObject&#160;</td>
+          <td class="paramname"><em>gameObject</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespace_d_e_l_tation_1_1_d_i_framework.html#ac6f453b41c84b3e7ee519a4432d219d1">DependencySource</a>&#160;</td>
+          <td class="paramname"><em>sources</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Inject dependencies into components of the provided Game Object (from the specified sources). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">gameObject</td><td>Injected Game Object.</td></tr>
+    <tr><td class="paramname">sources</td><td>Sources to get dependencies from.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">ArgumentNullException</td><td>If <em>gameObject</em>  is null.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="_di_8cs_source.html#l00100">100</a> of file <a class="el" href="_di_8cs_source.html">Di.cs</a>.</p>
 
 </div>
 </div>
@@ -321,7 +422,7 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_di_8cs_source.html#l00039">39</a> of file <a class="el" href="_di_8cs_source.html">Di.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_di_8cs_source.html#l00040">40</a> of file <a class="el" href="_di_8cs_source.html">Di.cs</a>.</p>
 
 </div>
 </div>
@@ -372,7 +473,7 @@ Static Public Member Functions</h2></td></tr>
 </dl>
 </div>
 
-<p class="definition">Definition at line <a class="el" href="_di_8cs_source.html#l00019">19</a> of file <a class="el" href="_di_8cs_source.html">Di.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_di_8cs_source.html#l00020">20</a> of file <a class="el" href="_di_8cs_source.html">Di.cs</a>.</p>
 
 </div>
 </div>

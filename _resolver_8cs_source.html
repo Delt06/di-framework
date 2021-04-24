@@ -127,7 +127,7 @@ $(document).ready(function(){initNavTree('_resolver_8cs_source.html',''); initRe
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;            <span class="keywordflow">return</span> canBeResolvedSafe;</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        }</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        <span class="keyword">private</span> CachedComponentResolver RentResolver() =&gt; ResolverPool.Rent(<span class="keyword">this</span>, _dependencySource);</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        <span class="keyword">private</span> CachedComponentResolver RentResolver() =&gt; ResolverPool.Rent(gameObject, _dependencySource);</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        <span class="keywordtype">void</span> IInitializable.EnsureInitialized() =&gt; <a class="code" href="class_d_e_l_tation_1_1_d_i_framework_1_1_resolver.html#a2a7fd20883a719b9b537958a1edd3acb">Resolve</a>();</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>

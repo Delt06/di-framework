@@ -68,7 +68,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "_baked_injection_8cs.html",
-"namespace_d_e_l_tation_1_1_d_i_framework_1_1_editor.html"
+"namespace_d_e_l_tation_1_1_d_i_framework_1_1_baking.html#abc919b1b93c06894f9bbee5f54fdbe9f"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
