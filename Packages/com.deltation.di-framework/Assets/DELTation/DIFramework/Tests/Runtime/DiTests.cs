@@ -1,9 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using DELTation.DIFramework.Containers;
+using DELTation.DIFramework.Exceptions;
+using DELTation.DIFramework.Tests.Runtime.Pocos;
 using NUnit.Framework;
 using UnityEngine;
+using IInterface = DELTation.DIFramework.Tests.Runtime.Pocos.IInterface;
 using Object = UnityEngine.Object;
 
 namespace DELTation.DIFramework.Tests.Runtime
@@ -207,6 +209,57 @@ namespace DELTation.DIFramework.Tests.Runtime
             // Assert
             var allObjects = objects1.Concat(objects2).Distinct().ToArray();
             Assert.That(allRegisteredObjects, Is.EquivalentTo(allObjects));
+        }
+
+        [Test]
+        public void GivenDi_WhenCreatingInstanceWithoutExplicitConstructors_ThenItIsNotNull()
+        {
+            // Arrange
+
+            // Act
+            var instance = Di.Create<PocoDep2>();
+
+            // Assert
+            Assert.That(instance, Is.Not.Null);
+        }
+
+        [Test]
+        public void GivenDi_WhenCreatingInstanceAndCantResolveDependency_ThenThrowsDependencyNotRegisteredException()
+        {
+            // Arrange
+
+            // Act
+
+            // Assert
+            Assert.That(Di.Create<PocoDep1>, Throws.InstanceOf<DependencyNotRegisteredException>());
+        }
+
+        [Test]
+        public void GivenDi_WhenCreatingInstanceOfAbstractClassOrInterface_ThenThrowsArgumentException()
+        {
+            // Arrange
+
+            // Act
+
+            // Assert
+            Assert.That(Di.Create<AbstractClass>, Throws.ArgumentException);
+            Assert.That(Di.Create<IInterface>, Throws.ArgumentException);
+        }
+
+        [Test]
+        public void GivenDi_WhenCreatingInstanceAndCanResolveDependency_ThenInstanceIsCreatedAndDependencyIsInjected()
+        {
+            // Arrange
+            CreateContainerWith<SingleInstanceContainer_PocoDep2>();
+
+            // Act
+            var instance = Di.Create<PocoDep1>();
+            var resolvedPocoDep2 = Di.TryResolveGlobally<PocoDep2>(out var pocoDep2);
+
+            // Assert
+            Assert.That(instance, Is.Not.Null);
+            Assert.That(resolvedPocoDep2);
+            Assert.That(instance.Dep, Is.EqualTo(pocoDep2));
         }
     }
 }
