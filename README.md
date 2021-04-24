@@ -16,6 +16,7 @@ A simple Unity framework to inject dependencies into your components. The projec
 ## Table of contents
 - [Installation](#installation)
 - [Setting Up](#setting-up)
+- [Projects using DI Framework](#projects-using-di-framework)
 - [Documentation](#documentation)
 
 ## Installation
@@ -53,6 +54,9 @@ public sealed class Movement : MonoBehaviour
     private Rigidbody _rigidbody;
 }
 ```
+
+## Projects using DI Framework
+- https://github.com/Delt06/fps-roguelike
 
 ## Documentation
 - [Wiki](https://github.com/Delt06/di-framework/wiki)  
