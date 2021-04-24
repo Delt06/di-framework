@@ -38,7 +38,7 @@ namespace DELTation.DIFramework
             return canBeResolvedSafe;
         }
 
-        private CachedComponentResolver RentResolver() => ResolverPool.Rent(this, _dependencySource);
+        private CachedComponentResolver RentResolver() => ResolverPool.Rent(gameObject, _dependencySource);
 
         void IInitializable.EnsureInitialized() => Resolve();
 

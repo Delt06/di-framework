@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using DELTation.DIFramework.Resolution;
 using JetBrains.Annotations;
+using UnityEngine;
 
 namespace DELTation.DIFramework
 {
@@ -88,6 +89,39 @@ namespace DELTation.DIFramework
             var type = typeof(T);
             if (type.IsAbstract) throw new ArgumentException($"{type} is abstract and thus cannot be instantiated.");
             return (T) PocoInjection.CreateInstance(type, TryResolveGlobally);
+        }
+
+        /// <summary>
+        /// Inject dependencies into components of the provided Game Object (from the specified sources).
+        /// </summary>
+        /// <param name="gameObject">Injected Game Object.</param>
+        /// <param name="sources">Sources to get dependencies from.</param>
+        /// <exception cref="ArgumentNullException">If <paramref name="gameObject"/> is null.</exception>
+        public static void Inject([NotNull] GameObject gameObject, DependencySource sources)
+        {
+            if (gameObject == null) throw new ArgumentNullException(nameof(gameObject));
+
+            var resolver = ResolverPool.Rent(gameObject, sources);
+
+            try
+            {
+                resolver.Resolve();
+            }
+            finally
+            {
+                ResolverPool.Return(resolver);
+            }
+        }
+
+        /// <summary>
+        /// Inject dependencies into components of the provided Game Object (from all sources).
+        /// </summary>
+        /// <param name="gameObject">Injected Game Object.</param>
+        /// <exception cref="ArgumentNullException">If <paramref name="gameObject"/> is null.</exception>
+        public static void Inject([NotNull] GameObject gameObject)
+        {
+            if (gameObject == null) throw new ArgumentNullException(nameof(gameObject));
+            Inject(gameObject, DependencySources.All);
         }
     }
 }

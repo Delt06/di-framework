@@ -7,24 +7,23 @@ namespace DELTation.DIFramework.Resolution
 {
     internal static class ResolverPool
     {
-        public static CachedComponentResolver Rent([NotNull] MonoBehaviour resolverComponent,
+        public static CachedComponentResolver Rent([NotNull] GameObject gameObject,
             DependencySource dependencySource)
         {
-            if (resolverComponent == null) throw new ArgumentNullException(nameof(resolverComponent));
+            if (gameObject == null) throw new ArgumentNullException(nameof(gameObject));
 
             if (FreeResolvers.Count == 0)
-                return new CachedComponentResolver(resolverComponent, dependencySource);
+                return new CachedComponentResolver(gameObject, dependencySource);
 
             var lastIndex = FreeResolvers.Count - 1;
             var resolver = FreeResolvers[lastIndex];
             FreeResolvers.RemoveAt(lastIndex);
             FreeResolversSet.Remove(resolver);
             resolver.Clear();
-            resolver.ResolverComponent = resolverComponent;
+            resolver.GameObject = gameObject;
             resolver.DependencySource = dependencySource;
             return resolver;
         }
-
 
         public static void Return([NotNull] CachedComponentResolver resolver)
         {

@@ -9,26 +9,27 @@ namespace DELTation.DIFramework.Resolution
 {
     internal sealed class CachedComponentResolver : IResolver
     {
-        public CachedComponentResolver(MonoBehaviour resolverComponent, DependencySource dependencySource)
+        public CachedComponentResolver(GameObject gameObject, DependencySource dependencySource)
         {
-            ResolverComponent = resolverComponent;
+            GameObject = gameObject;
             DependencySource = dependencySource;
             _resolutionFunction = Resolve;
             _bakedIsAffectedExtraCondition = IsAffectedExtraCondition;
         }
 
-        public MonoBehaviour ResolverComponent { get; set; }
+        public GameObject GameObject { get; set; }
         public DependencySource DependencySource { get; set; }
 
         public void Clear()
         {
+            GameObject = default;
             _cache.Clear();
             _affectedComponents.Clear();
         }
 
         public bool CanBeResolvedSafe(MonoBehaviour component, Type type, out DependencySource actualSource)
         {
-            var context = new ResolutionContext(ResolverComponent, component);
+            var context = new ResolutionContext(GameObject, component);
             return DependencySource.CanBeResolvedSafe(context, type, out actualSource);
         }
 
@@ -36,7 +37,7 @@ namespace DELTation.DIFramework.Resolution
         {
             _affectedComponents.Clear();
             var extraCondition = UseBakedData ? _bakedIsAffectedExtraCondition : null;
-            Injection.GetAffectedComponents(_affectedComponents, ResolverComponent.transform, extraCondition);
+            Injection.GetAffectedComponents(_affectedComponents, GameObject.transform, extraCondition);
 
             foreach (var (component, _) in _affectedComponents)
             {
@@ -91,7 +92,7 @@ namespace DELTation.DIFramework.Resolution
         {
             if (_cache.TryGet(type, out var dependency)) return dependency;
 
-            var context = new ResolutionContext(ResolverComponent, component);
+            var context = new ResolutionContext(GameObject, component);
             if (DependencySource.TryResolve(context, type, out dependency, out var actualSource))
             {
                 if (IsCacheable(actualSource))
