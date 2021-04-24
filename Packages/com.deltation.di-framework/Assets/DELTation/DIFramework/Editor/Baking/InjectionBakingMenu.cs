@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using DELTation.DIFramework.Resolution;
 using UnityEditor;
 using UnityEngine;
@@ -46,7 +47,14 @@ namespace DELTation.DIFramework.Editor.Baking
         {
             Clear(false);
 
-            var bakedTypes = GetAllBakedTypes();
+            var bakedTypes = GetAllBakedTypes().ToArray();
+
+            foreach (var bakedType in bakedTypes)
+            {
+                if (bakedType.Name.StartsWith("<"))
+                    Debug.Log(bakedType.Name);
+            }
+
             var className = GetClassName();
             var baker = new InjectionBaker(className, bakedTypes);
 
@@ -71,17 +79,32 @@ namespace DELTation.DIFramework.Editor.Baking
 
         private static IEnumerable<Type> GetAllBakedTypes() =>
             AppDomain.CurrentDomain.GetAssemblies()
+                .Where(a => DiSettings.TryGetInstance(out var settings) && settings.ShouldBeBaked(a))
                 .SelectMany(a => a.GetTypes())
                 .Where(CanBeBaked)
                 .Distinct();
 
         private static bool CanBeBaked(Type type) =>
-            typeof(MonoBehaviour).IsAssignableFrom(type) &&
-            !GetFullyQualifiedName(type).StartsWith(nameof(DELTation)) &&
-            HasAtLeastOneConstructor(type) &&
-            Injection.IsInjectable(type);
+            type.IsClass &&
+            type.IsPublic &&
+            !IsCompilerGenerated(type) &&
+            (typeof(MonoBehaviour).IsAssignableFrom(type) &&
+             HasAtLeastOneConstructMethod(type) &&
+             Injection.IsInjectable(type)
+             ||
+             IsInjectablePoco(type));
 
-        private static bool HasAtLeastOneConstructor(Type type) =>
+        private static bool IsCompilerGenerated(Type type) =>
+            type.Name.StartsWith("<") ||
+            type.Name.Contains("`") ||
+            type.GetCustomAttribute<CompilerGeneratedAttribute>() != null;
+
+        private static bool IsInjectablePoco(Type type) =>
+            PocoInjection.IsPoco(type) &&
+            PocoInjection.IsInjectable(type) &&
+            type.GetConstructors(BindingFlags.Public | BindingFlags.Instance).Length > 0;
+
+        private static bool HasAtLeastOneConstructMethod(Type type) =>
             type.GetMethods(BindingFlags.Public | BindingFlags.Instance)
                 .Count(m => m.Name == Injection.Constructor) > 0;
 

@@ -9,19 +9,16 @@ namespace DELTation.DIFramework.Resolution
 {
     internal sealed class CachedComponentResolver : IResolver
     {
-        public CachedComponentResolver(MonoBehaviour resolverComponent, DependencySource dependencySource,
-            bool useBakedData)
+        public CachedComponentResolver(MonoBehaviour resolverComponent, DependencySource dependencySource)
         {
             ResolverComponent = resolverComponent;
             DependencySource = dependencySource;
-            UseBakedData = useBakedData;
             _resolutionFunction = Resolve;
             _bakedIsAffectedExtraCondition = IsAffectedExtraCondition;
         }
 
         public MonoBehaviour ResolverComponent { get; set; }
         public DependencySource DependencySource { get; set; }
-        public bool UseBakedData { get; set; }
 
         public void Clear()
         {
@@ -49,11 +46,15 @@ namespace DELTation.DIFramework.Resolution
             _cache.Clear();
         }
 
+        private static bool UseBakedData => DiSettings.TryGetInstance(out var settings) &&
+                                            settings.UseBakedData;
+
         private static bool IsAffectedExtraCondition(MonoBehaviour mb) => BakedInjection.IsBaked(mb.GetType());
 
         private void Inject(MonoBehaviour component)
         {
-            if (UseBakedData && BakedInjection.TryInject(component, _resolutionFunction)) return;
+            if (UseBakedData && BakedInjection.TryInject(component, _resolutionFunction))
+                return;
 
             var methods = Injection.GetConstructMethods(component.GetType());
 

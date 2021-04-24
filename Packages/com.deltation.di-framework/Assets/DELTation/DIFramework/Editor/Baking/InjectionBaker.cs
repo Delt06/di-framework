@@ -29,31 +29,41 @@ namespace DELTation.DIFramework.Editor.Baking
 
             var index = 0;
             var bakeCalls = new StringBuilder();
-            var injectionFunctionDeclarations = new StringBuilder();
+            var functionDeclarations = new StringBuilder();
 
             foreach (var type in _bakedTypes)
             {
-                bakeCalls.Append(GetBakeCallText(type, index));
-                injectionFunctionDeclarations.Append(GetInjectionFunctionDeclaration(type, index));
-                injectionFunctionDeclarations.AppendLine();
+                var bakeCallText = GetBakeCallText(type, index);
+
+                string functionDeclaration;
+                var success = PocoInjection.IsPoco(type)
+                    ? TryGetInstantiationFunctionDeclaration(type, index, out functionDeclaration)
+                    : TryGetInjectionFunctionDeclaration(type, index, out functionDeclaration);
+                if (!success) continue;
+
+                bakeCalls.Append(bakeCallText);
+                functionDeclarations.Append(functionDeclaration);
+                functionDeclarations.AppendLine();
                 index++;
             }
 
             FixLineEndings(bakeCalls);
-            FixLineEndings(injectionFunctionDeclarations);
+            FixLineEndings(functionDeclarations);
 
             var dataText = string.Format(ClassTemplate, Namespace, _className, bakeCalls,
-                injectionFunctionDeclarations
+                functionDeclarations
             );
             writer.Write(dataText);
         }
 
-        private static string GetBakeCallText(Type type, int injectionFunctionIndex)
+        private static string GetBakeCallText(Type type, int functionIndex)
         {
             var methodName = $"{nameof(BakedInjection)}.{nameof(BakedInjection.Bake)}";
             var fullTypeName = GetFullyQualifiedName(type);
             var typeName = $"typeof({fullTypeName})";
-            var injectionFunctionName = GetInjectionFunctionName(injectionFunctionIndex);
+            var functionName = PocoInjection.IsPoco(type)
+                ? GetInstantiationFunctionName(functionIndex)
+                : GetInjectionFunctionName(functionIndex);
 
             return new StringBuilder()
                 .Append(TripleIndent)
@@ -61,15 +71,18 @@ namespace DELTation.DIFramework.Editor.Baking
                 .Append("(")
                 .Append(typeName)
                 .Append(", ")
-                .Append(injectionFunctionName)
+                .Append(functionName)
                 .AppendLine(");")
                 .ToString();
         }
 
-        private static string GetInjectionFunctionName(int injectionFunctionIndex) =>
-            $"InjectionFunction_{injectionFunctionIndex}";
+        private static string GetInjectionFunctionName(int functionIndex) =>
+            $"InjectionFunction_{functionIndex}";
 
-        private static string GetInjectionFunctionDeclaration(Type type, int injectionFunctionIndex)
+        private static string GetInstantiationFunctionName(int functionIndex) =>
+            $"InstantiationFunction_{functionIndex}";
+
+        private static bool TryGetInjectionFunctionDeclaration(Type type, int injectionFunctionIndex, out string result)
         {
             var stringBuilder = new StringBuilder();
             stringBuilder.Append(DoubleIndent)
@@ -99,6 +112,12 @@ namespace DELTation.DIFramework.Editor.Baking
                         stringBuilder.Append(", ");
 
                     var parameter = parameters[parameterIndex];
+                    if (parameter.ParameterType.IsConstructedGenericType)
+                    {
+                        result = default;
+                        return false;
+                    }
+
                     AppendResolveExpression(parameter.ParameterType, stringBuilder);
                 }
 
@@ -109,7 +128,52 @@ namespace DELTation.DIFramework.Editor.Baking
             stringBuilder.Append(DoubleIndent)
                 .AppendLine("}");
 
-            return stringBuilder.ToString();
+            result = stringBuilder.ToString();
+            return true;
+        }
+
+        private static bool TryGetInstantiationFunctionDeclaration(Type type, int functionIndex, out string result)
+        {
+            var stringBuilder = new StringBuilder();
+            stringBuilder.Append(DoubleIndent)
+                .Append("private static object ")
+                .Append(GetInstantiationFunctionName(functionIndex))
+                .Append($"({nameof(PocoResolutionFunction)} resolve)")
+                .AppendLine();
+
+            stringBuilder.Append(DoubleIndent)
+                .AppendLine("{");
+
+            if (PocoInjection.TryGetInjectableConstructorParameters(type, out var parameters))
+            {
+                stringBuilder.Append(TripleIndent)
+                    .Append("return new ")
+                    .Append(GetFullyQualifiedName(type))
+                    .Append("(");
+
+                for (var parameterIndex = 0; parameterIndex < parameters.Count; parameterIndex++)
+                {
+                    if (parameterIndex > 0)
+                        stringBuilder.Append(", ");
+
+                    var parameter = parameters[parameterIndex];
+                    if (parameter.ParameterType.IsConstructedGenericType)
+                    {
+                        result = default;
+                        return false;
+                    }
+
+                    AppendPocoResolveExpression(parameter.ParameterType, stringBuilder);
+                }
+
+                stringBuilder.AppendLine(");");
+            }
+
+            stringBuilder.Append(DoubleIndent)
+                .AppendLine("}");
+
+            result = stringBuilder.ToString();
+            return true;
         }
 
         private static void AppendResolveExpression(Type dependencyType, StringBuilder stringBuilder)
@@ -118,6 +182,16 @@ namespace DELTation.DIFramework.Editor.Baking
             stringBuilder.Append("(")
                 .Append(typeName)
                 .Append(") resolve(component, typeof(")
+                .Append(typeName)
+                .Append("))");
+        }
+
+        private static void AppendPocoResolveExpression(Type dependencyType, StringBuilder stringBuilder)
+        {
+            var typeName = GetFullyQualifiedName(dependencyType);
+            stringBuilder.Append("(")
+                .Append(typeName)
+                .Append(") resolve(typeof(")
                 .Append(typeName)
                 .Append("))");
         }

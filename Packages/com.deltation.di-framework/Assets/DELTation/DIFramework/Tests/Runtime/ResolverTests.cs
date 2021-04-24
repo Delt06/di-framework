@@ -126,7 +126,6 @@ namespace DELTation.DIFramework.Tests.Runtime
             prefab.AddComponent<Component20>();
 
             var resolver = prefab.AddComponent<Resolver>();
-            resolver.UseBakedData = useBakedData;
 
             Injection.InvalidateCache();
 
