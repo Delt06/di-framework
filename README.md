@@ -12,7 +12,7 @@ A simple Unity framework to inject dependencies into your components. The projec
 > Developed and tested with Unity 2019.4.17f1 LTS
 
 ## Table of contents
-- [Key Features](#key-features-and-concepts)
+- [Key Features and Concepts](#key-features-and-concepts)
 - [Installation](#installation)
 - [Setting Up](#setting-up)
 - [Projects using DI Framework](#projects-using-di-framework)
