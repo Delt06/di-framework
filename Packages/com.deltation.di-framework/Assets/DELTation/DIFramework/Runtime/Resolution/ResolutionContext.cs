@@ -5,10 +5,10 @@ namespace DELTation.DIFramework.Resolution
 {
     internal readonly struct ResolutionContext : IEquatable<ResolutionContext>
     {
-        public readonly Component Resolver;
+        public readonly GameObject Resolver;
         public readonly Component Component;
 
-        public ResolutionContext(Component resolver, Component component)
+        public ResolutionContext(GameObject resolver, Component component)
         {
             Resolver = resolver;
             Component = component;

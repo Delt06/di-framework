@@ -2,6 +2,7 @@
 using System.Linq;
 using DELTation.DIFramework.Containers;
 using DELTation.DIFramework.Exceptions;
+using DELTation.DIFramework.Tests.Runtime.Components;
 using DELTation.DIFramework.Tests.Runtime.Pocos;
 using NUnit.Framework;
 using UnityEngine;
@@ -260,6 +261,70 @@ namespace DELTation.DIFramework.Tests.Runtime
             Assert.That(instance, Is.Not.Null);
             Assert.That(resolvedPocoDep2);
             Assert.That(instance.Dep, Is.EqualTo(pocoDep2));
+        }
+
+        [Test]
+        public void GivenDiAndNoComponents_WhenInjecting_ThenThrowsDependencyNotResolvedException()
+        {
+            // Arrange
+            var gameObject = NewGameObject();
+            gameObject.AddComponent<RigidbodyComponent>();
+
+            // Act
+
+            // Assert
+            Assert.That(() => Di.Inject(gameObject), Throws.InstanceOf<DependencyNotResolvedException>());
+        }
+
+
+        [Test]
+        public void GivenDiAndLocalComponent_WhenInjecting_ThenValueIsSet()
+        {
+            // Arrange
+            var gameObject = NewGameObject();
+            var rigidbodyComponent = gameObject.AddComponent<RigidbodyComponent>();
+            var rigidbody = gameObject.AddComponent<Rigidbody>();
+
+            // Act
+            Di.Inject(gameObject);
+
+            // Assert
+            Assert.That(rigidbodyComponent.Rigidbody, Is.EqualTo(rigidbody));
+        }
+
+        [Test]
+        public void GivenDiAndGlobalComponent_WhenInjecting_ThenValueIsSet()
+        {
+            // Arrange
+            var listDependencyContainer = CreateContainerWith<ListDependencyContainer>();
+            var rigidbody = NewGameObject().AddComponent<Rigidbody>();
+            listDependencyContainer.Add(rigidbody);
+            var gameObject = NewGameObject();
+            var rigidbodyComponent = gameObject.AddComponent<RigidbodyComponent>();
+
+            // Act
+            Di.Inject(gameObject);
+
+            // Assert
+            Assert.That(rigidbodyComponent.Rigidbody, Is.EqualTo(rigidbody));
+        }
+
+        [Test]
+        public void GivenDiAndGlobalComponent_WhenInjectingWithLocalSources_ThenThrowsDependencyNotResolvedException()
+        {
+            // Arrange
+            var listDependencyContainer = CreateContainerWith<ListDependencyContainer>();
+            var rigidbody = NewGameObject().AddComponent<Rigidbody>();
+            listDependencyContainer.Add(rigidbody);
+            var gameObject = NewGameObject();
+            gameObject.AddComponent<RigidbodyComponent>();
+
+            // Act
+
+            // Assert
+            Assert.That(() => Di.Inject(gameObject, DependencySource.Local),
+                Throws.InstanceOf<DependencyNotResolvedException>()
+            );
         }
     }
 }
