@@ -32,7 +32,8 @@ var NAVTREE =
         [ "Option 2", "index.html#autotoc_md4", null ]
       ] ],
       [ "Setting up", "index.html#autotoc_md5", null ],
-      [ "Documentation", "index.html#autotoc_md6", null ]
+      [ "Projects using DI Framework", "index.html#autotoc_md6", null ],
+      [ "Documentation", "index.html#autotoc_md7", null ]
     ] ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
