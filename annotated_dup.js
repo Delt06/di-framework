@@ -2,6 +2,9 @@ var annotated_dup =
 [
     [ "DELTation", "namespace_d_e_l_tation.html", [
       [ "DIFramework", "namespace_d_e_l_tation_1_1_d_i_framework.html", [
+        [ "Baking", "namespace_d_e_l_tation_1_1_d_i_framework_1_1_baking.html", [
+          [ "BakedInjection", "class_d_e_l_tation_1_1_d_i_framework_1_1_baking_1_1_baked_injection.html", "class_d_e_l_tation_1_1_d_i_framework_1_1_baking_1_1_baked_injection" ]
+        ] ],
         [ "Containers", "namespace_d_e_l_tation_1_1_d_i_framework_1_1_containers.html", [
           [ "ChildrenDependencyContainer", "class_d_e_l_tation_1_1_d_i_framework_1_1_containers_1_1_children_dependency_container.html", "class_d_e_l_tation_1_1_d_i_framework_1_1_containers_1_1_children_dependency_container" ],
           [ "ConfigurableDependencyContainer", "class_d_e_l_tation_1_1_d_i_framework_1_1_containers_1_1_configurable_dependency_container.html", "class_d_e_l_tation_1_1_d_i_framework_1_1_containers_1_1_configurable_dependency_container" ],
@@ -24,7 +27,15 @@ var annotated_dup =
           [ "ComponentResolutionData", "struct_d_e_l_tation_1_1_d_i_framework_1_1_reporting_1_1_component_resolution_data.html", "struct_d_e_l_tation_1_1_d_i_framework_1_1_reporting_1_1_component_resolution_data" ],
           [ "ResolverReport", "class_d_e_l_tation_1_1_d_i_framework_1_1_reporting_1_1_resolver_report.html", "class_d_e_l_tation_1_1_d_i_framework_1_1_reporting_1_1_resolver_report" ]
         ] ],
+        [ "Resolution", "namespace_d_e_l_tation_1_1_d_i_framework_1_1_resolution.html", [
+          [ "Injection", "class_d_e_l_tation_1_1_d_i_framework_1_1_resolution_1_1_injection.html", "class_d_e_l_tation_1_1_d_i_framework_1_1_resolution_1_1_injection" ]
+        ] ],
+        [ "Sorting", "namespace_d_e_l_tation_1_1_d_i_framework_1_1_sorting.html", [
+          [ "TopologicalSorting", "class_d_e_l_tation_1_1_d_i_framework_1_1_sorting_1_1_topological_sorting.html", "class_d_e_l_tation_1_1_d_i_framework_1_1_sorting_1_1_topological_sorting" ]
+        ] ],
         [ "ContainerBuilder", "class_d_e_l_tation_1_1_d_i_framework_1_1_container_builder.html", "class_d_e_l_tation_1_1_d_i_framework_1_1_container_builder" ],
+        [ "ContainersExtensions", "class_d_e_l_tation_1_1_d_i_framework_1_1_containers_extensions.html", "class_d_e_l_tation_1_1_d_i_framework_1_1_containers_extensions" ],
+        [ "Di", "class_d_e_l_tation_1_1_d_i_framework_1_1_di.html", "class_d_e_l_tation_1_1_d_i_framework_1_1_di" ],
         [ "DiSettings", "class_d_e_l_tation_1_1_d_i_framework_1_1_di_settings.html", "class_d_e_l_tation_1_1_d_i_framework_1_1_di_settings" ],
         [ "IDependencyContainer", "interface_d_e_l_tation_1_1_d_i_framework_1_1_i_dependency_container.html", "interface_d_e_l_tation_1_1_d_i_framework_1_1_i_dependency_container" ],
         [ "Resolver", "class_d_e_l_tation_1_1_d_i_framework_1_1_resolver.html", "class_d_e_l_tation_1_1_d_i_framework_1_1_resolver" ],

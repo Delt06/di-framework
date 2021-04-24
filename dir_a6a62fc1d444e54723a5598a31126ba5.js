@@ -11,10 +11,14 @@ var dir_a6a62fc1d444e54723a5598a31126ba5 =
     [ "ContainerBuilder.cs", "_container_builder_8cs.html", [
       [ "ContainerBuilder", "class_d_e_l_tation_1_1_d_i_framework_1_1_container_builder.html", "class_d_e_l_tation_1_1_d_i_framework_1_1_container_builder" ]
     ] ],
-    [ "ContainersExtensions.cs", "_containers_extensions_8cs.html", null ],
+    [ "ContainersExtensions.cs", "_containers_extensions_8cs.html", [
+      [ "ContainersExtensions", "class_d_e_l_tation_1_1_d_i_framework_1_1_containers_extensions.html", "class_d_e_l_tation_1_1_d_i_framework_1_1_containers_extensions" ]
+    ] ],
     [ "DependencySource.cs", "_dependency_source_8cs.html", "_dependency_source_8cs" ],
     [ "DependencySources.cs", "_dependency_sources_8cs.html", null ],
-    [ "Di.cs", "_di_8cs.html", null ],
+    [ "Di.cs", "_di_8cs.html", [
+      [ "Di", "class_d_e_l_tation_1_1_d_i_framework_1_1_di.html", "class_d_e_l_tation_1_1_d_i_framework_1_1_di" ]
+    ] ],
     [ "DiSettings.cs", "_di_settings_8cs.html", [
       [ "DiSettings", "class_d_e_l_tation_1_1_d_i_framework_1_1_di_settings.html", "class_d_e_l_tation_1_1_d_i_framework_1_1_di_settings" ]
     ] ],

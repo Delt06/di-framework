@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['equals_185',['Equals',['../struct_d_e_l_tation_1_1_d_i_framework_1_1_reporting_1_1_component_resolution_data.html#a3fac6a20a736e8fb3541e40206da8dee',1,'DELTation.DIFramework.Reporting.ComponentResolutionData.Equals(ComponentResolutionData other)'],['../struct_d_e_l_tation_1_1_d_i_framework_1_1_reporting_1_1_component_resolution_data.html#af4c8b29f334947112107d8d9f64f1aba',1,'DELTation.DIFramework.Reporting.ComponentResolutionData.Equals(object obj)']]]
+  ['dependencyalreadyregistered_217',['DependencyAlreadyRegistered',['../class_d_e_l_tation_1_1_d_i_framework_1_1_exceptions_1_1_dependency_already_registered.html#a0252f1c236f5a6fcf5890053c4273aa4',1,'DELTation::DIFramework::Exceptions::DependencyAlreadyRegistered']]],
+  ['dependencynotregisteredexception_218',['DependencyNotRegisteredException',['../class_d_e_l_tation_1_1_d_i_framework_1_1_exceptions_1_1_dependency_not_registered_exception.html#abc3ffeda49f40cb71a237a021747e037',1,'DELTation::DIFramework::Exceptions::DependencyNotRegisteredException']]],
+  ['dependencynotresolvedexception_219',['DependencyNotResolvedException',['../class_d_e_l_tation_1_1_d_i_framework_1_1_exceptions_1_1_dependency_not_resolved_exception.html#a797374a3f8d18ed353607410c298c978',1,'DELTation::DIFramework::Exceptions::DependencyNotResolvedException']]]
 ];

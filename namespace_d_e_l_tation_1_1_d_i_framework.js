@@ -1,17 +1,16 @@
 var namespace_d_e_l_tation_1_1_d_i_framework =
 [
-    [ "Baking", "namespace_d_e_l_tation_1_1_d_i_framework_1_1_baking.html", [
-      [ "InjectionFunction", "namespace_d_e_l_tation_1_1_d_i_framework_1_1_baking.html#a98f42973deec5cfc313b4a3c9a7c9bec", null ],
-      [ "ResolutionFunction", "namespace_d_e_l_tation_1_1_d_i_framework_1_1_baking.html#a39ab7447a51fdbf35e06aa5d29aa3686", null ]
-    ] ],
+    [ "Baking", "namespace_d_e_l_tation_1_1_d_i_framework_1_1_baking.html", "namespace_d_e_l_tation_1_1_d_i_framework_1_1_baking" ],
     [ "Containers", "namespace_d_e_l_tation_1_1_d_i_framework_1_1_containers.html", "namespace_d_e_l_tation_1_1_d_i_framework_1_1_containers" ],
     [ "Editor", "namespace_d_e_l_tation_1_1_d_i_framework_1_1_editor.html", "namespace_d_e_l_tation_1_1_d_i_framework_1_1_editor" ],
     [ "Exceptions", "namespace_d_e_l_tation_1_1_d_i_framework_1_1_exceptions.html", "namespace_d_e_l_tation_1_1_d_i_framework_1_1_exceptions" ],
     [ "Pooling", "namespace_d_e_l_tation_1_1_d_i_framework_1_1_pooling.html", null ],
     [ "Reporting", "namespace_d_e_l_tation_1_1_d_i_framework_1_1_reporting.html", "namespace_d_e_l_tation_1_1_d_i_framework_1_1_reporting" ],
-    [ "Resolution", "namespace_d_e_l_tation_1_1_d_i_framework_1_1_resolution.html", null ],
-    [ "Sorting", "namespace_d_e_l_tation_1_1_d_i_framework_1_1_sorting.html", null ],
+    [ "Resolution", "namespace_d_e_l_tation_1_1_d_i_framework_1_1_resolution.html", "namespace_d_e_l_tation_1_1_d_i_framework_1_1_resolution" ],
+    [ "Sorting", "namespace_d_e_l_tation_1_1_d_i_framework_1_1_sorting.html", "namespace_d_e_l_tation_1_1_d_i_framework_1_1_sorting" ],
     [ "ContainerBuilder", "class_d_e_l_tation_1_1_d_i_framework_1_1_container_builder.html", "class_d_e_l_tation_1_1_d_i_framework_1_1_container_builder" ],
+    [ "ContainersExtensions", "class_d_e_l_tation_1_1_d_i_framework_1_1_containers_extensions.html", "class_d_e_l_tation_1_1_d_i_framework_1_1_containers_extensions" ],
+    [ "Di", "class_d_e_l_tation_1_1_d_i_framework_1_1_di.html", "class_d_e_l_tation_1_1_d_i_framework_1_1_di" ],
     [ "DiSettings", "class_d_e_l_tation_1_1_d_i_framework_1_1_di_settings.html", "class_d_e_l_tation_1_1_d_i_framework_1_1_di_settings" ],
     [ "IDependencyContainer", "interface_d_e_l_tation_1_1_d_i_framework_1_1_i_dependency_container.html", "interface_d_e_l_tation_1_1_d_i_framework_1_1_i_dependency_container" ],
     [ "Resolver", "class_d_e_l_tation_1_1_d_i_framework_1_1_resolver.html", "class_d_e_l_tation_1_1_d_i_framework_1_1_resolver" ],
