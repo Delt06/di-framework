@@ -1,13 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using JetBrains.Annotations;
 
 namespace DELTation.DIFramework
 {
     internal sealed class TypedCache
     {
-        public object[] AllObjects => _allObjects.ToArray();
+        internal void AddAllObjectsTo([NotNull] ICollection<object> targetList)
+        {
+            if (targetList == null) throw new ArgumentNullException(nameof(targetList));
+
+            foreach (var @object in _allObjects)
+            {
+                targetList.Add(@object);
+            }
+        }
 
         public bool TryGet<T>(out T obj) where T : class
         {

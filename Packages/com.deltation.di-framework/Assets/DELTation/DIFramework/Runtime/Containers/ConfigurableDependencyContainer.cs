@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using DELTation.DIFramework.Exceptions;
 using JetBrains.Annotations;
 
@@ -36,19 +35,21 @@ namespace DELTation.DIFramework.Containers
 
             var builder = new ContainerBuilder(this);
             _composeDependencies(builder);
-            return Enumerable.Range(0, builder.DependenciesCount)
-                .Any(i => ConformsTo(builder, i, type));
+
+            for (var i = 0; i < builder.DependenciesCount; i++)
+            {
+                if (ConformsTo(builder, i, type))
+                    return true;
+            }
+
+            return false;
         }
 
-        public void GetAllRegisteredObjects(HashSet<object> objects)
+        public void GetAllRegisteredObjects(ICollection<object> objects)
         {
             if (objects == null) throw new ArgumentNullException(nameof(objects));
             EnsureInitialized();
-
-            foreach (var @object in _cache.AllObjects)
-            {
-                objects.Add(@object);
-            }
+            _cache.AddAllObjectsTo(objects);
         }
 
         private static bool ConformsTo(ContainerBuilder builder, int index, Type checkedType) =>

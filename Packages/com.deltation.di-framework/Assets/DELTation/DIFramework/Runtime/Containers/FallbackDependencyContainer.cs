@@ -14,7 +14,7 @@ namespace DELTation.DIFramework.Containers
             return TryFindObjectOfType(type, out _);
         }
 
-        void IDependencyContainer.GetAllRegisteredObjects(HashSet<object> objects)
+        void IDependencyContainer.GetAllRegisteredObjects(ICollection<object> objects)
         {
             if (objects == null) throw new ArgumentNullException(nameof(objects));
         }

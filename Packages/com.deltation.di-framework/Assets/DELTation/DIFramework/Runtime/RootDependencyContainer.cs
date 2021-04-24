@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using DELTation.DIFramework.Editor;
 using DELTation.DIFramework.Pooling;
 using UnityEngine;
@@ -45,17 +44,34 @@ namespace DELTation.DIFramework
 
         private void Initialize()
         {
-            _subContainers = GetChildContainers().ToArray();
+            _subContainers = GetChildContainers();
         }
 
-        private IEnumerable<IDependencyContainer> GetChildContainers() =>
-            GetComponentsInChildren<IDependencyContainer>()
-                .Where(c => !ReferenceEquals(c, this));
+        private IDependencyContainer[] GetChildContainers()
+        {
+            var containersList = ListPool<IDependencyContainer>.Rent();
+            GetComponentsInChildren(containersList);
+            containersList.Remove(this);
+            var containersArray = containersList.ToArray();
+            ListPool<IDependencyContainer>.Return(containersList);
+            return containersArray;
+        }
 
-        public bool CanBeResolvedSafe(Type type) => GetChildContainers().Any(c => c.CanBeResolvedSafe(type));
+        public bool CanBeResolvedSafe(Type type)
+        {
+            if (type == null) throw new ArgumentNullException(nameof(type));
+
+            foreach (var childContainer in GetChildContainers())
+            {
+                if (childContainer.CanBeResolvedSafe(type))
+                    return true;
+            }
+
+            return false;
+        }
 
         /// <inheritdoc />
-        public void GetAllRegisteredObjects(HashSet<object> objects)
+        public void GetAllRegisteredObjects(ICollection<object> objects)
         {
             if (objects == null) throw new ArgumentNullException(nameof(objects));
             EnsureInitialized();

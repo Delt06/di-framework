@@ -30,7 +30,7 @@ namespace DELTation.DIFramework
         /// Populates the provided set with a collection of all objects registered in the container.
         /// <seealso cref="Di.GetAllRegisteredObjects"/>
         /// </summary>
-        /// <param name="objects">Set to put registered objects into.</param>
-        void GetAllRegisteredObjects([NotNull] HashSet<object> objects);
+        /// <param name="objects">Collection to put registered objects into.</param>
+        void GetAllRegisteredObjects([NotNull] ICollection<object> objects);
     }
 }
