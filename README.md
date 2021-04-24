@@ -25,7 +25,7 @@ A simple Unity framework to inject dependencies into your components. The projec
 - Can inject anytime, not only on scene start
 - Context-aware injection: dependencies can be automatically fulfilled with components found in children and parents
 - Baking: to avoid reflection (and to improve performance), injection can be baked via automatic code generation
-- General-purpose API: `Di` class contains convenience methods that provide access to explicit injection and object instantiation.
+- General-purpose API: `Di` class contains convenience methods that provide access to explicit injection and object instantiation
 
 ## Installation
 ### Option 1
