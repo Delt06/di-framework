@@ -20,7 +20,7 @@ A simple Unity framework to inject dependencies into your components. The projec
 
 ## Key Features
 - Simple and consistent injection mechanisms
-    -  Method injection for `MonoBehaviour`s
+    -  Method injection for `MonoBehaviour`s (through all suitable methods named `Construct`)
     -  Constructor injection for standard C# classes (a.k.a. POCO)
 - Can inject anytime, not only on scene start
 - Context-aware injection: dependencies can be automatically fulfilled with components found in children and parents
