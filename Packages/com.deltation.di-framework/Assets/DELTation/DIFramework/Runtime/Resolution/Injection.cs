@@ -114,13 +114,13 @@ namespace DELTation.DIFramework.Resolution
             return true;
         }
 
-        internal static bool AreInjectable([NotNull] this ParameterInfo[] parameters)
+        internal static bool AreInjectable([NotNull] this IReadOnlyList<ParameterInfo> parameters)
         {
             if (parameters == null) throw new ArgumentNullException(nameof(parameters));
 
-            foreach (var parameter in parameters)
+            for (var index = 0; index < parameters.Count; index++)
             {
-                if (!parameter.IsInjectable())
+                if (!parameters[index].IsInjectable())
                     return false;
             }
 

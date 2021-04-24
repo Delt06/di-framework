@@ -8,12 +8,12 @@ namespace DELTation.DIFramework.Resolution
     internal static class ResolverPool
     {
         public static CachedComponentResolver Rent([NotNull] MonoBehaviour resolverComponent,
-            DependencySource dependencySource, bool useBakedData)
+            DependencySource dependencySource)
         {
             if (resolverComponent == null) throw new ArgumentNullException(nameof(resolverComponent));
 
             if (FreeResolvers.Count == 0)
-                return new CachedComponentResolver(resolverComponent, dependencySource, useBakedData);
+                return new CachedComponentResolver(resolverComponent, dependencySource);
 
             var lastIndex = FreeResolvers.Count - 1;
             var resolver = FreeResolvers[lastIndex];
@@ -22,7 +22,6 @@ namespace DELTation.DIFramework.Resolution
             resolver.Clear();
             resolver.ResolverComponent = resolverComponent;
             resolver.DependencySource = dependencySource;
-            resolver.UseBakedData = useBakedData;
             return resolver;
         }
 

@@ -17,9 +17,14 @@ namespace {0}
     /// </summary>
     internal static class {1}
     {{
+#if UNITY_EDITOR
+        [UnityEditor.InitializeOnLoadMethod]
+#else
         [RuntimeInitializeOnLoadMethod]
+#endif
         public static void Bake()
         {{
+            BakedInjection.DataExists = true;
             BakedInjection.Clear();
             
 {2}
