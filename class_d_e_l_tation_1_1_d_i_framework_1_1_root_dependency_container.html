@@ -118,23 +118,26 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a113ebe1e4d38389999bb07f8ed593c2a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_d_e_l_tation_1_1_d_i_framework_1_1_root_dependency_container.html#a113ebe1e4d38389999bb07f8ed593c2a">CanBeResolvedSafe</a> (Type type)</td></tr>
 <tr class="memdesc:a113ebe1e4d38389999bb07f8ed593c2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks whether the given type can be resolved via the container. Produces no side effects.  <a href="class_d_e_l_tation_1_1_d_i_framework_1_1_root_dependency_container.html#a113ebe1e4d38389999bb07f8ed593c2a">More...</a><br /></td></tr>
 <tr class="separator:a113ebe1e4d38389999bb07f8ed593c2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1b325653e9f4b0fbc99be37f104dd138"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_d_e_l_tation_1_1_d_i_framework_1_1_root_dependency_container.html#a1b325653e9f4b0fbc99be37f104dd138">GetAllRegisteredObjects</a> (HashSet&lt; object &gt; objects)</td></tr>
-<tr class="memdesc:a1b325653e9f4b0fbc99be37f104dd138"><td class="mdescLeft">&#160;</td><td class="mdescRight">Populates the provided set with a collection of all objects registered in the container. </p><dl class="section see"><dt>See also</dt><dd>Di.GetAllRegisteredObjects</dd></dl>
-  <a href="class_d_e_l_tation_1_1_d_i_framework_1_1_root_dependency_container.html#a1b325653e9f4b0fbc99be37f104dd138">More...</a><br /></td></tr>
-<tr class="separator:a1b325653e9f4b0fbc99be37f104dd138"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a91fd37ac693ce7eb09683a176d1f49a6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_d_e_l_tation_1_1_d_i_framework_1_1_root_dependency_container.html#a91fd37ac693ce7eb09683a176d1f49a6">GetAllRegisteredObjects</a> (ICollection&lt; object &gt; objects)</td></tr>
+<tr class="memdesc:a91fd37ac693ce7eb09683a176d1f49a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Populates the provided set with a collection of all objects registered in the container. </p><dl class="section see"><dt>See also</dt><dd>Di.GetAllRegisteredObjects</dd></dl>
+  <a href="class_d_e_l_tation_1_1_d_i_framework_1_1_root_dependency_container.html#a91fd37ac693ce7eb09683a176d1f49a6">More...</a><br /></td></tr>
+<tr class="separator:a91fd37ac693ce7eb09683a176d1f49a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2be858bfdae5a3ef23aa290f22b60fdb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_d_e_l_tation_1_1_d_i_framework_1_1_root_dependency_container.html#a2be858bfdae5a3ef23aa290f22b60fdb">TryResolve</a> (Type type, out object dependency)</td></tr>
 <tr class="memdesc:a2be858bfdae5a3ef23aa290f22b60fdb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tries to resolve a dependency.  <a href="class_d_e_l_tation_1_1_d_i_framework_1_1_root_dependency_container.html#a2be858bfdae5a3ef23aa290f22b60fdb">More...</a><br /></td></tr>
 <tr class="separator:a2be858bfdae5a3ef23aa290f22b60fdb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_root_dependency_container_8cs_source.html#l00011">11</a> of file <a class="el" href="_root_dependency_container_8cs_source.html">RootDependencyContainer.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_root_dependency_container_8cs_source.html#l00010">10</a> of file <a class="el" href="_root_dependency_container_8cs_source.html">RootDependencyContainer.cs</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a113ebe1e4d38389999bb07f8ed593c2a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a113ebe1e4d38389999bb07f8ed593c2a">&#9670;&nbsp;</a></span>CanBeResolvedSafe()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">bool DELTation.DIFramework.RootDependencyContainer.CanBeResolvedSafe </td>
@@ -144,6 +147,11 @@ Public Member Functions</h2></td></tr>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Checks whether the given type can be resolved via the container. Produces no side effects. </p>
@@ -157,10 +165,12 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="interface_d_e_l_tation_1_1_d_i_framework_1_1_i_dependency_container.html#a406c572582762848ab43a759fa75c9fc">DELTation.DIFramework.IDependencyContainer</a>.</p>
 
+<p class="definition">Definition at line <a class="el" href="_root_dependency_container_8cs_source.html#l00060">60</a> of file <a class="el" href="_root_dependency_container_8cs_source.html">RootDependencyContainer.cs</a>.</p>
+
 </div>
 </div>
-<a id="a1b325653e9f4b0fbc99be37f104dd138"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1b325653e9f4b0fbc99be37f104dd138">&#9670;&nbsp;</a></span>GetAllRegisteredObjects()</h2>
+<a id="a91fd37ac693ce7eb09683a176d1f49a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a91fd37ac693ce7eb09683a176d1f49a6">&#9670;&nbsp;</a></span>GetAllRegisteredObjects()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -171,7 +181,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">void DELTation.DIFramework.RootDependencyContainer.GetAllRegisteredObjects </td>
           <td>(</td>
-          <td class="paramtype">HashSet&lt; object &gt;&#160;</td>
+          <td class="paramtype">ICollection&lt; object &gt;&#160;</td>
           <td class="paramname"><em>objects</em></td><td>)</td>
           <td></td>
         </tr>
@@ -186,9 +196,9 @@ Public Member Functions</h2></td></tr>
 <p>Populates the provided set with a collection of all objects registered in the container. </p><dl class="section see"><dt>See also</dt><dd>Di.GetAllRegisteredObjects</dd></dl>
  </p>
 
-<p>Implements <a class="el" href="interface_d_e_l_tation_1_1_d_i_framework_1_1_i_dependency_container.html#a578c09b0757e0276e207e74291aee5c1">DELTation.DIFramework.IDependencyContainer</a>.</p>
+<p>Implements <a class="el" href="interface_d_e_l_tation_1_1_d_i_framework_1_1_i_dependency_container.html#a7e0c4ef7cd44b2b18ff1d07eeed6abdc">DELTation.DIFramework.IDependencyContainer</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_root_dependency_container_8cs_source.html#l00058">58</a> of file <a class="el" href="_root_dependency_container_8cs_source.html">RootDependencyContainer.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_root_dependency_container_8cs_source.html#l00074">74</a> of file <a class="el" href="_root_dependency_container_8cs_source.html">RootDependencyContainer.cs</a>.</p>
 
 </div>
 </div>
@@ -238,7 +248,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="interface_d_e_l_tation_1_1_d_i_framework_1_1_i_dependency_container.html#a1a7b5b412c9f85b75734a8d08537e2c2">DELTation.DIFramework.IDependencyContainer</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_root_dependency_container_8cs_source.html#l00069">69</a> of file <a class="el" href="_root_dependency_container_8cs_source.html">RootDependencyContainer.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_root_dependency_container_8cs_source.html#l00085">85</a> of file <a class="el" href="_root_dependency_container_8cs_source.html">RootDependencyContainer.cs</a>.</p>
 
 </div>
 </div>
