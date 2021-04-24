@@ -1,5 +1,4 @@
-﻿using System;
-using DELTation.DIFramework.Containers;
+﻿using DELTation.DIFramework.Containers;
 using DELTation.DIFramework.Tests.Runtime.Pocos;
 using NUnit.Framework;
 

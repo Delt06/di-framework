@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using DELTation.DIFramework.Exceptions;
 using DELTation.DIFramework.Pooling;
 using DELTation.DIFramework.Resolution;
 using DELTation.DIFramework.Sorting;
@@ -141,31 +140,7 @@ namespace DELTation.DIFramework
             throw InvalidStateException();
         }
 
-        private object CreateInstance(Type type)
-        {
-            if (!TryGetInjectableConstructorParameters(type, out var parameters))
-                throw new ArgumentException($"Type {type} does not have an injectable constructor.");
-
-            var arguments = Injection.RentArgumentsArray(parameters.Length);
-
-            for (var index = 0; index < parameters.Length; index++)
-            {
-                var parameterType = parameters[index].ParameterType;
-                if (_container.TryResolve(parameterType, out var dependency))
-                {
-                    arguments[index] = dependency;
-                }
-                else
-                {
-                    Injection.ReturnArgumentsArray(arguments);
-                    throw new DependencyNotRegisteredException(parameterType);
-                }
-            }
-
-            var instance = Activator.CreateInstance(type, arguments);
-            Injection.ReturnArgumentsArray(arguments);
-            return instance;
-        }
+        private object CreateInstance(Type type) => PocoInjection.CreateInstance(type, _resolutionFunction);
 
         internal Type GetType(int index)
         {
@@ -194,10 +169,13 @@ namespace DELTation.DIFramework
         private static InvalidOperationException InvalidStateException() =>
             new InvalidOperationException("Invalid state: either object or type should be not null.");
 
-        internal ContainerBuilder([NotNull] IDependencyContainer container) =>
-            _container = container ?? throw new ArgumentNullException(nameof(container));
+        internal ContainerBuilder([NotNull] IDependencyContainer container)
+        {
+            if (container == null) throw new ArgumentNullException(nameof(container));
+            _resolutionFunction = container.TryResolve;
+        }
 
-        private readonly IDependencyContainer _container;
+        private readonly ResolutionFunction _resolutionFunction;
         private readonly List<Dependency> _dependencies = new List<Dependency>();
 
         private readonly struct Dependency : IEquatable<Dependency>

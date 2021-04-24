@@ -77,5 +77,17 @@ namespace DELTation.DIFramework
 
             return objects;
         }
+
+        /// <summary>
+        /// Creates an instance and injects its dependencies via a constructor.
+        /// </summary>
+        /// <typeparam name="T">The type of the instance.</typeparam>
+        /// <returns>Created instance.</returns>
+        public static T Create<T>() where T : class
+        {
+            var type = typeof(T);
+            if (type.IsAbstract) throw new ArgumentException($"{type} is abstract and thus cannot be instantiated.");
+            return (T) PocoInjection.CreateInstance(type, TryResolveGlobally);
+        }
     }
 }
