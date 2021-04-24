@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using DELTation.DIFramework.Pooling;
 using JetBrains.Annotations;
@@ -78,10 +77,21 @@ namespace DELTation.DIFramework.Resolution
         public static IEnumerable<Type> GetAllDependenciesOf([NotNull] Type componentType)
         {
             if (componentType == null) throw new ArgumentNullException(nameof(componentType));
-            return GetConstructMethods(componentType)
-                .SelectMany(m => m.GetParameters())
-                .Select(p => p.ParameterType)
-                .Distinct();
+
+            var constructMethods = GetConstructMethods(componentType);
+            var parameterTypes = new HashSet<Type>();
+
+            for (var ctorIndex = 0; ctorIndex < constructMethods.Count; ctorIndex++)
+            {
+                var constructMethod = constructMethods[ctorIndex];
+
+                foreach (var parameter in constructMethod.GetParameters())
+                {
+                    parameterTypes.Add(parameter.ParameterType);
+                }
+            }
+
+            return parameterTypes;
         }
 
         /// <summary>
