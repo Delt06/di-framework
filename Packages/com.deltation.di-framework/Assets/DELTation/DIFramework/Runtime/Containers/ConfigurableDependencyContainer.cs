@@ -45,15 +45,11 @@ namespace DELTation.DIFramework.Containers
             return false;
         }
 
-        public void GetAllRegisteredObjects(HashSet<object> objects)
+        public void GetAllRegisteredObjects(ICollection<object> objects)
         {
             if (objects == null) throw new ArgumentNullException(nameof(objects));
             EnsureInitialized();
-
-            foreach (var @object in _cache.AllObjects)
-            {
-                objects.Add(@object);
-            }
+            _cache.AddAllObjectsTo(objects);
         }
 
         private static bool ConformsTo(ContainerBuilder builder, int index, Type checkedType) =>

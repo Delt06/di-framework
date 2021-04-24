@@ -71,7 +71,7 @@ namespace DELTation.DIFramework
         }
 
         /// <inheritdoc />
-        public void GetAllRegisteredObjects(HashSet<object> objects)
+        public void GetAllRegisteredObjects(ICollection<object> objects)
         {
             if (objects == null) throw new ArgumentNullException(nameof(objects));
             EnsureInitialized();
