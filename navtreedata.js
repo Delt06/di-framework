@@ -27,7 +27,7 @@ var NAVTREE =
   [ "DI Framework", "index.html", [
     [ "Unity DI Framework", "index.html", [
       [ "Table of contents", "index.html#autotoc_md1", null ],
-      [ "Key Features", "index.html#autotoc_md2", null ],
+      [ "Key Features and Concepts", "index.html#autotoc_md2", null ],
       [ "Installation", "index.html#autotoc_md3", [
         [ "Option 1", "index.html#autotoc_md4", null ],
         [ "Option 2", "index.html#autotoc_md5", null ]
