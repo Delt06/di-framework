@@ -62,7 +62,7 @@ namespace DELTation.DIFramework
         }
 
         /// <summary>
-        /// Returns a collection of all (unique) objects registered in containers.
+        /// Return a collection of all objects registered in containers.
         /// </summary>
         /// <returns>A collection of all registered objects.</returns>
         public static IEnumerable<object> GetAllRegisteredObjects()
@@ -79,7 +79,7 @@ namespace DELTation.DIFramework
         }
 
         /// <summary>
-        /// Creates an instance and injects its dependencies via a constructor.
+        /// Create an instance and injects its dependencies via a constructor.
         /// </summary>
         /// <typeparam name="T">The type of the instance.</typeparam>
         /// <returns>Created instance.</returns>
