@@ -98,112 +98,115 @@ $(document).ready(function(){initNavTree('_cached_component_resolver_8cs_source.
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;{</div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    <span class="keyword">internal</span> sealed <span class="keyword">class </span>CachedComponentResolver : IResolver</div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    {</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;        <span class="keyword">public</span> CachedComponentResolver(<a class="code" href="class_mono_behaviour.html">MonoBehaviour</a> resolverComponent, <a class="code" href="namespace_d_e_l_tation_1_1_d_i_framework.html#ac6f453b41c84b3e7ee519a4432d219d1">DependencySource</a> dependencySource,</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;            <span class="keywordtype">bool</span> useBakedData)</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;        {</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;            ResolverComponent = resolverComponent;</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;            <a class="code" href="namespace_d_e_l_tation_1_1_d_i_framework.html#ac6f453b41c84b3e7ee519a4432d219d1">DependencySource</a> = dependencySource;</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;            UseBakedData = useBakedData;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;            _resolutionFunction = Resolve;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;            _bakedIsAffectedExtraCondition = IsAffectedExtraCondition;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        }</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        <span class="keyword">public</span> <a class="code" href="class_mono_behaviour.html">MonoBehaviour</a> ResolverComponent { <span class="keyword">get</span>; <span class="keyword">set</span>; }</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        <span class="keyword">public</span> <a class="code" href="namespace_d_e_l_tation_1_1_d_i_framework.html#ac6f453b41c84b3e7ee519a4432d219d1">DependencySource</a> <a class="code" href="namespace_d_e_l_tation_1_1_d_i_framework.html#ac6f453b41c84b3e7ee519a4432d219d1">DependencySource</a> { <span class="keyword">get</span>; <span class="keyword">set</span>; }</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        <span class="keyword">public</span> <span class="keywordtype">bool</span> UseBakedData { <span class="keyword">get</span>; <span class="keyword">set</span>; }</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> Clear()</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        {</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;            _cache.Clear();</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;            _affectedComponents.Clear();</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        }</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        <span class="keyword">public</span> <span class="keywordtype">bool</span> CanBeResolvedSafe(<a class="code" href="class_mono_behaviour.html">MonoBehaviour</a> component, Type type, out <a class="code" href="namespace_d_e_l_tation_1_1_d_i_framework.html#ac6f453b41c84b3e7ee519a4432d219d1">DependencySource</a> actualSource)</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        {</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;            var context = <span class="keyword">new</span> ResolutionContext(ResolverComponent, component);</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespace_d_e_l_tation_1_1_d_i_framework.html#ac6f453b41c84b3e7ee519a4432d219d1">DependencySource</a>.CanBeResolvedSafe(context, type, out actualSource);</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        }</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> Resolve()</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        {</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;            _affectedComponents.Clear();</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;            var extraCondition = UseBakedData ? _bakedIsAffectedExtraCondition : <span class="keyword">null</span>;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;            <a class="code" href="class_d_e_l_tation_1_1_d_i_framework_1_1_resolution_1_1_injection.html">Injection</a>.GetAffectedComponents(_affectedComponents, ResolverComponent.transform, extraCondition);</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            <span class="keywordflow">foreach</span> (var (component, _) in _affectedComponents)</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            {</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                Inject(component);</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            }</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;        <span class="keyword">public</span> CachedComponentResolver(<a class="code" href="class_mono_behaviour.html">MonoBehaviour</a> resolverComponent, <a class="code" href="namespace_d_e_l_tation_1_1_d_i_framework.html#ac6f453b41c84b3e7ee519a4432d219d1">DependencySource</a> dependencySource)</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;        {</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;            ResolverComponent = resolverComponent;</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;            <a class="code" href="namespace_d_e_l_tation_1_1_d_i_framework.html#ac6f453b41c84b3e7ee519a4432d219d1">DependencySource</a> = dependencySource;</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;            _resolutionFunction = Resolve;</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;            _bakedIsAffectedExtraCondition = IsAffectedExtraCondition;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        }</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        <span class="keyword">public</span> <a class="code" href="class_mono_behaviour.html">MonoBehaviour</a> ResolverComponent { <span class="keyword">get</span>; <span class="keyword">set</span>; }</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        <span class="keyword">public</span> <a class="code" href="namespace_d_e_l_tation_1_1_d_i_framework.html#ac6f453b41c84b3e7ee519a4432d219d1">DependencySource</a> <a class="code" href="namespace_d_e_l_tation_1_1_d_i_framework.html#ac6f453b41c84b3e7ee519a4432d219d1">DependencySource</a> { <span class="keyword">get</span>; <span class="keyword">set</span>; }</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> Clear()</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        {</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;            _cache.Clear();</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;            _affectedComponents.Clear();</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        }</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        <span class="keyword">public</span> <span class="keywordtype">bool</span> CanBeResolvedSafe(<a class="code" href="class_mono_behaviour.html">MonoBehaviour</a> component, Type type, out <a class="code" href="namespace_d_e_l_tation_1_1_d_i_framework.html#ac6f453b41c84b3e7ee519a4432d219d1">DependencySource</a> actualSource)</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        {</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;            var context = <span class="keyword">new</span> ResolutionContext(ResolverComponent, component);</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespace_d_e_l_tation_1_1_d_i_framework.html#ac6f453b41c84b3e7ee519a4432d219d1">DependencySource</a>.CanBeResolvedSafe(context, type, out actualSource);</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        }</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> Resolve()</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        {</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;            _affectedComponents.Clear();</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;            var extraCondition = UseBakedData ? _bakedIsAffectedExtraCondition : <span class="keyword">null</span>;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;            <a class="code" href="class_d_e_l_tation_1_1_d_i_framework_1_1_resolution_1_1_injection.html">Injection</a>.GetAffectedComponents(_affectedComponents, ResolverComponent.transform, extraCondition);</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;            <span class="keywordflow">foreach</span> (var (component, _) in _affectedComponents)</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;            {</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;                Inject(component);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            }</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            _cache.Clear();</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        }</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            _cache.Clear();</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        }</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keywordtype">bool</span> UseBakedData =&gt; <a class="code" href="class_d_e_l_tation_1_1_d_i_framework_1_1_di_settings.html">DiSettings</a>.<a class="code" href="class_d_e_l_tation_1_1_d_i_framework_1_1_di_settings.html#afaccc86edf24c89e89e018b4d473d0ed">TryGetInstance</a>(out var settings) &amp;&amp;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                                            settings.UseBakedData;</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keywordtype">bool</span> IsAffectedExtraCondition(<a class="code" href="class_mono_behaviour.html">MonoBehaviour</a> mb) =&gt; <a class="code" href="class_d_e_l_tation_1_1_d_i_framework_1_1_baking_1_1_baked_injection.html">BakedInjection</a>.<a class="code" href="class_d_e_l_tation_1_1_d_i_framework_1_1_baking_1_1_baked_injection.html#a3696c54d8114e58e8b2cb60bce45d099">IsBaked</a>(mb.GetType());</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <span class="keyword">private</span> <span class="keywordtype">void</span> Inject(<a class="code" href="class_mono_behaviour.html">MonoBehaviour</a> component)</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        {</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            <span class="keywordflow">if</span> (UseBakedData &amp;&amp; <a class="code" href="class_d_e_l_tation_1_1_d_i_framework_1_1_baking_1_1_baked_injection.html">BakedInjection</a>.<a class="code" href="class_d_e_l_tation_1_1_d_i_framework_1_1_baking_1_1_baked_injection.html#a8e24e846c159f0d28ff14cb33779f481">TryInject</a>(component, _resolutionFunction)) <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            var methods = <a class="code" href="class_d_e_l_tation_1_1_d_i_framework_1_1_resolution_1_1_injection.html">Injection</a>.<a class="code" href="class_d_e_l_tation_1_1_d_i_framework_1_1_resolution_1_1_injection.html#aa2786d5daaf6bf50489f6b6ad11c14d7">GetConstructMethods</a>(component.GetType());</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            <span class="keywordflow">for</span> (var index = 0; index &lt; methods.Count; index++)</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            {</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                InjectThrough(component, methods[index]);</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            }</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        }</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <span class="keyword">private</span> <span class="keywordtype">void</span> InjectThrough(<a class="code" href="class_mono_behaviour.html">MonoBehaviour</a> component, MethodInfo method)</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        {</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;            <span class="keywordflow">if</span> (!<a class="code" href="class_d_e_l_tation_1_1_d_i_framework_1_1_resolution_1_1_injection.html">Injection</a>.<a class="code" href="class_d_e_l_tation_1_1_d_i_framework_1_1_resolution_1_1_injection.html#a66cc2de7a9b87ad47852a3135b83a976">TryGetInjectableParameters</a>(method, out var parameters))</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                <span class="keywordflow">throw</span> <span class="keyword">new</span> <a class="code" href="class_d_e_l_tation_1_1_d_i_framework_1_1_exceptions_1_1_not_injectable_exception.html">NotInjectableException</a>(component, method.Name);</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            var arguments = <a class="code" href="class_d_e_l_tation_1_1_d_i_framework_1_1_resolution_1_1_injection.html">Injection</a>.RentArgumentsArray(parameters.Count);</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            <span class="keywordflow">for</span> (var index = 0; index &lt; parameters.Count; index++)</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            {</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;                var parameter = parameters[index];</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;                arguments[index] = Resolve(component, parameter.ParameterType);</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            }</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            method.Invoke(component, arguments);</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            <span class="keywordflow">for</span> (var index = 0; index &lt; arguments.Length; index++)</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            {</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;                arguments[index] = <span class="keyword">null</span>;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            }</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            <a class="code" href="class_d_e_l_tation_1_1_d_i_framework_1_1_resolution_1_1_injection.html">Injection</a>.ReturnArgumentsArray(arguments);</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        }</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        <span class="keyword">private</span> <span class="keywordtype">object</span> Resolve(<a class="code" href="class_mono_behaviour.html">MonoBehaviour</a> component, Type type)</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        {</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;            <span class="keywordflow">if</span> (_cache.TryGet(type, out var dependency)) <span class="keywordflow">return</span> dependency;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;            var context = <span class="keyword">new</span> ResolutionContext(ResolverComponent, component);</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;            <span class="keywordflow">if</span> (<a class="code" href="namespace_d_e_l_tation_1_1_d_i_framework.html#ac6f453b41c84b3e7ee519a4432d219d1">DependencySource</a>.TryResolve(context, type, out dependency, out var actualSource))</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;            {</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                <span class="keywordflow">if</span> (IsCacheable(actualSource))</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                    _cache.TryRegister(dependency, out _);</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;                <span class="keywordflow">return</span> dependency;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;            }</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; </div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;            <span class="keywordflow">throw</span> <span class="keyword">new</span> <a class="code" href="class_d_e_l_tation_1_1_d_i_framework_1_1_exceptions_1_1_dependency_not_resolved_exception.html">DependencyNotResolvedException</a>(type);</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        }</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keywordtype">bool</span> IsCacheable(<a class="code" href="namespace_d_e_l_tation_1_1_d_i_framework.html#ac6f453b41c84b3e7ee519a4432d219d1">DependencySource</a> source) =&gt; source != <a class="code" href="namespace_d_e_l_tation_1_1_d_i_framework.html#ac6f453b41c84b3e7ee519a4432d219d1">DependencySource</a>.Local;</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        <span class="keyword">private</span> readonly <a class="code" href="namespace_d_e_l_tation_1_1_d_i_framework_1_1_baking.html#a39ab7447a51fdbf35e06aa5d29aa3686">ResolutionFunction</a> _resolutionFunction;</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        <span class="keyword">private</span> readonly Func&lt;MonoBehaviour, bool&gt; _bakedIsAffectedExtraCondition;</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        <span class="keyword">private</span> readonly TypedCache _cache = <span class="keyword">new</span> TypedCache();</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; </div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        <span class="keyword">private</span> readonly List&lt;(<a class="code" href="class_mono_behaviour.html">MonoBehaviour</a> component, <span class="keywordtype">int</span> depth)&gt; _affectedComponents =</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;            <span class="keyword">new</span> List&lt;(<a class="code" href="class_mono_behaviour.html">MonoBehaviour</a>, <span class="keywordtype">int</span> depth)&gt;();</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    }</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;}</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            <span class="keywordflow">if</span> (UseBakedData &amp;&amp; <a class="code" href="class_d_e_l_tation_1_1_d_i_framework_1_1_baking_1_1_baked_injection.html">BakedInjection</a>.<a class="code" href="class_d_e_l_tation_1_1_d_i_framework_1_1_baking_1_1_baked_injection.html#a8e24e846c159f0d28ff14cb33779f481">TryInject</a>(component, _resolutionFunction))</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            var methods = <a class="code" href="class_d_e_l_tation_1_1_d_i_framework_1_1_resolution_1_1_injection.html">Injection</a>.<a class="code" href="class_d_e_l_tation_1_1_d_i_framework_1_1_resolution_1_1_injection.html#aa2786d5daaf6bf50489f6b6ad11c14d7">GetConstructMethods</a>(component.GetType());</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            <span class="keywordflow">for</span> (var index = 0; index &lt; methods.Count; index++)</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            {</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                InjectThrough(component, methods[index]);</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            }</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        }</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        <span class="keyword">private</span> <span class="keywordtype">void</span> InjectThrough(<a class="code" href="class_mono_behaviour.html">MonoBehaviour</a> component, MethodInfo method)</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        {</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            <span class="keywordflow">if</span> (!<a class="code" href="class_d_e_l_tation_1_1_d_i_framework_1_1_resolution_1_1_injection.html">Injection</a>.<a class="code" href="class_d_e_l_tation_1_1_d_i_framework_1_1_resolution_1_1_injection.html#a66cc2de7a9b87ad47852a3135b83a976">TryGetInjectableParameters</a>(method, out var parameters))</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;                <span class="keywordflow">throw</span> <span class="keyword">new</span> <a class="code" href="class_d_e_l_tation_1_1_d_i_framework_1_1_exceptions_1_1_not_injectable_exception.html">NotInjectableException</a>(component, method.Name);</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            var arguments = <a class="code" href="class_d_e_l_tation_1_1_d_i_framework_1_1_resolution_1_1_injection.html">Injection</a>.RentArgumentsArray(parameters.Count);</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            <span class="keywordflow">for</span> (var index = 0; index &lt; parameters.Count; index++)</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            {</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;                var parameter = parameters[index];</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                arguments[index] = Resolve(component, parameter.ParameterType);</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            }</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            method.Invoke(component, arguments);</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            <span class="keywordflow">for</span> (var index = 0; index &lt; arguments.Length; index++)</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            {</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;                arguments[index] = <span class="keyword">null</span>;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            }</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            <a class="code" href="class_d_e_l_tation_1_1_d_i_framework_1_1_resolution_1_1_injection.html">Injection</a>.ReturnArgumentsArray(arguments);</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        }</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        <span class="keyword">private</span> <span class="keywordtype">object</span> Resolve(<a class="code" href="class_mono_behaviour.html">MonoBehaviour</a> component, Type type)</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        {</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;            <span class="keywordflow">if</span> (_cache.TryGet(type, out var dependency)) <span class="keywordflow">return</span> dependency;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;            var context = <span class="keyword">new</span> ResolutionContext(ResolverComponent, component);</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;            <span class="keywordflow">if</span> (<a class="code" href="namespace_d_e_l_tation_1_1_d_i_framework.html#ac6f453b41c84b3e7ee519a4432d219d1">DependencySource</a>.TryResolve(context, type, out dependency, out var actualSource))</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            {</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                <span class="keywordflow">if</span> (IsCacheable(actualSource))</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                    _cache.TryRegister(dependency, out _);</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;                <span class="keywordflow">return</span> dependency;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;            }</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            <span class="keywordflow">throw</span> <span class="keyword">new</span> <a class="code" href="class_d_e_l_tation_1_1_d_i_framework_1_1_exceptions_1_1_dependency_not_resolved_exception.html">DependencyNotResolvedException</a>(type);</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        }</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keywordtype">bool</span> IsCacheable(<a class="code" href="namespace_d_e_l_tation_1_1_d_i_framework.html#ac6f453b41c84b3e7ee519a4432d219d1">DependencySource</a> source) =&gt; source != <a class="code" href="namespace_d_e_l_tation_1_1_d_i_framework.html#ac6f453b41c84b3e7ee519a4432d219d1">DependencySource</a>.Local;</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160; </div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        <span class="keyword">private</span> readonly <a class="code" href="namespace_d_e_l_tation_1_1_d_i_framework_1_1_baking.html#abc6bb178967c0baac1175ce866aa3b92">ResolutionFunction</a> _resolutionFunction;</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        <span class="keyword">private</span> readonly Func&lt;MonoBehaviour, bool&gt; _bakedIsAffectedExtraCondition;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        <span class="keyword">private</span> readonly TypedCache _cache = <span class="keyword">new</span> TypedCache();</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160; </div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        <span class="keyword">private</span> readonly List&lt;(<a class="code" href="class_mono_behaviour.html">MonoBehaviour</a> component, <span class="keywordtype">int</span> depth)&gt; _affectedComponents =</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;            <span class="keyword">new</span> List&lt;(<a class="code" href="class_mono_behaviour.html">MonoBehaviour</a>, <span class="keywordtype">int</span> depth)&gt;();</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    }</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;}</div>
 <div class="ttc" id="aclass_d_e_l_tation_1_1_d_i_framework_1_1_baking_1_1_baked_injection_html"><div class="ttname"><a href="class_d_e_l_tation_1_1_d_i_framework_1_1_baking_1_1_baked_injection.html">DELTation.DIFramework.Baking.BakedInjection</a></div><div class="ttdef"><b>Definition:</b> <a href="_baked_injection_8cs_source.html#l00008">BakedInjection.cs:9</a></div></div>
-<div class="ttc" id="aclass_d_e_l_tation_1_1_d_i_framework_1_1_baking_1_1_baked_injection_html_a3696c54d8114e58e8b2cb60bce45d099"><div class="ttname"><a href="class_d_e_l_tation_1_1_d_i_framework_1_1_baking_1_1_baked_injection.html#a3696c54d8114e58e8b2cb60bce45d099">DELTation.DIFramework.Baking.BakedInjection.IsBaked</a></div><div class="ttdeci">static bool IsBaked([NotNull] Type type)</div><div class="ttdef"><b>Definition:</b> <a href="_baked_injection_8cs_source.html#l00034">BakedInjection.cs:34</a></div></div>
-<div class="ttc" id="aclass_d_e_l_tation_1_1_d_i_framework_1_1_baking_1_1_baked_injection_html_a8e24e846c159f0d28ff14cb33779f481"><div class="ttname"><a href="class_d_e_l_tation_1_1_d_i_framework_1_1_baking_1_1_baked_injection.html#a8e24e846c159f0d28ff14cb33779f481">DELTation.DIFramework.Baking.BakedInjection.TryInject</a></div><div class="ttdeci">static bool TryInject([NotNull] MonoBehaviour component, [NotNull] ResolutionFunction resolutionFunction)</div><div class="ttdef"><b>Definition:</b> <a href="_baked_injection_8cs_source.html#l00010">BakedInjection.cs:10</a></div></div>
+<div class="ttc" id="aclass_d_e_l_tation_1_1_d_i_framework_1_1_baking_1_1_baked_injection_html_a3696c54d8114e58e8b2cb60bce45d099"><div class="ttname"><a href="class_d_e_l_tation_1_1_d_i_framework_1_1_baking_1_1_baked_injection.html#a3696c54d8114e58e8b2cb60bce45d099">DELTation.DIFramework.Baking.BakedInjection.IsBaked</a></div><div class="ttdeci">static bool IsBaked([NotNull] Type type)</div><div class="ttdef"><b>Definition:</b> <a href="_baked_injection_8cs_source.html#l00062">BakedInjection.cs:62</a></div></div>
+<div class="ttc" id="aclass_d_e_l_tation_1_1_d_i_framework_1_1_baking_1_1_baked_injection_html_a8e24e846c159f0d28ff14cb33779f481"><div class="ttname"><a href="class_d_e_l_tation_1_1_d_i_framework_1_1_baking_1_1_baked_injection.html#a8e24e846c159f0d28ff14cb33779f481">DELTation.DIFramework.Baking.BakedInjection.TryInject</a></div><div class="ttdeci">static bool TryInject([NotNull] MonoBehaviour component, [NotNull] ResolutionFunction resolutionFunction)</div><div class="ttdef"><b>Definition:</b> <a href="_baked_injection_8cs_source.html#l00012">BakedInjection.cs:12</a></div></div>
+<div class="ttc" id="aclass_d_e_l_tation_1_1_d_i_framework_1_1_di_settings_html"><div class="ttname"><a href="class_d_e_l_tation_1_1_d_i_framework_1_1_di_settings.html">DELTation.DIFramework.DiSettings</a></div><div class="ttdef"><b>Definition:</b> <a href="_di_settings_8cs_source.html#l00010">DiSettings.cs:11</a></div></div>
+<div class="ttc" id="aclass_d_e_l_tation_1_1_d_i_framework_1_1_di_settings_html_afaccc86edf24c89e89e018b4d473d0ed"><div class="ttname"><a href="class_d_e_l_tation_1_1_d_i_framework_1_1_di_settings.html#afaccc86edf24c89e89e018b4d473d0ed">DELTation.DIFramework.DiSettings.TryGetInstance</a></div><div class="ttdeci">static bool TryGetInstance(out DiSettings settings)</div><div class="ttdef"><b>Definition:</b> <a href="_di_settings_8cs_source.html#l00033">DiSettings.cs:33</a></div></div>
 <div class="ttc" id="aclass_d_e_l_tation_1_1_d_i_framework_1_1_exceptions_1_1_dependency_not_resolved_exception_html"><div class="ttname"><a href="class_d_e_l_tation_1_1_d_i_framework_1_1_exceptions_1_1_dependency_not_resolved_exception.html">DELTation.DIFramework.Exceptions.DependencyNotResolvedException</a></div><div class="ttdef"><b>Definition:</b> <a href="_dependency_not_resolved_exception_8cs_source.html#l00006">DependencyNotResolvedException.cs:7</a></div></div>
 <div class="ttc" id="aclass_d_e_l_tation_1_1_d_i_framework_1_1_exceptions_1_1_not_injectable_exception_html"><div class="ttname"><a href="class_d_e_l_tation_1_1_d_i_framework_1_1_exceptions_1_1_not_injectable_exception.html">DELTation.DIFramework.Exceptions.NotInjectableException</a></div><div class="ttdef"><b>Definition:</b> <a href="_not_injectable_exception_8cs_source.html#l00007">NotInjectableException.cs:8</a></div></div>
 <div class="ttc" id="aclass_d_e_l_tation_1_1_d_i_framework_1_1_resolution_1_1_injection_html"><div class="ttname"><a href="class_d_e_l_tation_1_1_d_i_framework_1_1_resolution_1_1_injection.html">DELTation.DIFramework.Resolution.Injection</a></div><div class="ttdoc">Contains methods related to injection of dependencies.</div><div class="ttdef"><b>Definition:</b> <a href="_injection_8cs_source.html#l00013">Injection.cs:14</a></div></div>
@@ -211,7 +214,7 @@ $(document).ready(function(){initNavTree('_cached_component_resolver_8cs_source.
 <div class="ttc" id="aclass_d_e_l_tation_1_1_d_i_framework_1_1_resolution_1_1_injection_html_aa2786d5daaf6bf50489f6b6ad11c14d7"><div class="ttname"><a href="class_d_e_l_tation_1_1_d_i_framework_1_1_resolution_1_1_injection.html#aa2786d5daaf6bf50489f6b6ad11c14d7">DELTation.DIFramework.Resolution.Injection.GetConstructMethods</a></div><div class="ttdeci">static IReadOnlyList&lt; MethodInfo &gt; GetConstructMethods(Type type)</div><div class="ttdef"><b>Definition:</b> <a href="_injection_8cs_source.html#l00178">Injection.cs:178</a></div></div>
 <div class="ttc" id="aclass_mono_behaviour_html"><div class="ttname"><a href="class_mono_behaviour.html">MonoBehaviour</a></div></div>
 <div class="ttc" id="anamespace_d_e_l_tation_1_1_d_i_framework_1_1_baking_html"><div class="ttname"><a href="namespace_d_e_l_tation_1_1_d_i_framework_1_1_baking.html">DELTation.DIFramework.Baking</a></div><div class="ttdef"><b>Definition:</b> <a href="_baked_injection_8cs_source.html#l00006">BakedInjection.cs:7</a></div></div>
-<div class="ttc" id="anamespace_d_e_l_tation_1_1_d_i_framework_1_1_baking_html_a39ab7447a51fdbf35e06aa5d29aa3686"><div class="ttname"><a href="namespace_d_e_l_tation_1_1_d_i_framework_1_1_baking.html#a39ab7447a51fdbf35e06aa5d29aa3686">DELTation.DIFramework.Baking.ResolutionFunction</a></div><div class="ttdeci">delegate object ResolutionFunction(MonoBehaviour component, Type type)</div></div>
+<div class="ttc" id="anamespace_d_e_l_tation_1_1_d_i_framework_1_1_baking_html_abc6bb178967c0baac1175ce866aa3b92"><div class="ttname"><a href="namespace_d_e_l_tation_1_1_d_i_framework_1_1_baking.html#abc6bb178967c0baac1175ce866aa3b92">DELTation.DIFramework.Baking.ResolutionFunction</a></div><div class="ttdeci">delegate object ResolutionFunction([NotNull] MonoBehaviour component, [NotNull] Type type)</div></div>
 <div class="ttc" id="anamespace_d_e_l_tation_1_1_d_i_framework_1_1_exceptions_html"><div class="ttname"><a href="namespace_d_e_l_tation_1_1_d_i_framework_1_1_exceptions.html">DELTation.DIFramework.Exceptions</a></div><div class="ttdef"><b>Definition:</b> <a href="_dependency_already_registered_8cs_source.html#l00004">DependencyAlreadyRegistered.cs:5</a></div></div>
 <div class="ttc" id="anamespace_d_e_l_tation_1_1_d_i_framework_1_1_resolution_html"><div class="ttname"><a href="namespace_d_e_l_tation_1_1_d_i_framework_1_1_resolution.html">DELTation.DIFramework.Resolution</a></div><div class="ttdef"><b>Definition:</b> <a href="_cached_component_resolver_8cs_source.html#l00008">CachedComponentResolver.cs:9</a></div></div>
 <div class="ttc" id="anamespace_d_e_l_tation_1_1_d_i_framework_html"><div class="ttname"><a href="namespace_d_e_l_tation_1_1_d_i_framework.html">DELTation.DIFramework</a></div><div class="ttdef"><b>Definition:</b> <a href="_baked_injection_8cs_source.html#l00006">BakedInjection.cs:7</a></div></div>

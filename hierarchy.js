@@ -37,6 +37,7 @@ var hierarchy =
       [ "DELTation.DIFramework.Resolver", "class_d_e_l_tation_1_1_d_i_framework_1_1_resolver.html", null ],
       [ "DELTation.DIFramework.RootDependencyContainer", "class_d_e_l_tation_1_1_d_i_framework_1_1_root_dependency_container.html", null ]
     ] ],
+    [ "DELTation.DIFramework.Resolution.PocoInjection", "class_d_e_l_tation_1_1_d_i_framework_1_1_resolution_1_1_poco_injection.html", null ],
     [ "DELTation.DIFramework.Reporting.ResolverReport", "class_d_e_l_tation_1_1_d_i_framework_1_1_reporting_1_1_resolver_report.html", null ],
     [ "ScriptableObject", "class_scriptable_object.html", [
       [ "DELTation.DIFramework.DiSettings", "class_d_e_l_tation_1_1_d_i_framework_1_1_di_settings.html", null ]

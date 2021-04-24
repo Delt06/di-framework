@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['componentsdata_265',['ComponentsData',['../class_d_e_l_tation_1_1_d_i_framework_1_1_reporting_1_1_resolver_report.html#a50f4efd3c54d476ed6cc5d2485f87ac0',1,'DELTation::DIFramework::Reporting::ResolverReport']]]
+  ['bakedinjectionfunctionscount_286',['BakedInjectionFunctionsCount',['../class_d_e_l_tation_1_1_d_i_framework_1_1_baking_1_1_baked_injection.html#a195e6b071bc76ab9a6125f45ce0879c1',1,'DELTation::DIFramework::Baking::BakedInjection']]],
+  ['bakedpocoinstantiationfunctionscount_287',['BakedPocoInstantiationFunctionsCount',['../class_d_e_l_tation_1_1_d_i_framework_1_1_baking_1_1_baked_injection.html#a1dc422f5bbb8ae0660d3cc5a8200700a',1,'DELTation::DIFramework::Baking::BakedInjection']]]
 ];

@@ -28,7 +28,8 @@ var annotated_dup =
           [ "ResolverReport", "class_d_e_l_tation_1_1_d_i_framework_1_1_reporting_1_1_resolver_report.html", "class_d_e_l_tation_1_1_d_i_framework_1_1_reporting_1_1_resolver_report" ]
         ] ],
         [ "Resolution", "namespace_d_e_l_tation_1_1_d_i_framework_1_1_resolution.html", [
-          [ "Injection", "class_d_e_l_tation_1_1_d_i_framework_1_1_resolution_1_1_injection.html", "class_d_e_l_tation_1_1_d_i_framework_1_1_resolution_1_1_injection" ]
+          [ "Injection", "class_d_e_l_tation_1_1_d_i_framework_1_1_resolution_1_1_injection.html", "class_d_e_l_tation_1_1_d_i_framework_1_1_resolution_1_1_injection" ],
+          [ "PocoInjection", "class_d_e_l_tation_1_1_d_i_framework_1_1_resolution_1_1_poco_injection.html", "class_d_e_l_tation_1_1_d_i_framework_1_1_resolution_1_1_poco_injection" ]
         ] ],
         [ "Sorting", "namespace_d_e_l_tation_1_1_d_i_framework_1_1_sorting.html", [
           [ "TopologicalSorting", "class_d_e_l_tation_1_1_d_i_framework_1_1_sorting_1_1_topological_sorting.html", "class_d_e_l_tation_1_1_d_i_framework_1_1_sorting_1_1_topological_sorting" ]

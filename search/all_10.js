@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['unity_20di_20framework_129',['Unity DI Framework',['../index.html',1,'']]],
-  ['usebakeddata_130',['UseBakedData',['../class_d_e_l_tation_1_1_d_i_framework_1_1_resolver.html#af4b9da07bd54002619d8db484b88180c',1,'DELTation::DIFramework::Resolver']]]
+  ['unity_20di_20framework_141',['Unity DI Framework',['../index.html',1,'']]],
+  ['usebakeddata_142',['UseBakedData',['../class_d_e_l_tation_1_1_d_i_framework_1_1_di_settings.html#a3f2e3b135958057913289531e894e3c3',1,'DELTation::DIFramework::DiSettings']]]
 ];
