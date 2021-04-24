@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using JetBrains.Annotations;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -116,7 +115,7 @@ namespace DELTation.DIFramework.Resolution
             return false;
         }
 
-        internal static bool TryResolveGlobally(this DependencySource source,
+        private static bool TryResolveGlobally(this DependencySource source,
             [NotNull] RootDependencyContainer container,
             [NotNull] Type type, out object result,
             out DependencySource actualSource)
@@ -147,7 +146,18 @@ namespace DELTation.DIFramework.Resolution
             }
 
             var containers = Object.FindObjectsOfType<RootDependencyContainer>();
-            var canBeResolved = containers.Any(container => container.CanBeResolvedSafe(type));
+
+            var canBeResolved = false;
+
+            foreach (var container in containers)
+            {
+                if (container.CanBeResolvedSafe(type))
+                {
+                    canBeResolved = true;
+                    break;
+                }
+            }
+
             actualSource = canBeResolved ? DependencySource.Global : default;
             return canBeResolved;
         }
