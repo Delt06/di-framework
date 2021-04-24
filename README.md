@@ -12,17 +12,18 @@ A simple Unity framework to inject dependencies into your components. The projec
 > Developed and tested with Unity 2019.4.17f1 LTS
 
 ## Table of contents
-- [Key Features](#key-features)
+- [Key Features](#key-features-and-concepts)
 - [Installation](#installation)
 - [Setting Up](#setting-up)
 - [Projects using DI Framework](#projects-using-di-framework)
 - [Documentation](#documentation)
 
-## Key Features
+## Key Features and Concepts
 - Simple and consistent injection mechanisms
     -  Method injection for `MonoBehaviour`s (through all suitable methods named `Construct`)
     -  Constructor injection for standard C# classes (a.k.a. POCO)
 - Can inject anytime, not only on scene start
+- The framework is designed for writing code without direct dependencies on the framework itself. You will not have to include framework's namespaces everywhere.
 - Context-aware injection: dependencies can be automatically fulfilled with components found in children and parents
 - Baking: to avoid reflection (and to improve performance), injection can be baked via automatic code generation
 - General-purpose API: `Di` class contains convenience methods that provide access to explicit injection and object instantiation
