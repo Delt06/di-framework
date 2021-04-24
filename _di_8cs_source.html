@@ -135,8 +135,15 @@ $(document).ready(function(){initNavTree('_di_8cs_source.html',''); initResizabl
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            <span class="keywordflow">return</span> objects;</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        }</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    }</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;}</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        <span class="keyword">public</span> <span class="keyword">static</span> T Create&lt;T&gt;() where T : class</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        {</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            var type = typeof(T);</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;            <span class="keywordflow">if</span> (type.IsAbstract) <span class="keywordflow">throw</span> <span class="keyword">new</span> ArgumentException($<span class="stringliteral">&quot;{type} is abstract and thus cannot be instantiated.&quot;</span>);</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;            <span class="keywordflow">return</span> (T) PocoInjection.CreateInstance(type, TryResolveGlobally);</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        }</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    }</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;}</div>
 <div class="ttc" id="anamespace_d_e_l_tation_1_1_d_i_framework_1_1_resolution_html"><div class="ttname"><a href="namespace_d_e_l_tation_1_1_d_i_framework_1_1_resolution.html">DELTation.DIFramework.Resolution</a></div><div class="ttdef"><b>Definition:</b> <a href="_cached_component_resolver_8cs_source.html#l00008">CachedComponentResolver.cs:9</a></div></div>
 <div class="ttc" id="anamespace_d_e_l_tation_1_1_d_i_framework_html"><div class="ttname"><a href="namespace_d_e_l_tation_1_1_d_i_framework.html">DELTation.DIFramework</a></div><div class="ttdef"><b>Definition:</b> <a href="_baked_injection_8cs_source.html#l00006">BakedInjection.cs:7</a></div></div>
 <div class="ttc" id="anamespace_d_e_l_tation_1_1_d_i_framework_html_ac6f453b41c84b3e7ee519a4432d219d1"><div class="ttname"><a href="namespace_d_e_l_tation_1_1_d_i_framework.html#ac6f453b41c84b3e7ee519a4432d219d1">DELTation.DIFramework.DependencySource</a></div><div class="ttdeci">DependencySource</div><div class="ttdef"><b>Definition:</b> <a href="_dependency_source_8cs_source.html#l00006">DependencySource.cs:7</a></div></div>
