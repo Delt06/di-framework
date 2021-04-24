@@ -113,6 +113,7 @@ Key Features and Concepts</h1>
 <li>Can inject anytime, not only on scene start.</li>
 <li>The framework is designed for writing code without direct dependencies on the framework itself. You will not have to include framework's namespaces everywhere.</li>
 <li>Context-aware injection: dependencies can be automatically fulfilled with components found in children and parents.</li>
+<li>Potential problems are exposed even before running the game: <code>Resolver</code> has a custom Inspector, which shows all dependencies of the object and specifies whether they may be fulfilled.</li>
 <li>Baking: to avoid reflection (and to improve performance), injection can be baked via automatic code generation.</li>
 <li>General-purpose API: <code>Di</code> class contains convenience methods that provide access to explicit injection and object instantiation.</li>
 </ul>
