@@ -36,8 +36,11 @@ namespace DELTation.DIFramework.Resolution
         public void Resolve()
         {
             _affectedComponents.Clear();
+
             var extraCondition = UseBakedData ? _bakedIsAffectedExtraCondition : null;
-            Injection.GetAffectedComponents(_affectedComponents, GameObject.transform, extraCondition);
+            var transform = GameObject.transform;
+            if (!Injection.TryGetAffectedComponentsFast(_affectedComponents, transform, extraCondition))
+                Injection.GetAffectedComponents(_affectedComponents, transform, extraCondition);
 
             foreach (var (component, _) in _affectedComponents)
             {

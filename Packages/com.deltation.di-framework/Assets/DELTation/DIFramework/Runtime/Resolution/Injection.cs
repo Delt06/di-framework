@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using DELTation.DIFramework.Pooling;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -145,11 +146,7 @@ namespace DELTation.DIFramework.Resolution
             for (var index = 0; index < tempComponentsList.Count; index++)
             {
                 var component = tempComponentsList[index];
-                if (component == null) continue;
-                if (component is Resolver) continue;
-
-                var extraConditionIsMet = isAffectedExtraCondition != null && isAffectedExtraCondition(component);
-                if (extraConditionIsMet || HasAtLeastOneConstructor(component))
+                if (IsAffected(component, isAffectedExtraCondition))
                     affectedComponents.Add((component, depth));
             }
 
@@ -162,6 +159,43 @@ namespace DELTation.DIFramework.Resolution
 
                 GetAffectedComponents(affectedComponents, child, isAffectedExtraCondition, depth + 1);
             }
+        }
+
+        internal static bool TryGetAffectedComponentsFast(List<(MonoBehaviour component, int depth)> affectedComponents,
+            Transform root, [CanBeNull] Func<MonoBehaviour, bool> isAffectedExtraCondition = null)
+        {
+            var resolvers = ListPool<Resolver>.Rent();
+            root.GetComponentsInChildren(resolvers);
+            if (resolvers.Count > 1)
+            {
+                ListPool<Resolver>.Return(resolvers);
+                return false;
+            }
+
+            ListPool<Resolver>.Return(resolvers);
+            var components = ListPool<MonoBehaviour>.Rent();
+            root.GetComponentsInChildren(true, components);
+
+            for (var i = 0; i < components.Count; i++)
+            {
+                var component = components[i];
+                if (IsAffected(component, isAffectedExtraCondition))
+                    affectedComponents.Add((component, 0));
+            }
+
+            ListPool<MonoBehaviour>.Return(components);
+            return true;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static bool IsAffected([CanBeNull] MonoBehaviour component,
+            [CanBeNull] Func<MonoBehaviour, bool> isAffectedExtraCondition)
+        {
+            if (component is Resolver) return false;
+            if (component == null) return false;
+
+            var extraConditionIsMet = isAffectedExtraCondition != null && isAffectedExtraCondition(component);
+            return extraConditionIsMet || HasAtLeastOneConstructor(component);
         }
 
         private static bool HasAtLeastOneConstructor(MonoBehaviour component) =>
