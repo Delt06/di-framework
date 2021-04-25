@@ -13,6 +13,7 @@ A simple Unity framework to inject dependencies into your components. The projec
 
 ## Table of contents
 - [Key Features and Concepts](#key-features-and-concepts)
+- [Motivation](#motivation)
 - [Installation](#installation)
 - [Setting Up](#setting-up)
 - [Projects using DI Framework](#projects-using-di-framework)
@@ -28,6 +29,74 @@ A simple Unity framework to inject dependencies into your components. The projec
 - Potential problems are exposed even before running the game: `Resolver` has a custom Inspector, which shows all dependencies of the object and specifies whether they may be fulfilled.
 - Baking: to avoid reflection (and to improve performance), injection can be baked via automatic code generation.
 - General-purpose API: `Di` class contains convenience methods that provide access to explicit injection and object instantiation.
+
+## Motivation
+When working on complex objects in Unity (e.g. characters in an open world game), there is frequently a need for one system of the object to reference another. For example, animation component may require a reference to a component that is responsible for vehicle entering/exiting. It may look like this:
+```c#
+public class VehicleEnteringAnimation : MonoBehaviour
+{
+    public VehicleInteraction Interaction;
+    
+    private void Update()
+    {
+        // do work with Interaction, e.g. react to its events
+    }
+}
+```
+However, with this approach there are at least 2 problems:
+- A need to always assign fields in Inspector (and maybe validate that they are assigned)
+- Cannot use interfaces: Unity does not serialize them
+
+There is an alternative approach:
+```c#
+public class VehicleEnteringAnimation : MonoBehaviour
+{
+    private VehicleInteraction _interaction;
+    
+    private void Update()
+    {
+        // do work with _interaction, e.g. react to its events
+    }
+    
+    private void Awake()
+    {
+        // find the component like this:
+        // _interaction = GetComponentInParent<VehicleInteraction>(); // can use interfaces now!
+        // or this:
+        // _interaction = FindObjectOfType<VechileInteraction(); // but here still cannot...
+    }
+}
+```
+
+This may work, but new problems have arisen:
+- The source of dependency is hardwired into component's code, not flexible
+- Sometimes requires to write lots of `GetComponent` calls
+
+DI Framework was created to solve exactly this problem. It supports the following notation:
+```c#
+public class VehicleEnteringAnimation : MonoBehaviour
+{
+    // interaction can come from anywhere, and finally can be an interface
+    public void Construct(VehicleInteraction interaction)
+    {
+        _interaction = interaction;
+    }
+
+    private VehicleInteraction _interaction;
+    
+    private void Update()
+    {
+        // do work with _interaction, e.g. react to its events
+    }
+```
+
+The final step is to add a component called `Resolver` to the game object to inject the dependency. One `Resolver` will take care of the game object it is attached to and of all its children.
+
+The benefits of the approach are:
+- Explicit dependencies: they are always visible at the top of the class definition
+- Testability: can call `Construct` method manually to inject anything there (useful for mocking)
+- Inversion of control: components no longer specify where the dependencies come from, this responsibility is offloaded to the `Resolver`
+- Validation: inability to resolve a dependency will be displayed in the Inspector of the object (at `Resolver`)
 
 ## Installation
 ### Option 1
