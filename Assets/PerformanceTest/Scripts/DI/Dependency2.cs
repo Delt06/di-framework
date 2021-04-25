@@ -1,9 +1,6 @@
 ﻿using UnityEngine;
 
-namespace PerformanceTest.Scripts
+namespace PerformanceTest.Scripts.DI
 {
-	public class Dependency2 : MonoBehaviour
-	{
-		
-	}
+    public class Dependency2 : MonoBehaviour { }
 }
