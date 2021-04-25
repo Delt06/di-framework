@@ -1,5 +1,6 @@
 var NAVTREEINDEX1 =
 {
+"namespace_d_e_l_tation_1_1_d_i_framework_1_1_baking.html#abc6bb178967c0baac1175ce866aa3b92":[1,0,0,0,0,4],
 "namespace_d_e_l_tation_1_1_d_i_framework_1_1_baking.html#abc919b1b93c06894f9bbee5f54fdbe9f":[1,0,0,0,0,2],
 "namespace_d_e_l_tation_1_1_d_i_framework_1_1_containers.html":[1,0,0,0,1],
 "namespace_d_e_l_tation_1_1_d_i_framework_1_1_editor.html":[1,0,0,0,2],

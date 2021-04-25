@@ -97,6 +97,7 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 Table of contents</h1>
 <ul>
 <li><a href="#key-features-and-concepts">Key Features and Concepts</a></li>
+<li><a href="#motivation">Motivation</a></li>
 <li><a href="#installation">Installation</a></li>
 <li><a href="#setting-up">Setting Up</a></li>
 <li><a href="#projects-using-di-framework">Projects using DI Framework</a></li>
@@ -118,18 +119,78 @@ Key Features and Concepts</h1>
 <li>General-purpose API: <code>Di</code> class contains convenience methods that provide access to explicit injection and object instantiation.</li>
 </ul>
 <h1><a class="anchor" id="autotoc_md3"></a>
+Motivation</h1>
+<p>When working on complex objects in Unity (e.g. characters in an open world game), there is frequently a need for one system of the object to reference another. For example, animation component may require a reference to a component that is responsible for vehicle entering/exiting. It may look like this: </p><div class="fragment"><div class="line"> {c#}</div>
+<div class="line">public class VehicleEnteringAnimation : MonoBehaviour</div>
+<div class="line">{</div>
+<div class="line">    public VehicleInteraction Interaction;</div>
+<div class="line">    </div>
+<div class="line">    private void Update()</div>
+<div class="line">    {</div>
+<div class="line">        // do work with Interaction, e.g. react to its events</div>
+<div class="line">    }</div>
+<div class="line">}</div>
+</div><!-- fragment --><p> However, with this approach there are at least 2 problems:</p><ul>
+<li>A need to always assign fields in Inspector (and maybe validate that they are assigned)</li>
+<li>Cannot use interfaces: Unity does not serialize them</li>
+</ul>
+<p>There is an alternative approach: </p><div class="fragment"><div class="line"> {c#}</div>
+<div class="line">public class VehicleEnteringAnimation : MonoBehaviour</div>
+<div class="line">{</div>
+<div class="line">    private VehicleInteraction _interaction;</div>
+<div class="line">    </div>
+<div class="line">    private void Update()</div>
+<div class="line">    {</div>
+<div class="line">        // do work with _interaction, e.g. react to its events</div>
+<div class="line">    }</div>
+<div class="line">    </div>
+<div class="line">    private void Awake()</div>
+<div class="line">    {</div>
+<div class="line">        // find the component like this:</div>
+<div class="line">        // _interaction = GetComponentInParent&lt;VehicleInteraction&gt;(); // can use interfaces now!</div>
+<div class="line">        // or this:</div>
+<div class="line">        // _interaction = FindObjectOfType&lt;VechileInteraction(); // but here still cannot...</div>
+<div class="line">    }</div>
+<div class="line">}</div>
+</div><!-- fragment --><p>This may work, but new problems have arisen:</p><ul>
+<li>The source of dependency is hardwired into component's code, not flexible</li>
+<li>Sometimes requires to write lots of <code>GetComponent</code> calls</li>
+</ul>
+<p>DI Framework was created to solve exactly this problem. It supports the following notation: </p><div class="fragment"><div class="line"> {c#}</div>
+<div class="line">public class VehicleEnteringAnimation : MonoBehaviour</div>
+<div class="line">{</div>
+<div class="line">    // interaction can come from anywhere, and finally can be an interface</div>
+<div class="line">    public void Construct(VehicleInteraction interaction)</div>
+<div class="line">    {</div>
+<div class="line">        _interaction = interaction;</div>
+<div class="line">    }</div>
+<div class="line"> </div>
+<div class="line">    private VehicleInteraction _interaction;</div>
+<div class="line">    </div>
+<div class="line">    private void Update()</div>
+<div class="line">    {</div>
+<div class="line">        // do work with _interaction, e.g. react to its events</div>
+<div class="line">    }</div>
+</div><!-- fragment --><p>The final step is to add a component called <code>Resolver</code> to the game object to inject the dependency. One <code>Resolver</code> will take care of the game object it is attached to and of all its children.</p>
+<p>The benefits of the approach are:</p><ul>
+<li>Explicit dependencies: they are always visible at the top of the class definition</li>
+<li>Testability: can call <code>Construct</code> method manually to inject anything there (useful for mocking)</li>
+<li>Inversion of control: components no longer specify where the dependencies come from, this responsibility is offloaded to the <code>Resolver</code></li>
+<li>Validation: inability to resolve a dependency will be displayed in the Inspector of the object (at <code>Resolver</code>)</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md4"></a>
 Installation</h1>
-<h2><a class="anchor" id="autotoc_md4"></a>
+<h2><a class="anchor" id="autotoc_md5"></a>
 Option 1</h2>
 <ul>
 <li>Open Package Manager through Window/Package Manager</li>
 <li>Click "+" and choose "Add package from git URL..."</li>
 <li>Insert the URL: <a href="https://github.com/Delt06/di-framework.git?path=Packages/com.deltation.di-framework">https://github.com/Delt06/di-framework.git?path=Packages/com.deltation.di-framework</a></li>
 </ul>
-<h2><a class="anchor" id="autotoc_md5"></a>
+<h2><a class="anchor" id="autotoc_md6"></a>
 Option 2</h2>
 <p>Add the following line to <code>Packages/manifest.json</code>: </p><div class="fragment"><div class="line">&quot;com.deltation.di-framework&quot;: &quot;https://github.com/Delt06/di-framework.git?path=Packages/com.deltation.di-framework&quot;,</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md6"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md7"></a>
 Setting up</h1>
 <ul>
 <li>Create a <code>GameObject</code> and attach a <code>Root Dependency Container</code> component.</li>
@@ -154,12 +215,12 @@ Setting up</h1>
 <div class="line">}</div>
 </div><!-- fragment --></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md7"></a>
+<h1><a class="anchor" id="autotoc_md8"></a>
 Projects using DI Framework</h1>
 <ul>
 <li><a href="https://github.com/Delt06/fps-roguelike">https://github.com/Delt06/fps-roguelike</a></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md8"></a>
+<h1><a class="anchor" id="autotoc_md9"></a>
 Documentation</h1>
 <ul>
 <li><a href="https://github.com/Delt06/di-framework/wiki">Wiki</a> <br  />
