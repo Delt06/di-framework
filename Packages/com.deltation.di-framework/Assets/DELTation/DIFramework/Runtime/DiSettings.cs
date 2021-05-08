@@ -62,8 +62,6 @@ namespace DELTation.DIFramework
 
             UnityEditor.AssetDatabase.CreateAsset(settings, AssetPath);
             UnityEditor.AssetDatabase.SaveAssets();
-
-            Debug.Log("Create new");
 #endif
 
             return settings;
