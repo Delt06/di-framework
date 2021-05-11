@@ -146,23 +146,24 @@ $(document).ready(function(){initNavTree('_di_settings_8cs_source.html',''); ini
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            var settings = CreateInstance&lt;DiSettings&gt;();</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="preprocessor">#if UNITY_EDITOR</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            <span class="keywordflow">if</span> (!UnityEditor.AssetDatabase.IsValidFolder(FullFolderName))</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                UnityEditor.AssetDatabase.CreateFolder(ParentFolder, Folder);</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            UnityEditor.AssetDatabase.CreateAsset(settings, AssetPath);</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            UnityEditor.AssetDatabase.SaveAssets();</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            <span class="keywordflow">return</span> settings;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        }</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <span class="keyword">private</span> <span class="keyword">static</span> DiSettings _instance;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <span class="keyword">private</span> <span class="keyword">const</span> <span class="keywordtype">string</span> AssetPath = FullFolderName + <span class="stringliteral">&quot;/DI Settings.asset&quot;</span>;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <span class="keyword">private</span> <span class="keyword">const</span> <span class="keywordtype">string</span> FullFolderName = ParentFolder + <span class="stringliteral">&quot;/&quot;</span> + Folder;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        <span class="keyword">private</span> <span class="keyword">const</span> <span class="keywordtype">string</span> ParentFolder = <span class="stringliteral">&quot;Assets&quot;</span>;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        <span class="keyword">private</span> <span class="keyword">const</span> <span class="keywordtype">string</span> Folder = <span class="stringliteral">&quot;Resources&quot;</span>;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    }</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;}</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            <span class="keyword">const</span> <span class="keywordtype">string</span> parentFolder = <span class="stringliteral">&quot;Assets&quot;</span>;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            <span class="keyword">const</span> <span class="keywordtype">string</span> folder = <span class="stringliteral">&quot;Resources&quot;</span>;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            <span class="keyword">const</span> <span class="keywordtype">string</span> fullFolderName = parentFolder + <span class="stringliteral">&quot;/&quot;</span> + folder;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            <span class="keyword">const</span> <span class="keywordtype">string</span> assetPath = fullFolderName + <span class="stringliteral">&quot;/DI Settings.asset&quot;</span>;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            <span class="keywordflow">if</span> (!UnityEditor.AssetDatabase.IsValidFolder(fullFolderName))</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                UnityEditor.AssetDatabase.CreateFolder(parentFolder, folder);</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;            UnityEditor.AssetDatabase.CreateAsset(settings, assetPath);</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            UnityEditor.AssetDatabase.SaveAssets();</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            <span class="keywordflow">return</span> settings;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        }</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        <span class="keyword">private</span> <span class="keyword">static</span> DiSettings _instance;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    }</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;}</div>
 <div class="ttc" id="aclass_d_e_l_tation_1_1_d_i_framework_1_1_di_settings_html"><div class="ttname"><a href="class_d_e_l_tation_1_1_d_i_framework_1_1_di_settings.html">DELTation.DIFramework.DiSettings</a></div><div class="ttdef"><b>Definition:</b> <a href="_di_settings_8cs_source.html#l00010">DiSettings.cs:11</a></div></div>
 <div class="ttc" id="aclass_d_e_l_tation_1_1_d_i_framework_1_1_di_settings_html_a3f2e3b135958057913289531e894e3c3"><div class="ttname"><a href="class_d_e_l_tation_1_1_d_i_framework_1_1_di_settings.html#a3f2e3b135958057913289531e894e3c3">DELTation.DIFramework.DiSettings.UseBakedData</a></div><div class="ttdeci">bool UseBakedData</div><div class="ttdef"><b>Definition:</b> <a href="_di_settings_8cs_source.html#l00018">DiSettings.cs:18</a></div></div>
 <div class="ttc" id="aclass_d_e_l_tation_1_1_d_i_framework_1_1_di_settings_html_a8c9de1f44619a2f210e6401cb852d216"><div class="ttname"><a href="class_d_e_l_tation_1_1_d_i_framework_1_1_di_settings.html#a8c9de1f44619a2f210e6401cb852d216">DELTation.DIFramework.DiSettings.ShowIconsInHierarchy</a></div><div class="ttdeci">bool ShowIconsInHierarchy</div><div class="ttdef"><b>Definition:</b> <a href="_di_settings_8cs_source.html#l00016">DiSettings.cs:16</a></div></div>
