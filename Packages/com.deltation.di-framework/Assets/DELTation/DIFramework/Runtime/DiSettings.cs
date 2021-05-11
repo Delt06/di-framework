@@ -57,10 +57,15 @@ namespace DELTation.DIFramework
             var settings = CreateInstance<DiSettings>();
 
 #if UNITY_EDITOR
-            if (!UnityEditor.AssetDatabase.IsValidFolder(FullFolderName))
-                UnityEditor.AssetDatabase.CreateFolder(ParentFolder, Folder);
+            const string parentFolder = "Assets";
+            const string folder = "Resources";
+            const string fullFolderName = parentFolder + "/" + folder;
+            const string assetPath = fullFolderName + "/DI Settings.asset";
 
-            UnityEditor.AssetDatabase.CreateAsset(settings, AssetPath);
+            if (!UnityEditor.AssetDatabase.IsValidFolder(fullFolderName))
+                UnityEditor.AssetDatabase.CreateFolder(parentFolder, folder);
+
+            UnityEditor.AssetDatabase.CreateAsset(settings, assetPath);
             UnityEditor.AssetDatabase.SaveAssets();
 #endif
 
@@ -68,9 +73,5 @@ namespace DELTation.DIFramework
         }
 
         private static DiSettings _instance;
-        private const string AssetPath = FullFolderName + "/DI Settings.asset";
-        private const string FullFolderName = ParentFolder + "/" + Folder;
-        private const string ParentFolder = "Assets";
-        private const string Folder = "Resources";
     }
 }
