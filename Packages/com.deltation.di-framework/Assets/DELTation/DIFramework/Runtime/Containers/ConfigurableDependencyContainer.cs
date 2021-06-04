@@ -12,15 +12,27 @@ namespace DELTation.DIFramework.Containers
         public ConfigurableDependencyContainer([NotNull] Action<ContainerBuilder> composeDependencies) =>
             _composeDependencies = composeDependencies ?? throw new ArgumentNullException(nameof(composeDependencies));
 
+        /// <summary>
+        /// Check dependency graph for loops.
+        /// </summary>
+        /// <returns>True if there is a loop, false otherwise.</returns>
+        public bool HasLoops()
+        {
+            var builder = new ContainerBuilder(TryResolve);
+            _composeDependencies(builder);
+            return !builder.TrySortTopologically(true);
+        }
+
         private void EnsureInitialized()
         {
             if (_initialized) return;
 
             _initialized = true;
 
-            var builder = new ContainerBuilder(this);
+            var builder = new ContainerBuilder(TryResolve);
             _composeDependencies(builder);
-            builder.SortTopologically();
+            if (!builder.TrySortTopologically())
+                throw new DependencyLoopException();
 
             for (var index = 0; index < builder.DependenciesCount; index++)
             {
@@ -33,7 +45,7 @@ namespace DELTation.DIFramework.Containers
         {
             if (type == null) throw new ArgumentNullException(nameof(type));
 
-            var builder = new ContainerBuilder(this);
+            var builder = new ContainerBuilder(TryResolve);
             _composeDependencies(builder);
 
             for (var i = 0; i < builder.DependenciesCount; i++)

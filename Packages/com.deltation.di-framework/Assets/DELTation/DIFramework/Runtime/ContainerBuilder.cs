@@ -38,7 +38,7 @@ namespace DELTation.DIFramework
             return this;
         }
 
-        public void SortTopologically()
+        public bool TrySortTopologically(bool dryRun = false)
         {
             var graph = ListPool<List<int>>.Rent();
 
@@ -68,7 +68,7 @@ namespace DELTation.DIFramework
             if (loop)
             {
                 ListPool<int>.Return(result);
-                throw new InvalidOperationException("Dependencies contain a loop.");
+                return false;
             }
 
             var sortedDependencies = ListPool<Dependency>.Rent();
@@ -79,15 +79,19 @@ namespace DELTation.DIFramework
                 sortedDependencies.Add(_dependencies[index]);
             }
 
-            _dependencies.Clear();
-
-            foreach (var dependency in sortedDependencies)
+            if (!dryRun)
             {
-                _dependencies.Add(dependency);
+                _dependencies.Clear();
+
+                foreach (var dependency in sortedDependencies)
+                {
+                    _dependencies.Add(dependency);
+                }
             }
 
             ListPool<Dependency>.Return(sortedDependencies);
             ListPool<int>.Return(result);
+            return true;
         }
 
         private void SortTopologically(ICollection<int> result, out bool loop)
@@ -169,10 +173,9 @@ namespace DELTation.DIFramework
         private static InvalidOperationException InvalidStateException() =>
             new InvalidOperationException("Invalid state: either object or type should be not null.");
 
-        internal ContainerBuilder([NotNull] IDependencyContainer container)
+        internal ContainerBuilder([NotNull] ResolutionFunction resolutionFunction)
         {
-            if (container == null) throw new ArgumentNullException(nameof(container));
-            _resolutionFunction = container.TryResolve;
+            _resolutionFunction = resolutionFunction ?? throw new ArgumentNullException(nameof(resolutionFunction));
         }
 
         private readonly ResolutionFunction _resolutionFunction;

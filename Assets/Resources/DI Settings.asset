@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: DI Settings
   m_EditorClassIdentifier: 
   _showIconsInHierarchy: 1
+  _showMissingResolverWarnings: 1
   _useBakedData: 1
   _bakedAssembliesRegex: ^Assembly-CSharp$

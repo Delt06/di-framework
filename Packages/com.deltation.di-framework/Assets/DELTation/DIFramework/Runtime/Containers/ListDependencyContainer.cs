@@ -6,6 +6,9 @@ using Object = UnityEngine.Object;
 
 namespace DELTation.DIFramework.Containers
 {
+    /// <summary>
+    /// Container that defines its object with a list.
+    /// </summary>
     [AddComponentMenu("Dependency Container/List Dependency Container")]
     public sealed class ListDependencyContainer : DependencyContainerBase
     {

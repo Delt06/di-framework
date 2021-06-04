@@ -3,6 +3,9 @@ using Component = UnityEngine.Component;
 
 namespace DELTation.DIFramework.Containers
 {
+    /// <summary>
+    /// Containers that registers all children.
+    /// </summary>
     [DisallowMultipleComponent, AddComponentMenu("Dependency Container/Children Dependency Container")]
     public sealed class ChildrenDependencyContainer : DependencyContainerBase
     {
