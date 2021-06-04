@@ -7,7 +7,7 @@
 
 [![Tests](https://github.com/Delt06/di-framework/actions/workflows/tests.yml/badge.svg)](https://github.com/Delt06/di-framework/actions/workflows/tests.yml)
 
-A simple Unity framework to inject dependencies into your components. The project contains a simple demo game to demonstrate the framework in action.
+A Unity framework to inject dependencies into your components. The project contains a simple demo game to demonstrate the framework in action.
 
 > Developed and tested with Unity 2019.4.17f1 LTS
 
