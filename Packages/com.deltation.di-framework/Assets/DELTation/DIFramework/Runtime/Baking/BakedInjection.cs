@@ -113,7 +113,7 @@ namespace DELTation.DIFramework.Baking
         /// The number of defined baked injection functions.
         /// </summary>
         public static int BakedInjectionFunctionsCount => BakedInjectionFunctions.Count;
-        
+
         /// <summary>
         /// The number of defined POCO instantiation functions.
         /// </summary>
