@@ -92,12 +92,15 @@ $(document).ready(function(){initNavTree('class_d_e_l_tation_1_1_d_i_framework_1
 <div class="title">DELTation.DIFramework.Baking.BakedInjection Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Hub to define baked injection and instantiation functions. Warning: for internal usage only.  
+ <a href="class_d_e_l_tation_1_1_d_i_framework_1_1_baking_1_1_baked_injection.html#details">More...</a></p>
 <div class="dynheader">
 Collaboration diagram for DELTation.DIFramework.Baking.BakedInjection:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_d_e_l_tation_1_1_d_i_framework_1_1_baking_1_1_baked_injection__coll__graph.png" border="0" usemap="#a_d_e_l_tation_8_d_i_framework_8_baking_8_baked_injection_coll__map" alt="Collaboration graph"/></div>
 <map name="a_d_e_l_tation_8_d_i_framework_8_baking_8_baked_injection_coll__map" id="a_d_e_l_tation_8_d_i_framework_8_baking_8_baked_injection_coll__map">
-<area shape="rect" title=" " alt="" coords="5,95,216,136"/>
+<area shape="rect" title="Hub to define baked injection and instantiation functions. Warning: for internal usage only." alt="" coords="5,95,216,136"/>
 <area shape="rect" title=" " alt="" coords="83,5,138,32"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
@@ -105,33 +108,43 @@ Collaboration diagram for DELTation.DIFramework.Baking.BakedInjection:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a8e24e846c159f0d28ff14cb33779f481"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_d_e_l_tation_1_1_d_i_framework_1_1_baking_1_1_baked_injection.html#a8e24e846c159f0d28ff14cb33779f481">TryInject</a> ([NotNull] <a class="el" href="class_mono_behaviour.html">MonoBehaviour</a> component, [NotNull] <a class="el" href="namespace_d_e_l_tation_1_1_d_i_framework_1_1_baking.html#abc6bb178967c0baac1175ce866aa3b92">ResolutionFunction</a> resolutionFunction)</td></tr>
+<tr class="memdesc:a8e24e846c159f0d28ff14cb33779f481"><td class="mdescLeft">&#160;</td><td class="mdescRight">Try inject using baked data.  <a href="class_d_e_l_tation_1_1_d_i_framework_1_1_baking_1_1_baked_injection.html#a8e24e846c159f0d28ff14cb33779f481">More...</a><br /></td></tr>
 <tr class="separator:a8e24e846c159f0d28ff14cb33779f481"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad211b027de7536618ded5285727b851f"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_d_e_l_tation_1_1_d_i_framework_1_1_baking_1_1_baked_injection.html#ad211b027de7536618ded5285727b851f">TryInstantiate</a> ([NotNull] Type type, [NotNull] <a class="el" href="namespace_d_e_l_tation_1_1_d_i_framework_1_1_baking.html#a121c458e4ce07400e23bb6e0e6066a31">PocoResolutionFunction</a> resolutionFunction, out object instance)</td></tr>
+<tr class="memdesc:ad211b027de7536618ded5285727b851f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Try create an instance of the provided type using baked data.  <a href="class_d_e_l_tation_1_1_d_i_framework_1_1_baking_1_1_baked_injection.html#ad211b027de7536618ded5285727b851f">More...</a><br /></td></tr>
 <tr class="separator:ad211b027de7536618ded5285727b851f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afa19fe7da366a1bfcaeffc94d05b980d"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_d_e_l_tation_1_1_d_i_framework_1_1_baking_1_1_baked_injection.html#afa19fe7da366a1bfcaeffc94d05b980d">Bake</a> ([NotNull] Type type, [NotNull] <a class="el" href="namespace_d_e_l_tation_1_1_d_i_framework_1_1_baking.html#a98f42973deec5cfc313b4a3c9a7c9bec">InjectionFunction</a> injectionFunction)</td></tr>
+<tr class="memdesc:afa19fe7da366a1bfcaeffc94d05b980d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define a baked injection function.  <a href="class_d_e_l_tation_1_1_d_i_framework_1_1_baking_1_1_baked_injection.html#afa19fe7da366a1bfcaeffc94d05b980d">More...</a><br /></td></tr>
 <tr class="separator:afa19fe7da366a1bfcaeffc94d05b980d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c80599ec52f7c07956fa65d123e7824"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_d_e_l_tation_1_1_d_i_framework_1_1_baking_1_1_baked_injection.html#a1c80599ec52f7c07956fa65d123e7824">Bake</a> ([NotNull] Type type, [NotNull] <a class="el" href="namespace_d_e_l_tation_1_1_d_i_framework_1_1_baking.html#abc919b1b93c06894f9bbee5f54fdbe9f">PocoInstantiationFunction</a> instantiationFunction)</td></tr>
+<tr class="memdesc:a1c80599ec52f7c07956fa65d123e7824"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define a baked instantiation function.  <a href="class_d_e_l_tation_1_1_d_i_framework_1_1_baking_1_1_baked_injection.html#a1c80599ec52f7c07956fa65d123e7824">More...</a><br /></td></tr>
 <tr class="separator:a1c80599ec52f7c07956fa65d123e7824"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab817b722fc224f7fc25203200bbb0dde"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_d_e_l_tation_1_1_d_i_framework_1_1_baking_1_1_baked_injection.html#ab817b722fc224f7fc25203200bbb0dde">Clear</a> ()</td></tr>
+<tr class="memdesc:ab817b722fc224f7fc25203200bbb0dde"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear defined baked data.s  <a href="class_d_e_l_tation_1_1_d_i_framework_1_1_baking_1_1_baked_injection.html#ab817b722fc224f7fc25203200bbb0dde">More...</a><br /></td></tr>
 <tr class="separator:ab817b722fc224f7fc25203200bbb0dde"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3696c54d8114e58e8b2cb60bce45d099"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_d_e_l_tation_1_1_d_i_framework_1_1_baking_1_1_baked_injection.html#a3696c54d8114e58e8b2cb60bce45d099">IsBaked</a> ([NotNull] Type type)</td></tr>
-<tr class="separator:a3696c54d8114e58e8b2cb60bce45d099"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2385cf2ec0e5fd1fa862b0c85d68fbdd"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_d_e_l_tation_1_1_d_i_framework_1_1_baking_1_1_baked_injection.html#a2385cf2ec0e5fd1fa862b0c85d68fbdd">IsInjectionBaked</a> ([NotNull] Type type)</td></tr>
+<tr class="memdesc:a2385cf2ec0e5fd1fa862b0c85d68fbdd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if injection is baked for the type.  <a href="class_d_e_l_tation_1_1_d_i_framework_1_1_baking_1_1_baked_injection.html#a2385cf2ec0e5fd1fa862b0c85d68fbdd">More...</a><br /></td></tr>
+<tr class="separator:a2385cf2ec0e5fd1fa862b0c85d68fbdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:a17965150baff53e701b281949b2603b4"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_d_e_l_tation_1_1_d_i_framework_1_1_baking_1_1_baked_injection.html#a17965150baff53e701b281949b2603b4">DataExists</a> = false</td></tr>
+<tr class="memdesc:a17965150baff53e701b281949b2603b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is there baked data?  <a href="class_d_e_l_tation_1_1_d_i_framework_1_1_baking_1_1_baked_injection.html#a17965150baff53e701b281949b2603b4">More...</a><br /></td></tr>
 <tr class="separator:a17965150baff53e701b281949b2603b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
 <tr class="memitem:a195e6b071bc76ab9a6125f45ce0879c1"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_d_e_l_tation_1_1_d_i_framework_1_1_baking_1_1_baked_injection.html#a195e6b071bc76ab9a6125f45ce0879c1">BakedInjectionFunctionsCount</a><code> [get]</code></td></tr>
+<tr class="memdesc:a195e6b071bc76ab9a6125f45ce0879c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of defined baked injection functions.  <a href="class_d_e_l_tation_1_1_d_i_framework_1_1_baking_1_1_baked_injection.html#a195e6b071bc76ab9a6125f45ce0879c1">More...</a><br /></td></tr>
 <tr class="separator:a195e6b071bc76ab9a6125f45ce0879c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1dc422f5bbb8ae0660d3cc5a8200700a"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_d_e_l_tation_1_1_d_i_framework_1_1_baking_1_1_baked_injection.html#a1dc422f5bbb8ae0660d3cc5a8200700a">BakedPocoInstantiationFunctionsCount</a><code> [get]</code></td></tr>
+<tr class="memdesc:a1dc422f5bbb8ae0660d3cc5a8200700a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of defined POCO instantiation functions.  <a href="class_d_e_l_tation_1_1_d_i_framework_1_1_baking_1_1_baked_injection.html#a1dc422f5bbb8ae0660d3cc5a8200700a">More...</a><br /></td></tr>
 <tr class="separator:a1dc422f5bbb8ae0660d3cc5a8200700a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_baked_injection_8cs_source.html#l00008">8</a> of file <a class="el" href="_baked_injection_8cs_source.html">BakedInjection.cs</a>.</p>
+<div class="textblock"><p>Hub to define baked injection and instantiation functions. Warning: for internal usage only. </p>
+
+<p class="definition">Definition at line <a class="el" href="_baked_injection_8cs_source.html#l00012">12</a> of file <a class="el" href="_baked_injection_8cs_source.html">BakedInjection.cs</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="afa19fe7da366a1bfcaeffc94d05b980d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afa19fe7da366a1bfcaeffc94d05b980d">&#9670;&nbsp;</a></span>Bake() <span class="overload">[1/2]</span></h2>
@@ -167,7 +180,22 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_baked_injection_8cs_source.html#l00040">40</a> of file <a class="el" href="_baked_injection_8cs_source.html">BakedInjection.cs</a>.</p>
+<p>Define a baked injection function. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">type</td><td>Type that can be injected with the function.</td></tr>
+    <tr><td class="paramname">injectionFunction</td><td>Injection procedure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">ArgumentNullException</td><td>If any of arguments are null.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="_baked_injection_8cs_source.html#l00068">68</a> of file <a class="el" href="_baked_injection_8cs_source.html">BakedInjection.cs</a>.</p>
 
 </div>
 </div>
@@ -205,7 +233,23 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_baked_injection_8cs_source.html#l00047">47</a> of file <a class="el" href="_baked_injection_8cs_source.html">BakedInjection.cs</a>.</p>
+<p>Define a baked instantiation function. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">type</td><td>Type that can be created with the function.</td></tr>
+    <tr><td class="paramname">instantiationFunction</td><td>Creation procedure.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">ArgumentNullException</td><td>If any of arguments are null.</td></tr>
+    <tr><td class="paramname">ArgumentException</td><td>If type is abstract.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="_baked_injection_8cs_source.html#l00082">82</a> of file <a class="el" href="_baked_injection_8cs_source.html">BakedInjection.cs</a>.</p>
 
 </div>
 </div>
@@ -232,12 +276,14 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_baked_injection_8cs_source.html#l00056">56</a> of file <a class="el" href="_baked_injection_8cs_source.html">BakedInjection.cs</a>.</p>
+<p>Clear defined baked data.s </p>
+
+<p class="definition">Definition at line <a class="el" href="_baked_injection_8cs_source.html#l00094">94</a> of file <a class="el" href="_baked_injection_8cs_source.html">BakedInjection.cs</a>.</p>
 
 </div>
 </div>
-<a id="a3696c54d8114e58e8b2cb60bce45d099"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3696c54d8114e58e8b2cb60bce45d099">&#9670;&nbsp;</a></span>IsBaked()</h2>
+<a id="a2385cf2ec0e5fd1fa862b0c85d68fbdd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2385cf2ec0e5fd1fa862b0c85d68fbdd">&#9670;&nbsp;</a></span>IsInjectionBaked()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -246,7 +292,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static bool DELTation.DIFramework.Baking.BakedInjection.IsBaked </td>
+          <td class="memname">static bool DELTation.DIFramework.Baking.BakedInjection.IsInjectionBaked </td>
           <td>(</td>
           <td class="paramtype">[NotNull] Type&#160;</td>
           <td class="paramname"><em>type</em></td><td>)</td>
@@ -260,7 +306,22 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_baked_injection_8cs_source.html#l00062">62</a> of file <a class="el" href="_baked_injection_8cs_source.html">BakedInjection.cs</a>.</p>
+<p>Check if injection is baked for the type. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">type</td><td>Checked type.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">ArgumentNullException</td><td>If <em>type</em>  is null.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="_baked_injection_8cs_source.html#l00106">106</a> of file <a class="el" href="_baked_injection_8cs_source.html">BakedInjection.cs</a>.</p>
 
 </div>
 </div>
@@ -298,7 +359,23 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_baked_injection_8cs_source.html#l00012">12</a> of file <a class="el" href="_baked_injection_8cs_source.html">BakedInjection.cs</a>.</p>
+<p>Try inject using baked data. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">component</td><td>Component to inject dependencies to.</td></tr>
+    <tr><td class="paramname">resolutionFunction</td><td><a class="el" href="namespace_d_e_l_tation_1_1_d_i_framework_1_1_resolution.html">Resolution</a> provider.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if baked and injected, false otherwise.</dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">ArgumentNullException</td><td>If any of arguments are null.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="_baked_injection_8cs_source.html#l00026">26</a> of file <a class="el" href="_baked_injection_8cs_source.html">BakedInjection.cs</a>.</p>
 
 </div>
 </div>
@@ -342,7 +419,24 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_baked_injection_8cs_source.html#l00024">24</a> of file <a class="el" href="_baked_injection_8cs_source.html">BakedInjection.cs</a>.</p>
+<p>Try create an instance of the provided type using baked data. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">type</td><td>Instantiated type.</td></tr>
+    <tr><td class="paramname">resolutionFunction</td><td><a class="el" href="namespace_d_e_l_tation_1_1_d_i_framework_1_1_resolution.html">Resolution</a> provider.</td></tr>
+    <tr><td class="paramname">instance</td><td>Created instance.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if baked and instantiated, false otherwise.</dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">ArgumentNullException</td><td>If any of arguments are null.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="_baked_injection_8cs_source.html#l00046">46</a> of file <a class="el" href="_baked_injection_8cs_source.html">BakedInjection.cs</a>.</p>
 
 </div>
 </div>
@@ -367,7 +461,9 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_baked_injection_8cs_source.html#l00010">10</a> of file <a class="el" href="_baked_injection_8cs_source.html">BakedInjection.cs</a>.</p>
+<p>Is there baked data? </p>
+
+<p class="definition">Definition at line <a class="el" href="_baked_injection_8cs_source.html#l00017">17</a> of file <a class="el" href="_baked_injection_8cs_source.html">BakedInjection.cs</a>.</p>
 
 </div>
 </div>
@@ -392,7 +488,9 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_baked_injection_8cs_source.html#l00068">68</a> of file <a class="el" href="_baked_injection_8cs_source.html">BakedInjection.cs</a>.</p>
+<p>The number of defined baked injection functions. </p>
+
+<p class="definition">Definition at line <a class="el" href="_baked_injection_8cs_source.html#l00115">115</a> of file <a class="el" href="_baked_injection_8cs_source.html">BakedInjection.cs</a>.</p>
 
 </div>
 </div>
@@ -416,7 +514,9 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_baked_injection_8cs_source.html#l00069">69</a> of file <a class="el" href="_baked_injection_8cs_source.html">BakedInjection.cs</a>.</p>
+<p>The number of defined POCO instantiation functions. </p>
+
+<p class="definition">Definition at line <a class="el" href="_baked_injection_8cs_source.html#l00120">120</a> of file <a class="el" href="_baked_injection_8cs_source.html">BakedInjection.cs</a>.</p>
 
 </div>
 </div>

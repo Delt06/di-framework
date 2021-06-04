@@ -1,7 +1,23 @@
 var searchData=
 [
-  ['listdependencycontainer_87',['ListDependencyContainer',['../class_d_e_l_tation_1_1_d_i_framework_1_1_containers_1_1_list_dependency_container.html',1,'DELTation::DIFramework::Containers']]],
-  ['listdependencycontainer_2ecs_88',['ListDependencyContainer.cs',['../_list_dependency_container_8cs.html',1,'']]],
-  ['listpool_2ecs_89',['ListPool.cs',['../_list_pool_8cs.html',1,'']]],
-  ['local_90',['Local',['../namespace_d_e_l_tation_1_1_d_i_framework.html#ac6f453b41c84b3e7ee519a4432d219d1a509820290d57f333403f490dde7316f4',1,'DELTation::DIFramework']]]
+  ['idependencycontainer_70',['IDependencyContainer',['../interface_d_e_l_tation_1_1_d_i_framework_1_1_i_dependency_container.html',1,'DELTation::DIFramework']]],
+  ['idependencycontainer_2ecs_71',['IDependencyContainer.cs',['../_i_dependency_container_8cs.html',1,'']]],
+  ['iequatable_72',['IEquatable',['../class_i_equatable.html',1,'']]],
+  ['ignorebycontainer_73',['IgnoreByContainer',['../class_d_e_l_tation_1_1_d_i_framework_1_1_containers_1_1_ignore_by_container.html',1,'DELTation::DIFramework::Containers']]],
+  ['ignorebycontainer_2ecs_74',['IgnoreByContainer.cs',['../_ignore_by_container_8cs.html',1,'']]],
+  ['iignorebycontainer_75',['IIgnoreByContainer',['../interface_d_e_l_tation_1_1_d_i_framework_1_1_containers_1_1_i_ignore_by_container.html',1,'DELTation::DIFramework::Containers']]],
+  ['iinitializable_2ecs_76',['IInitializable.cs',['../_i_initializable_8cs.html',1,'']]],
+  ['inject_77',['Inject',['../class_d_e_l_tation_1_1_d_i_framework_1_1_di.html#a3e680a4168994bdd99f654b7be75b02c',1,'DELTation.DIFramework.Di.Inject([NotNull] GameObject gameObject)'],['../class_d_e_l_tation_1_1_d_i_framework_1_1_di.html#a762c4b811356cc1943ee4973926ce585',1,'DELTation.DIFramework.Di.Inject([NotNull] GameObject gameObject, DependencySource sources)']]],
+  ['injectable_78',['Injectable',['../struct_d_e_l_tation_1_1_d_i_framework_1_1_reporting_1_1_component_resolution_data.html#ac653b897d9f6867f2573ea1dbfe797a3',1,'DELTation::DIFramework::Reporting::ComponentResolutionData']]],
+  ['injection_79',['Injection',['../class_d_e_l_tation_1_1_d_i_framework_1_1_resolution_1_1_injection.html',1,'DELTation::DIFramework::Resolution']]],
+  ['injection_2ecs_80',['Injection.cs',['../_injection_8cs.html',1,'']]],
+  ['injectionfunction_81',['InjectionFunction',['../namespace_d_e_l_tation_1_1_d_i_framework_1_1_baking.html#a98f42973deec5cfc313b4a3c9a7c9bec',1,'DELTation::DIFramework::Baking']]],
+  ['injectionfunction_2ecs_82',['InjectionFunction.cs',['../_injection_function_8cs.html',1,'']]],
+  ['invalidatecache_83',['InvalidateCache',['../class_d_e_l_tation_1_1_d_i_framework_1_1_resolution_1_1_injection.html#a8705b9b42d2736d4a2612ca0397d0a76',1,'DELTation::DIFramework::Resolution::Injection']]],
+  ['iresolver_2ecs_84',['IResolver.cs',['../_i_resolver_8cs.html',1,'']]],
+  ['ishowiconinhierarchy_85',['IShowIconInHierarchy',['../interface_d_e_l_tation_1_1_d_i_framework_1_1_editor_1_1_i_show_icon_in_hierarchy.html',1,'DELTation::DIFramework::Editor']]],
+  ['ishowiconinhierarchy_2ecs_86',['IShowIconInHierarchy.cs',['../_i_show_icon_in_hierarchy_8cs.html',1,'']]],
+  ['isinjectable_87',['IsInjectable',['../class_d_e_l_tation_1_1_d_i_framework_1_1_resolution_1_1_injection.html#adf0ce0b477ba4bf89e9e14708e7669c6',1,'DELTation.DIFramework.Resolution.Injection.IsInjectable()'],['../class_d_e_l_tation_1_1_d_i_framework_1_1_resolution_1_1_poco_injection.html#aacf05bc2f8b33fa61b0bd9cd4139f6c4',1,'DELTation.DIFramework.Resolution.PocoInjection.IsInjectable()']]],
+  ['isinjectionbaked_88',['IsInjectionBaked',['../class_d_e_l_tation_1_1_d_i_framework_1_1_baking_1_1_baked_injection.html#a2385cf2ec0e5fd1fa862b0c85d68fbdd',1,'DELTation::DIFramework::Baking::BakedInjection']]],
+  ['ispoco_89',['IsPoco',['../class_d_e_l_tation_1_1_d_i_framework_1_1_resolution_1_1_poco_injection.html#a05ab687f493db88bfc373a1057f23570',1,'DELTation::DIFramework::Resolution::PocoInjection']]]
 ];

@@ -1,4 +1,4 @@
 <map id="DELTation.DIFramework.Baking.BakedInjection" name="DELTation.DIFramework.Baking.BakedInjection">
-<area shape="rect" id="node1" title=" " alt="" coords="5,95,216,136"/>
+<area shape="rect" id="node1" title="Hub to define baked injection and instantiation functions. Warning: for internal usage only." alt="" coords="5,95,216,136"/>
 <area shape="rect" id="node2" title=" " alt="" coords="83,5,138,32"/>
 </map>

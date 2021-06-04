@@ -124,7 +124,8 @@ $(document).ready(function(){initNavTree('functions.html',''); initResizable(); 
 : <a class="el" href="class_d_e_l_tation_1_1_d_i_framework_1_1_baking_1_1_baked_injection.html#ab817b722fc224f7fc25203200bbb0dde">DELTation.DIFramework.Baking.BakedInjection</a>
 </li>
 <li>Component
-: <a class="el" href="class_d_e_l_tation_1_1_d_i_framework_1_1_exceptions_1_1_not_injectable_exception.html#a0c913a35e124e78420f5fd1ea8b805b7">DELTation.DIFramework.Exceptions.NotInjectableException</a>
+: <a class="el" href="class_d_e_l_tation_1_1_d_i_framework_1_1_exceptions_1_1_dependency_not_resolved_exception.html#a424899e57dbb6a2b977c764e35e5a530">DELTation.DIFramework.Exceptions.DependencyNotResolvedException</a>
+, <a class="el" href="class_d_e_l_tation_1_1_d_i_framework_1_1_exceptions_1_1_not_injectable_exception.html#a0c913a35e124e78420f5fd1ea8b805b7">DELTation.DIFramework.Exceptions.NotInjectableException</a>
 , <a class="el" href="struct_d_e_l_tation_1_1_d_i_framework_1_1_reporting_1_1_component_resolution_data.html#abb83445a4f672d60614ca0d353cfbf06">DELTation.DIFramework.Reporting.ComponentResolutionData</a>
 </li>
 <li>ComponentResolutionData()
@@ -160,11 +161,14 @@ $(document).ready(function(){initNavTree('functions.html',''); initResizable(); 
 <li>DependencyAlreadyRegistered()
 : <a class="el" href="class_d_e_l_tation_1_1_d_i_framework_1_1_exceptions_1_1_dependency_already_registered.html#a0252f1c236f5a6fcf5890053c4273aa4">DELTation.DIFramework.Exceptions.DependencyAlreadyRegistered</a>
 </li>
+<li>DependencyLoopException()
+: <a class="el" href="class_d_e_l_tation_1_1_d_i_framework_1_1_exceptions_1_1_dependency_loop_exception.html#af050aa475d0f738b47a85ad1d05c26e8">DELTation.DIFramework.Exceptions.DependencyLoopException</a>
+</li>
 <li>DependencyNotRegisteredException()
 : <a class="el" href="class_d_e_l_tation_1_1_d_i_framework_1_1_exceptions_1_1_dependency_not_registered_exception.html#abc3ffeda49f40cb71a237a021747e037">DELTation.DIFramework.Exceptions.DependencyNotRegisteredException</a>
 </li>
 <li>DependencyNotResolvedException()
-: <a class="el" href="class_d_e_l_tation_1_1_d_i_framework_1_1_exceptions_1_1_dependency_not_resolved_exception.html#a797374a3f8d18ed353607410c298c978">DELTation.DIFramework.Exceptions.DependencyNotResolvedException</a>
+: <a class="el" href="class_d_e_l_tation_1_1_d_i_framework_1_1_exceptions_1_1_dependency_not_resolved_exception.html#a755ce3f0204c963ee1a78f98ccc0124f">DELTation.DIFramework.Exceptions.DependencyNotResolvedException</a>
 </li>
 <li>Depth
 : <a class="el" href="struct_d_e_l_tation_1_1_d_i_framework_1_1_reporting_1_1_component_resolution_data.html#a183558a79aebd91d17083066467e5888">DELTation.DIFramework.Reporting.ComponentResolutionData</a>
@@ -209,6 +213,14 @@ $(document).ready(function(){initNavTree('functions.html',''); initResizable(); 
 </ul>
 
 
+<h3><a id="index_h"></a>- h -</h3><ul>
+<li>HasLoops()
+: <a class="el" href="class_d_e_l_tation_1_1_d_i_framework_1_1_containers_1_1_configurable_dependency_container.html#a1bd52150af10544de5af848a48e2cc64">DELTation.DIFramework.Containers.ConfigurableDependencyContainer</a>
+, <a class="el" href="class_d_e_l_tation_1_1_d_i_framework_1_1_containers_1_1_dependency_container_base.html#a18b9ef73fbd57c2f3058f1a751082d87">DELTation.DIFramework.Containers.DependencyContainerBase</a>
+</li>
+</ul>
+
+
 <h3><a id="index_i"></a>- i -</h3><ul>
 <li>Inject()
 : <a class="el" href="class_d_e_l_tation_1_1_d_i_framework_1_1_di.html#a762c4b811356cc1943ee4973926ce585">DELTation.DIFramework.Di</a>
@@ -219,12 +231,12 @@ $(document).ready(function(){initNavTree('functions.html',''); initResizable(); 
 <li>InvalidateCache()
 : <a class="el" href="class_d_e_l_tation_1_1_d_i_framework_1_1_resolution_1_1_injection.html#a8705b9b42d2736d4a2612ca0397d0a76">DELTation.DIFramework.Resolution.Injection</a>
 </li>
-<li>IsBaked()
-: <a class="el" href="class_d_e_l_tation_1_1_d_i_framework_1_1_baking_1_1_baked_injection.html#a3696c54d8114e58e8b2cb60bce45d099">DELTation.DIFramework.Baking.BakedInjection</a>
-</li>
 <li>IsInjectable()
 : <a class="el" href="class_d_e_l_tation_1_1_d_i_framework_1_1_resolution_1_1_injection.html#adf0ce0b477ba4bf89e9e14708e7669c6">DELTation.DIFramework.Resolution.Injection</a>
 , <a class="el" href="class_d_e_l_tation_1_1_d_i_framework_1_1_resolution_1_1_poco_injection.html#aacf05bc2f8b33fa61b0bd9cd4139f6c4">DELTation.DIFramework.Resolution.PocoInjection</a>
+</li>
+<li>IsInjectionBaked()
+: <a class="el" href="class_d_e_l_tation_1_1_d_i_framework_1_1_baking_1_1_baked_injection.html#a2385cf2ec0e5fd1fa862b0c85d68fbdd">DELTation.DIFramework.Baking.BakedInjection</a>
 </li>
 <li>IsPoco()
 : <a class="el" href="class_d_e_l_tation_1_1_d_i_framework_1_1_resolution_1_1_poco_injection.html#a05ab687f493db88bfc373a1057f23570">DELTation.DIFramework.Resolution.PocoInjection</a>
@@ -290,11 +302,11 @@ $(document).ready(function(){initNavTree('functions.html',''); initResizable(); 
 <li>ShowIconsInHierarchy
 : <a class="el" href="class_d_e_l_tation_1_1_d_i_framework_1_1_di_settings.html#a8c9de1f44619a2f210e6401cb852d216">DELTation.DIFramework.DiSettings</a>
 </li>
+<li>ShowMissingResolverWarnings
+: <a class="el" href="class_d_e_l_tation_1_1_d_i_framework_1_1_di_settings.html#af76ee037cc623316a660e741751db9ba">DELTation.DIFramework.DiSettings</a>
+</li>
 <li>Sort()
 : <a class="el" href="class_d_e_l_tation_1_1_d_i_framework_1_1_sorting_1_1_topological_sorting.html#acf6b44253d3fb3dfe299dab6d35b8d57">DELTation.DIFramework.Sorting.TopologicalSorting</a>
-</li>
-<li>SortTopologically()
-: <a class="el" href="class_d_e_l_tation_1_1_d_i_framework_1_1_container_builder.html#a325607ddee117f978487933c5a7450c2">DELTation.DIFramework.ContainerBuilder</a>
 </li>
 </ul>
 
@@ -330,6 +342,9 @@ $(document).ready(function(){initNavTree('functions.html',''); initResizable(); 
 </li>
 <li>TryResolveGlobally&lt; T &gt;()
 : <a class="el" href="class_d_e_l_tation_1_1_d_i_framework_1_1_di.html#a6461e983836af7ababfd40adcdbbc19d">DELTation.DIFramework.Di</a>
+</li>
+<li>TrySortTopologically()
+: <a class="el" href="class_d_e_l_tation_1_1_d_i_framework_1_1_container_builder.html#ad2faa9af3edf487cd204646f6e5acd8d">DELTation.DIFramework.ContainerBuilder</a>
 </li>
 <li>Type
 : <a class="el" href="class_d_e_l_tation_1_1_d_i_framework_1_1_exceptions_1_1_dependency_already_registered.html#a63597c91f0ea26fcc392c401c8d6d907">DELTation.DIFramework.Exceptions.DependencyAlreadyRegistered</a>
