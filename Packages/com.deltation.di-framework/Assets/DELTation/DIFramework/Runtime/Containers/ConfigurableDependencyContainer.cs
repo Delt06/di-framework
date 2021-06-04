@@ -12,6 +12,10 @@ namespace DELTation.DIFramework.Containers
         public ConfigurableDependencyContainer([NotNull] Action<ContainerBuilder> composeDependencies) =>
             _composeDependencies = composeDependencies ?? throw new ArgumentNullException(nameof(composeDependencies));
 
+        /// <summary>
+        /// Check dependency graph for loops.
+        /// </summary>
+        /// <returns>True if there is a loop, false otherwise.</returns>
         public bool HasLoops()
         {
             var builder = new ContainerBuilder(TryResolve);

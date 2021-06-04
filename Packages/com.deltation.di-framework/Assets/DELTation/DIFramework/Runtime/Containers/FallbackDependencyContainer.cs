@@ -5,6 +5,9 @@ using Object = UnityEngine.Object;
 
 namespace DELTation.DIFramework.Containers
 {
+    /// <summary>
+    /// Container that searches for objects using FindObjectOfType.
+    /// </summary>
     [DisallowMultipleComponent, AddComponentMenu("Dependency Container/Fallback Dependency Container")]
     public sealed class FallbackDependencyContainer : MonoBehaviour, IDependencyContainer
     {

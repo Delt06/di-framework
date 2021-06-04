@@ -53,7 +53,7 @@ namespace DELTation.DIFramework.Resolution
         private static bool UseBakedData => DiSettings.TryGetInstance(out var settings) &&
                                             settings.UseBakedData;
 
-        private static bool IsAffectedExtraCondition(MonoBehaviour mb) => BakedInjection.IsBaked(mb.GetType());
+        private static bool IsAffectedExtraCondition(MonoBehaviour mb) => BakedInjection.IsInjectionBaked(mb.GetType());
 
         private void Inject(MonoBehaviour component)
         {

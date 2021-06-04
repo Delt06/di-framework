@@ -5,10 +5,24 @@ using UnityEngine;
 
 namespace DELTation.DIFramework.Baking
 {
+    /// <summary>
+    /// Hub to define baked injection and instantiation functions.
+    /// Warning: for internal usage only.
+    /// </summary>
     public static class BakedInjection
     {
+        /// <summary>
+        /// Is there baked data?
+        /// </summary>
         public static bool DataExists = false;
 
+        /// <summary>
+        /// Try inject using baked data.
+        /// </summary>
+        /// <param name="component">Component to inject dependencies to.</param>
+        /// <param name="resolutionFunction">Resolution provider.</param>
+        /// <returns>True if baked and injected, false otherwise.</returns>
+        /// <exception cref="ArgumentNullException">If any of arguments are null.</exception>
         public static bool TryInject([NotNull] MonoBehaviour component, [NotNull] ResolutionFunction resolutionFunction)
         {
             if (component == null) throw new ArgumentNullException(nameof(component));
@@ -21,6 +35,14 @@ namespace DELTation.DIFramework.Baking
             return true;
         }
 
+        /// <summary>
+        /// Try create an instance of the provided type using baked data. 
+        /// </summary>
+        /// <param name="type">Instantiated type.</param>
+        /// <param name="resolutionFunction">Resolution provider.</param>
+        /// <param name="instance">Created instance.</param>
+        /// <returns>True if baked and instantiated, false otherwise.</returns>
+        /// <exception cref="ArgumentNullException">If any of arguments are null.</exception>
         public static bool TryInstantiate([NotNull] Type type, [NotNull] PocoResolutionFunction resolutionFunction,
             out object instance)
         {
@@ -37,6 +59,12 @@ namespace DELTation.DIFramework.Baking
             return true;
         }
 
+        /// <summary>
+        /// Define a baked injection function.
+        /// </summary>
+        /// <param name="type">Type that can be injected with the function.</param>
+        /// <param name="injectionFunction">Injection procedure.</param>
+        /// <exception cref="ArgumentNullException">If any of arguments are null.</exception>
         public static void Bake([NotNull] Type type, [NotNull] InjectionFunction injectionFunction)
         {
             if (type == null) throw new ArgumentNullException(nameof(type));
@@ -44,6 +72,13 @@ namespace DELTation.DIFramework.Baking
                 injectionFunction ?? throw new ArgumentNullException(nameof(injectionFunction));
         }
 
+        /// <summary>
+        /// Define a baked instantiation function.
+        /// </summary>
+        /// <param name="type">Type that can be created with the function.</param>
+        /// <param name="instantiationFunction">Creation procedure.</param>
+        /// <exception cref="ArgumentNullException">If any of arguments are null.</exception>
+        /// <exception cref="ArgumentException">If type is abstract.</exception>
         public static void Bake([NotNull] Type type, [NotNull] PocoInstantiationFunction instantiationFunction)
         {
             if (type == null) throw new ArgumentNullException(nameof(type));
@@ -53,19 +88,35 @@ namespace DELTation.DIFramework.Baking
                                                     throw new ArgumentNullException(nameof(instantiationFunction));
         }
 
+        /// <summary>
+        /// Clear defined baked data.s
+        /// </summary>
         public static void Clear()
         {
             BakedInjectionFunctions.Clear();
             BakedPocoInstantiationFunctions.Clear();
         }
 
-        public static bool IsBaked([NotNull] Type type)
+        /// <summary>
+        /// Check if injection is baked for the type.
+        /// </summary>
+        /// <param name="type">Checked type.</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">If <paramref name="type"/> is null.</exception>
+        public static bool IsInjectionBaked([NotNull] Type type)
         {
             if (type == null) throw new ArgumentNullException(nameof(type));
             return BakedInjectionFunctions.TryGetValue(type, out _);
         }
 
+        /// <summary>
+        /// The number of defined baked injection functions.
+        /// </summary>
         public static int BakedInjectionFunctionsCount => BakedInjectionFunctions.Count;
+        
+        /// <summary>
+        /// The number of defined POCO instantiation functions.
+        /// </summary>
         public static int BakedPocoInstantiationFunctionsCount => BakedPocoInstantiationFunctions.Count;
 
         private static readonly Dictionary<Type, InjectionFunction> BakedInjectionFunctions =
