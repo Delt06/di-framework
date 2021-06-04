@@ -82,11 +82,15 @@ namespace DELTation.DIFramework.Resolution
             var constructMethods = GetConstructMethods(componentType);
             var parameterTypes = new HashSet<Type>();
 
+            // ReSharper disable once ForCanBeConvertedToForeach
             for (var ctorIndex = 0; ctorIndex < constructMethods.Count; ctorIndex++)
             {
                 var constructMethod = constructMethods[ctorIndex];
 
-                foreach (var parameter in constructMethod.GetParameters())
+                if (!Parameters.TryGetValue(constructMethod, out var parameters))
+                    Parameters[constructMethod] = parameters = constructMethod.GetParameters();
+
+                foreach (var parameter in parameters)
                 {
                     parameterTypes.Add(parameter.ParameterType);
                 }
@@ -260,6 +264,9 @@ namespace DELTation.DIFramework.Resolution
             ConstructMethods = new Dictionary<Type, List<MethodInfo>>();
 
         private static readonly IDictionary<MethodInfo, ParameterInfo[]> InjectableParameters =
+            new Dictionary<MethodInfo, ParameterInfo[]>();
+
+        private static readonly IDictionary<MethodInfo, ParameterInfo[]> Parameters =
             new Dictionary<MethodInfo, ParameterInfo[]>();
 
         internal static object[] RentArgumentsArray(int length)
