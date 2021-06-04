@@ -24,6 +24,8 @@ namespace DELTation.DIFramework.Containers
             InnerContainer.GetAllRegisteredObjects(objects);
         }
 
+        public bool HasLoops() => InnerContainer.HasLoops();
+
         protected abstract void ComposeDependencies(ContainerBuilder builder);
 
         private ConfigurableDependencyContainer InnerContainer => _innerContainer ??

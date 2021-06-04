@@ -50,6 +50,7 @@ namespace DELTation.DIFramework.Sorting
                     colors[index] = NodeColor.Grey;
                     var adjacentNodes = graph[index];
 
+                    // ReSharper disable once ForCanBeConvertedToForeach
                     for (var adjacentIndex = 0; adjacentIndex < adjacentNodes.Count; adjacentIndex++)
                     {
                         SortStep(colors, adjacentNodes[adjacentIndex], graph, result, out loop);
