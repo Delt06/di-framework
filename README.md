@@ -136,6 +136,7 @@ public sealed class Movement : MonoBehaviour
 
 ## Projects using DI Framework
 - https://github.com/Delt06/fps-roguelike
+- https://github.com/Delt06/leo-ecs-extensions
 
 ## Documentation
 - [Wiki](https://github.com/Delt06/di-framework/wiki)  
