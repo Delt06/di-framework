@@ -233,8 +233,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 76539478}
-  - component: {fileID: 76539480}
   - component: {fileID: 76539479}
+  - component: {fileID: 76539480}
   m_Layer: 0
   m_Name: Test Poco Resolver
   m_TagString: Untagged

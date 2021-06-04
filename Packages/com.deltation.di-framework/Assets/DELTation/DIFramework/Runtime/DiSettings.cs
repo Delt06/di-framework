@@ -10,10 +10,13 @@ namespace DELTation.DIFramework
     public sealed class DiSettings : ScriptableObject
     {
         [SerializeField] private bool _showIconsInHierarchy = true;
+        [SerializeField] private bool _showMissingResolverWarnings = true;
         [SerializeField] private bool _useBakedData = true;
         [SerializeField] private string _bakedAssembliesRegex = @"^Assembly-CSharp$";
 
         public bool ShowIconsInHierarchy => _showIconsInHierarchy;
+
+        public bool ShowMissingResolverWarnings => _showMissingResolverWarnings;
 
         public bool UseBakedData => _useBakedData;
 
