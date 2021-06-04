@@ -11,6 +11,7 @@ namespace DELTation.DIFramework.Editor
 
         private static void UpdateIcons(int instanceId, Rect selectionRect)
         {
+            if (Application.isPlaying) return;
             if (!DiSettings.TryGetInstance(out var settings) || !settings.ShowMissingResolverWarnings) return;
 
             if (!(EditorUtility.InstanceIDToObject(instanceId) is GameObject gameObject)) return;
