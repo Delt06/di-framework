@@ -104,7 +104,7 @@ namespace DELTation.DIFramework.Resolution
                 return dependency;
             }
 
-            throw new DependencyNotResolvedException(type);
+            throw new DependencyNotResolvedException(component, type);
         }
 
         private static bool IsCacheable(DependencySource source) => source != DependencySource.Local;
