@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static DELTation.DIFramework.ContainersExtensions;
 using Object = UnityEngine.Object;
 
 namespace DELTation.DIFramework.Containers
@@ -45,7 +46,7 @@ namespace DELTation.DIFramework.Containers
             foreach (var d in dependencies)
             {
                 if (d == null) continue;
-                if (d.ShouldBeIgnoredByContainer()) continue;
+                if (ShouldBeIgnoredByContainer(d)) continue;
 
                 dependency = d;
                 return true;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using DELTation.DIFramework.Exceptions;
 using JetBrains.Annotations;
+using static DELTation.DIFramework.ContainersExtensions;
 
 namespace DELTation.DIFramework.Containers
 {
@@ -70,7 +71,7 @@ namespace DELTation.DIFramework.Containers
         private void Register([NotNull] object dependency)
         {
             if (dependency == null) throw new ArgumentNullException(nameof(dependency));
-            if (dependency.ShouldBeIgnoredByContainer()) return;
+            if (ShouldBeIgnoredByContainer(dependency)) return;
 
             if (_cache.TryRegister(dependency, out var registeredDependency))
                 return;

@@ -13,9 +13,9 @@ namespace DELTation.DIFramework
         /// </summary>
         /// <param name="obj">Object to check.</param>
         /// <returns>True is the <paramref name="obj"/> should be ignored, false otherwise.</returns>
-        public static bool ShouldBeIgnoredByContainer(this object obj) =>
+        public static bool ShouldBeIgnoredByContainer(object obj) =>
             obj is IIgnoreByContainer || obj is IDependencyContainer ||
-            obj is Component c && c.TryGetComponent(out IIgnoreByContainer _);
+            obj is Component c && (c == null || c.TryGetComponent(out IIgnoreByContainer _));
 
         /// <summary>
         /// Tries to resolve a dependency via the given container.
