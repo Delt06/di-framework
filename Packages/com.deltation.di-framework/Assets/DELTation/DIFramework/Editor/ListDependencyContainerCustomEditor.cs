@@ -2,6 +2,7 @@
 using DELTation.DIFramework.Containers;
 using UnityEditor;
 using UnityEngine;
+using static DELTation.DIFramework.ContainersExtensions;
 
 namespace DELTation.DIFramework.Editor
 {
@@ -61,7 +62,7 @@ namespace DELTation.DIFramework.Editor
                 {
                     var size = GUILayout.Width(150);
                     var components = go.GetComponents<Component>()
-                        .Where(c => c && !(c is Transform) && !c.ShouldBeIgnoredByContainer())
+                        .Where(c => c && !(c is Transform) && !ShouldBeIgnoredByContainer(c))
                         .ToArray();
 
                     var options = components.Select(c => c.GetType().Name).Prepend("<Select Component>").ToArray();

@@ -173,10 +173,8 @@ namespace DELTation.DIFramework
         private static InvalidOperationException InvalidStateException() =>
             new InvalidOperationException("Invalid state: either object or type should be not null.");
 
-        internal ContainerBuilder([NotNull] ResolutionFunction resolutionFunction)
-        {
-            _resolutionFunction = resolutionFunction ?? throw new ArgumentNullException(nameof(resolutionFunction));
-        }
+        internal ContainerBuilder([NotNull] ResolutionFunction resolutionFunction) => _resolutionFunction =
+            resolutionFunction ?? throw new ArgumentNullException(nameof(resolutionFunction));
 
         private readonly ResolutionFunction _resolutionFunction;
         private readonly List<Dependency> _dependencies = new List<Dependency>();
