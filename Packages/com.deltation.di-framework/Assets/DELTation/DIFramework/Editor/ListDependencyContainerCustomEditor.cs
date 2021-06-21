@@ -1,15 +1,23 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using DELTation.DIFramework.Containers;
 using UnityEditor;
 using UnityEngine;
 using static DELTation.DIFramework.ContainersExtensions;
+using Object = UnityEngine.Object;
 
 namespace DELTation.DIFramework.Editor
 {
     [CustomEditor(typeof(ListDependencyContainer))]
     internal class ListDependencyContainerCustomEditor : UnityEditor.Editor
     {
+        private static readonly Type[] SuspiciousDependencyTypes =
+        {
+            typeof(MonoScript),
+        };
+
         private GUILayoutOption _miniButton;
+
 
         private void OnEnable()
         {
@@ -37,6 +45,13 @@ namespace DELTation.DIFramework.Editor
                 EditorGUILayout.BeginHorizontal();
 
                 EditorGUILayout.PropertyField(list.GetArrayElementAtIndex(index), GUIContent.none);
+
+                if (TryGetSuspiciousType(currentValue, out var suspiciousType))
+                {
+                    var warning = $"\u26A0 Dependency has type {suspiciousType}.";
+                    EditorGUILayout.LabelField(warning);
+                }
+
 
                 if (index == 0)
                     EditorGUI.BeginDisabledGroup(true);
@@ -79,11 +94,18 @@ namespace DELTation.DIFramework.Editor
                     }
                 }
 
+
                 EditorGUILayout.EndHorizontal();
             }
 
             if (list.arraySize == 0 && GUILayout.Button("+"))
                 list.arraySize++;
+        }
+
+        private static bool TryGetSuspiciousType(Object obj, out Type suspiciousType)
+        {
+            suspiciousType = obj ? obj.GetType() : null;
+            return Array.IndexOf(SuspiciousDependencyTypes, suspiciousType) != -1;
         }
 
         private bool MiniButton(string text) => GUILayout.Button(text, EditorStyles.miniButtonRight, _miniButton);
