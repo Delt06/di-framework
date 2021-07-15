@@ -12,6 +12,7 @@ namespace DELTation.DIFramework
         [SerializeField] private bool _showIconsInHierarchy = true;
         [SerializeField] private bool _showMissingResolverWarnings = true;
         [SerializeField] private bool _useBakedData = true;
+        [SerializeField] private bool _bakeOnBuild = false;
         [SerializeField] private string _bakedAssembliesRegex = @"^Assembly-CSharp$";
 
         public bool ShowIconsInHierarchy => _showIconsInHierarchy;
@@ -19,6 +20,8 @@ namespace DELTation.DIFramework
         public bool ShowMissingResolverWarnings => _showMissingResolverWarnings;
 
         public bool UseBakedData => _useBakedData;
+
+        public bool BakeOnBuild => _bakeOnBuild;
 
         public bool ShouldBeBaked([NotNull] Assembly assembly)
         {
