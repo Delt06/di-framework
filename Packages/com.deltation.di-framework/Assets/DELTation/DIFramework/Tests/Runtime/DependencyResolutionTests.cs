@@ -50,14 +50,14 @@ namespace DELTation.DIFramework.Tests.Runtime
         [Test]
         public void CreateObjectWithTwoChildren_WithLocalDependencies_BothResolvedLocally()
         {
-            var parent = NewGameObject("Parent");
+            var parent = NewGameObject();
 
-            var child1 = NewGameObject("Child 1");
+            var child1 = NewGameObject();
             child1.transform.parent = parent.transform;
             var rigidbody1 = child1.AddComponent<Rigidbody>();
             var rigidbodyComponent1 = child1.AddComponent<RigidbodyComponent>();
 
-            var child2 = NewGameObject("Child 2");
+            var child2 = NewGameObject();
             child2.transform.parent = parent.transform;
             var rigidbody2 = child2.AddComponent<Rigidbody>();
             var rigidbodyComponent2 = child2.AddComponent<RigidbodyComponent>();

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using DELTation.DIFramework.Cache;
 using DELTation.DIFramework.Editor;
 using DELTation.DIFramework.Pooling;
 using UnityEngine;

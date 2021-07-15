@@ -14,9 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _dependencySource: 30
   _destroyWhenFinished: 1
-  _cachedComponents: []
-  _cachedLocalComponents: []
-  _affectedComponentsCache: []
 --- !u!1001 &1418982713919064150
 PrefabInstance:
   m_ObjectHideFlags: 0

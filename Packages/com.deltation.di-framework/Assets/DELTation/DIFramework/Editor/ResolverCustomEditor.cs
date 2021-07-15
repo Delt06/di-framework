@@ -10,8 +10,7 @@ namespace DELTation.DIFramework.Editor
     internal sealed class ResolverCustomEditor : UnityEditor.Editor
     {
         private GUIStyle _headerStyle;
-        private static bool _foldoutCache;
-        private static bool _foldoutComponents;
+        private bool _foldout;
         private ResolverReport _report;
 
         private void OnEnable()
@@ -31,112 +30,21 @@ namespace DELTation.DIFramework.Editor
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
-            DrawDependencies();
-            DrawCache();
-        }
 
-        private void DrawCache()
-        {
-            EditorGUILayout.Space();
-
-            var resolver = (Resolver) serializedObject.targetObject;
-
-            var headerStyle = EditorStyles.foldoutHeader;
-            headerStyle.richText = true;
-            _foldoutCache =
-                EditorGUILayout.BeginFoldoutHeaderGroup(_foldoutCache, "<size=14><b>Cache</b></size>", headerStyle);
-
-
-            if (_foldoutCache)
-            {
-                {
-                    GUILayout.BeginHorizontal();
-
-                    if (GUILayout.Button("Populate"))
-                    {
-                        resolver.PopulateCache();
-                        EditorUtility.SetDirty(resolver);
-                    }
-
-                    if (GUILayout.Button("Clear"))
-                    {
-                        resolver.ClearCache();
-                        EditorUtility.SetDirty(resolver);
-                    }
-
-                    GUILayout.EndHorizontal();
-                }
-
-                {
-                    GUILayout.BeginHorizontal();
-                    GUILayout.Label(
-                        $"Dependencies: {resolver.CachedComponents.Count + resolver.CachedLocalComponents.Count}"
-                    );
-                    GUILayout.FlexibleSpace();
-                    GUILayout.Label($"Affected Components: {resolver.AffectedComponentsCache.Count}");
-                    GUILayout.EndHorizontal();
-                }
-
-
-                {
-                    GUILayout.BeginHorizontal();
-                    {
-                        GUILayout.BeginVertical();
-                        EditorGUI.BeginDisabledGroup(true);
-
-                        foreach (var cachedComponent in resolver.CachedComponents)
-                        {
-                            EditorGUILayout.ObjectField(cachedComponent, typeof(Component), true);
-                        }
-
-                        foreach (var gameObjectWithUnityObject in resolver.CachedLocalComponents)
-                        {
-                            EditorGUILayout.ObjectField(gameObjectWithUnityObject.Object, typeof(Component), true
-                            );
-                        }
-
-                        EditorGUI.EndDisabledGroup();
-                        GUILayout.EndVertical();
-                    }
-
-                    {
-                        GUILayout.BeginVertical();
-                        EditorGUI.BeginDisabledGroup(true);
-                        foreach (var affectedComponent in resolver.AffectedComponentsCache)
-                        {
-                            EditorGUILayout.ObjectField(affectedComponent, typeof(Component), true);
-                        }
-
-                        EditorGUI.EndDisabledGroup();
-                        GUILayout.EndVertical();
-                    }
-
-
-                    GUILayout.EndHorizontal();
-                }
-            }
-
-            EditorGUILayout.EndFoldoutHeaderGroup();
-        }
-
-        private void DrawDependencies()
-        {
             _report.Generate();
 
             EditorGUILayout.Space();
 
             GUILayout.BeginHorizontal();
-            var headerStyle = EditorStyles.foldoutHeader;
-            headerStyle.richText = true;
-            _foldoutComponents = EditorGUILayout.BeginFoldoutHeaderGroup(_foldoutComponents,
-                "<size=14><b>Dependencies</b></size>", headerStyle
-            );
+            EditorGUILayout.LabelField("<size=14><b>Dependencies</b></size>:", _headerStyle);
             GUILayout.FlexibleSpace();
             var resolutionText = GetResolutionText(_report);
             GUILayout.Box(resolutionText, _headerStyle);
             GUILayout.EndHorizontal();
 
-            if (_foldoutComponents)
+            _foldout = EditorGUILayout.BeginFoldoutHeaderGroup(_foldout, "Components");
+
+            if (_foldout)
                 foreach (var componentData in _report.ComponentsData)
                 {
                     DrawComponent(componentData);
