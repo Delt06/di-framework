@@ -224,6 +224,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _dependencySource: 30
   _destroyWhenFinished: 1
+  _cachedComponents: []
+  _cachedLocalComponents: []
 --- !u!1 &76539477
 GameObject:
   m_ObjectHideFlags: 0
@@ -282,6 +284,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _dependencySource: 30
   _destroyWhenFinished: 1
+  _cachedComponents: []
+  _cachedLocalComponents: []
 --- !u!1 &147276769
 GameObject:
   m_ObjectHideFlags: 0
@@ -501,6 +505,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2172815720654805409, guid: 40c7993c1eaf1aa429047dcc723da547,
+        type: 3}
+      propertyPath: _cachedComponents.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2172815720654805409, guid: 40c7993c1eaf1aa429047dcc723da547,
+        type: 3}
+      propertyPath: _cachedComponents.Array.data[0]
+      value: 
+      objectReference: {fileID: 531312485}
     - target: {fileID: 2172815720654805423, guid: 40c7993c1eaf1aa429047dcc723da547,
         type: 3}
       propertyPath: m_Name
@@ -508,6 +522,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 40c7993c1eaf1aa429047dcc723da547, type: 3}
+--- !u!114 &531312485 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2172815719558294914, guid: 40c7993c1eaf1aa429047dcc723da547,
+    type: 3}
+  m_PrefabInstance: {fileID: 531312484}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a24b1f0a033542fabd99107429396625, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &566981005
 GameObject:
   m_ObjectHideFlags: 0

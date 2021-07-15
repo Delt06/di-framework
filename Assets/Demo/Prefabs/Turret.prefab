@@ -248,6 +248,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _dependencySource: 30
+  _destroyWhenFinished: 1
+  _cachedComponents: []
+  _cachedLocalComponents: []
 --- !u!1 &2172815721098406790
 GameObject:
   m_ObjectHideFlags: 0
