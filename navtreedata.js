@@ -34,8 +34,9 @@ var NAVTREE =
         [ "Option 2", "index.html#autotoc_md6", null ]
       ] ],
       [ "Setting up", "index.html#autotoc_md7", null ],
-      [ "Projects using DI Framework", "index.html#autotoc_md8", null ],
-      [ "Documentation", "index.html#autotoc_md9", null ]
+      [ "Extensions", "index.html#autotoc_md8", null ],
+      [ "Projects using DI Framework", "index.html#autotoc_md9", null ],
+      [ "Documentation", "index.html#autotoc_md10", null ]
     ] ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
@@ -69,7 +70,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "_baked_injection_8cs.html",
-"namespace_d_e_l_tation_1_1_d_i_framework.html#ac6f453b41c84b3e7ee519a4432d219d1"
+"namespace_d_e_l_tation.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
