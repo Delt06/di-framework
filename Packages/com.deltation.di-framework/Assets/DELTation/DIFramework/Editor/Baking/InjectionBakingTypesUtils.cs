@@ -8,7 +8,7 @@ namespace DELTation.DIFramework.Editor.Baking
         public static string GetFullyQualifiedName([NotNull] Type type)
         {
             if (type == null) throw new ArgumentNullException(nameof(type));
-            return type.FullName?.Replace("+", ".") ?? string.Empty;
+            return type.GetFullFriendlyName()?.Replace("+", ".") ?? string.Empty;
         }
     }
 }

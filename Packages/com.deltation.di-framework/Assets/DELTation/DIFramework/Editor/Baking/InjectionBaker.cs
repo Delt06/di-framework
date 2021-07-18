@@ -112,12 +112,6 @@ namespace DELTation.DIFramework.Editor.Baking
                         stringBuilder.Append(", ");
 
                     var parameter = parameters[parameterIndex];
-                    if (parameter.ParameterType.IsConstructedGenericType)
-                    {
-                        result = default;
-                        return false;
-                    }
-
                     AppendResolveExpression(parameter.ParameterType, stringBuilder);
                 }
 
@@ -157,12 +151,6 @@ namespace DELTation.DIFramework.Editor.Baking
                         stringBuilder.Append(", ");
 
                     var parameter = parameters[parameterIndex];
-                    if (parameter.ParameterType.IsConstructedGenericType)
-                    {
-                        result = default;
-                        return false;
-                    }
-
                     AppendPocoResolveExpression(parameter.ParameterType, stringBuilder);
                 }
 
