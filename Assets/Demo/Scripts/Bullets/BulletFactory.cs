@@ -2,7 +2,7 @@
 
 namespace Demo.Scripts.Bullets
 {
-    public sealed class BulletFactory : MonoBehaviour, IBulletFactory
+    public sealed class BulletFactory : MonoBehaviour, IProjectileFactory<Bullet>
     {
         [SerializeField] private Bullet _prefab = default;
         [SerializeField, Min(0f)] private float _powerfulSpeedMultiplier = 2f;

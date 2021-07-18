@@ -1,7 +1,5 @@
 ﻿using DELTation.DIFramework;
 using DELTation.DIFramework.Containers;
-using DELTation.DIFramework.Tests.Runtime.Components;
-using DELTation.DIFramework.Tests.Runtime.Pocos;
 
 namespace Demo.Scripts.Dependencies
 {

@@ -15,4 +15,5 @@ MonoBehaviour:
   _showIconsInHierarchy: 1
   _showMissingResolverWarnings: 1
   _useBakedData: 1
+  _bakeOnBuild: 0
   _bakedAssembliesRegex: ^Assembly-CSharp$
