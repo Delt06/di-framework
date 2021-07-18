@@ -2,9 +2,9 @@
 
 namespace Demo.Scripts.Bullets
 {
-    public interface IBulletFactory
+    public interface IProjectileFactory<out TProjectile>
     {
-        Bullet Create(Vector3 position, Quaternion rotation);
-        Bullet CreatePowerful(Vector3 position, Quaternion rotation);
+        TProjectile Create(Vector3 position, Quaternion rotation);
+        TProjectile CreatePowerful(Vector3 position, Quaternion rotation);
     }
 }

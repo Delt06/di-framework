@@ -108,7 +108,7 @@ namespace DELTation.DIFramework.Editor
         {
             foreach (var (dependency, source) in componentData.Dependencies)
             {
-                var dependencyText = dependency.Name;
+                var dependencyText = dependency.GetFriendlyName();
                 DrawDependencyBox(dependencyText, source);
             }
         }
