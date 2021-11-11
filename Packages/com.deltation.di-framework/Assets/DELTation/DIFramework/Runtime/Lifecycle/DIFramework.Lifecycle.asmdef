@@ -1,8 +1,6 @@
 {
-    "name": "DIFramework",
-    "references": [
-        "GUID:7661adf0dcc98034093743fe3a566d1a"
-    ],
+    "name": "DIFramework.Lifecycle",
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
