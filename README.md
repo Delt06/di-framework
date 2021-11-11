@@ -139,6 +139,7 @@ public sealed class Movement : MonoBehaviour
 - [Event System](https://github.com/Delt06/di-events)
 
 ## Projects using DI Framework
+- https://github.com/Delt06/computer-battle
 - https://github.com/Delt06/fps-roguelike
 - https://github.com/Delt06/leo-ecs-extensions
 
