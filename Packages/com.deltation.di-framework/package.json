@@ -1,6 +1,6 @@
 {
   "name": "com.deltation.di-framework",
-  "version": "2.5.2",
+  "version": "2.5.3",
   "displayName": "DI Framework",
   "description": "A simple Unity DI/IoC framework to inject dependencies into your components.",
   "unity": "2019.4",
