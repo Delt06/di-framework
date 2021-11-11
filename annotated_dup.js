@@ -24,6 +24,11 @@ var annotated_dup =
           [ "DependencyNotResolvedException", "class_d_e_l_tation_1_1_d_i_framework_1_1_exceptions_1_1_dependency_not_resolved_exception.html", "class_d_e_l_tation_1_1_d_i_framework_1_1_exceptions_1_1_dependency_not_resolved_exception" ],
           [ "NotInjectableException", "class_d_e_l_tation_1_1_d_i_framework_1_1_exceptions_1_1_not_injectable_exception.html", "class_d_e_l_tation_1_1_d_i_framework_1_1_exceptions_1_1_not_injectable_exception" ]
         ] ],
+        [ "Lifecycle", "namespace_d_e_l_tation_1_1_d_i_framework_1_1_lifecycle.html", [
+          [ "IDestroyable", "interface_d_e_l_tation_1_1_d_i_framework_1_1_lifecycle_1_1_i_destroyable.html", "interface_d_e_l_tation_1_1_d_i_framework_1_1_lifecycle_1_1_i_destroyable" ],
+          [ "IStartable", "interface_d_e_l_tation_1_1_d_i_framework_1_1_lifecycle_1_1_i_startable.html", "interface_d_e_l_tation_1_1_d_i_framework_1_1_lifecycle_1_1_i_startable" ],
+          [ "IUpdatable", "interface_d_e_l_tation_1_1_d_i_framework_1_1_lifecycle_1_1_i_updatable.html", "interface_d_e_l_tation_1_1_d_i_framework_1_1_lifecycle_1_1_i_updatable" ]
+        ] ],
         [ "Reporting", "namespace_d_e_l_tation_1_1_d_i_framework_1_1_reporting.html", [
           [ "ComponentResolutionData", "struct_d_e_l_tation_1_1_d_i_framework_1_1_reporting_1_1_component_resolution_data.html", "struct_d_e_l_tation_1_1_d_i_framework_1_1_reporting_1_1_component_resolution_data" ],
           [ "ResolverReport", "class_d_e_l_tation_1_1_d_i_framework_1_1_reporting_1_1_resolver_report.html", "class_d_e_l_tation_1_1_d_i_framework_1_1_reporting_1_1_resolver_report" ]
@@ -36,6 +41,8 @@ var annotated_dup =
           [ "TopologicalSorting", "class_d_e_l_tation_1_1_d_i_framework_1_1_sorting_1_1_topological_sorting.html", "class_d_e_l_tation_1_1_d_i_framework_1_1_sorting_1_1_topological_sorting" ]
         ] ],
         [ "ContainerBuilder", "class_d_e_l_tation_1_1_d_i_framework_1_1_container_builder.html", "class_d_e_l_tation_1_1_d_i_framework_1_1_container_builder" ],
+        [ "ContainerBuilderExtensions", "class_d_e_l_tation_1_1_d_i_framework_1_1_container_builder_extensions.html", "class_d_e_l_tation_1_1_d_i_framework_1_1_container_builder_extensions" ],
+        [ "ContainerLifecycle", "class_d_e_l_tation_1_1_d_i_framework_1_1_container_lifecycle.html", "class_d_e_l_tation_1_1_d_i_framework_1_1_container_lifecycle" ],
         [ "ContainersExtensions", "class_d_e_l_tation_1_1_d_i_framework_1_1_containers_extensions.html", "class_d_e_l_tation_1_1_d_i_framework_1_1_containers_extensions" ],
         [ "Di", "class_d_e_l_tation_1_1_d_i_framework_1_1_di.html", "class_d_e_l_tation_1_1_d_i_framework_1_1_di" ],
         [ "DiSettings", "class_d_e_l_tation_1_1_d_i_framework_1_1_di_settings.html", "class_d_e_l_tation_1_1_d_i_framework_1_1_di_settings" ],

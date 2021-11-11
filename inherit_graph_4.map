@@ -1,14 +1,3 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$interface_d_e_l_tation_1_1_d_i_framework_1_1_i_dependency_container.html" title="Represents a container with registered dependencies." alt="" coords="5,104,248,145"/>
-<area shape="rect" id="node2" href="$class_d_e_l_tation_1_1_d_i_framework_1_1_containers_1_1_configurable_dependency_container.html" title=" " alt="" coords="296,5,528,47"/>
-<area shape="rect" id="node3" href="$class_d_e_l_tation_1_1_d_i_framework_1_1_containers_1_1_dependency_container_base.html" title=" " alt="" coords="296,71,528,112"/>
-<area shape="rect" id="node6" href="$class_d_e_l_tation_1_1_d_i_framework_1_1_containers_1_1_fallback_dependency_container.html" title="Container that searches for objects using FindObjectOfType." alt="" coords="296,136,528,177"/>
-<area shape="rect" id="node7" href="$class_d_e_l_tation_1_1_d_i_framework_1_1_root_dependency_container.html" title=" " alt="" coords="315,201,509,243"/>
-<area shape="rect" id="node4" href="$class_d_e_l_tation_1_1_d_i_framework_1_1_containers_1_1_children_dependency_container.html" title="Containers that registers all children." alt="" coords="576,39,808,80"/>
-<area shape="rect" id="node5" href="$class_d_e_l_tation_1_1_d_i_framework_1_1_containers_1_1_list_dependency_container.html" title="Container that defines its object with a list." alt="" coords="576,104,808,145"/>
-<area shape="rect" id="node8" href="$interface_d_e_l_tation_1_1_d_i_framework_1_1_containers_1_1_i_ignore_by_container.html" title="Makes containers ignore the object." alt="" coords="11,323,243,364"/>
-<area shape="rect" id="node9" href="$class_d_e_l_tation_1_1_d_i_framework_1_1_containers_1_1_ignore_by_container.html" title=" " alt="" coords="296,320,528,361"/>
-<area shape="rect" id="node10" href="$interface_d_e_l_tation_1_1_d_i_framework_1_1_editor_1_1_i_show_icon_in_hierarchy.html" title="A tag to show component&#39;s icon in hierarchy view." alt="" coords="25,257,228,299"/>
-<area shape="rect" id="node11" href="$class_d_e_l_tation_1_1_d_i_framework_1_1_resolver.html" title=" " alt="" coords="303,267,521,294"/>
-<area shape="rect" id="node12" href="$class_mono_behaviour.html" title=" " alt="" coords="71,206,183,233"/>
+<area shape="rect" id="node1" href="$class_d_e_l_tation_1_1_d_i_framework_1_1_di.html" title="Facade for the generic dependency resolution functions" alt="" coords="5,5,184,32"/>
 </map>

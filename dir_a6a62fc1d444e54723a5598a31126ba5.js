@@ -4,12 +4,17 @@ var dir_a6a62fc1d444e54723a5598a31126ba5 =
     [ "Containers", "dir_8bd65f270220a4290ce3c941f1cd89ef.html", "dir_8bd65f270220a4290ce3c941f1cd89ef" ],
     [ "Editor", "dir_339c38c916dd7c61479bc931227f879c.html", "dir_339c38c916dd7c61479bc931227f879c" ],
     [ "Exceptions", "dir_95a303e48bbc8476e6163526b219dd6d.html", "dir_95a303e48bbc8476e6163526b219dd6d" ],
+    [ "Lifecycle", "dir_902fea7f4738e82748970408ef4b3410.html", "dir_902fea7f4738e82748970408ef4b3410" ],
     [ "Pooling", "dir_38603ea05cf1feba062ba73c08eef1c7.html", "dir_38603ea05cf1feba062ba73c08eef1c7" ],
     [ "Reporting", "dir_0650719cdf6b27307650b1895995842c.html", "dir_0650719cdf6b27307650b1895995842c" ],
     [ "Resolution", "dir_9d8d8bd17a50becad43855ca04c63f61.html", "dir_9d8d8bd17a50becad43855ca04c63f61" ],
     [ "Sorting", "dir_e4fac6cf1e126ac194cbc521ece9b965.html", "dir_e4fac6cf1e126ac194cbc521ece9b965" ],
     [ "ContainerBuilder.cs", "_container_builder_8cs.html", [
       [ "ContainerBuilder", "class_d_e_l_tation_1_1_d_i_framework_1_1_container_builder.html", "class_d_e_l_tation_1_1_d_i_framework_1_1_container_builder" ]
+    ] ],
+    [ "ContainerBuilderExtensions.cs", "_container_builder_extensions_8cs.html", "_container_builder_extensions_8cs" ],
+    [ "ContainerLifecycle.cs", "_container_lifecycle_8cs.html", [
+      [ "ContainerLifecycle", "class_d_e_l_tation_1_1_d_i_framework_1_1_container_lifecycle.html", "class_d_e_l_tation_1_1_d_i_framework_1_1_container_lifecycle" ]
     ] ],
     [ "ContainersExtensions.cs", "_containers_extensions_8cs.html", [
       [ "ContainersExtensions", "class_d_e_l_tation_1_1_d_i_framework_1_1_containers_extensions.html", "class_d_e_l_tation_1_1_d_i_framework_1_1_containers_extensions" ]
