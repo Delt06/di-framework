@@ -12,6 +12,8 @@ namespace DELTation.DIFramework.Tests.Runtime
     {
         private DependencyContainer _container;
         private Destroyable _destroyable;
+        private FixedUpdatable _fixedUpdatable;
+        private LateUpdatable _lateUpdatable;
         private Startable _startable;
         private Updatable _updatable;
 
@@ -21,6 +23,8 @@ namespace DELTation.DIFramework.Tests.Runtime
             _startable = new Startable();
             _updatable = new Updatable();
             _destroyable = new Destroyable();
+            _fixedUpdatable = new FixedUpdatable();
+            _lateUpdatable = new LateUpdatable();
 
             _container = CreateContainerWith<DependencyContainer>();
         }
@@ -41,7 +45,7 @@ namespace DELTation.DIFramework.Tests.Runtime
             yield return null;
 
             // Assert
-            AssertThatCallsCountsAreEqual(0, 0, 0);
+            AssertThatCallsCountsAreEqual(0, 0, 0, 0, 0);
         }
 
         [UnityTest]
@@ -55,7 +59,21 @@ namespace DELTation.DIFramework.Tests.Runtime
             yield return null;
 
             // Assert
-            AssertThatCallsCountsAreEqual(1, 1, 0);
+            AssertThatCallsCountsAreEqual(1, 1, 0, lateCalls: 1);
+        }
+
+        [UnityTest]
+        public IEnumerator GivenContainerWithLifecycle_WhenWaitForPhysicsUpdate_ThenFixedUpdateIsCalled()
+        {
+            // Arrange
+            AddAllObjects();
+            InitLifecycle();
+
+            // Act
+            yield return new WaitForFixedUpdate();
+
+            // Assert
+            AssertThatCallsCountsAreEqual(1, destroyableCalls: 0, fixedCalls: 1);
         }
 
         [UnityTest]
@@ -70,11 +88,11 @@ namespace DELTation.DIFramework.Tests.Runtime
             yield return null;
 
             // Assert
-            AssertThatCallsCountsAreEqual(1, 2, 0);
+            AssertThatCallsCountsAreEqual(1, 2, 0, lateCalls: 2);
         }
 
         [UnityTest]
-        public IEnumerator GivenContainerWithLifecycle_WhenDestroyed_ThenStartIsCalled()
+        public IEnumerator GivenContainerWithLifecycle_WhenDestroyed_ThenDestroyIsCalled()
         {
             // Arrange
             AddAllObjects();
@@ -86,7 +104,7 @@ namespace DELTation.DIFramework.Tests.Runtime
             yield return null;
 
             // Assert
-            AssertThatCallsCountsAreEqual(1, 1, 1);
+            AssertThatCallsCountsAreEqual(1, 1, 1, lateCalls: 1);
         }
 
         private void AddAllObjects()
@@ -94,13 +112,24 @@ namespace DELTation.DIFramework.Tests.Runtime
             _container.ObjectsToRegister.Add(_startable);
             _container.ObjectsToRegister.Add(_updatable);
             _container.ObjectsToRegister.Add(_destroyable);
+            _container.ObjectsToRegister.Add(_fixedUpdatable);
+            _container.ObjectsToRegister.Add(_lateUpdatable);
         }
 
-        private void AssertThatCallsCountsAreEqual(int startableCalls, int updatableCalls, int destroyableCalls)
+        private void AssertThatCallsCountsAreEqual(int? startableCalls = null, int? updatableCalls = null,
+            int? destroyableCalls = null,
+            int? fixedCalls = null, int? lateCalls = null)
         {
-            Assert.AreEqual(startableCalls, _startable.CallsCount);
-            Assert.AreEqual(updatableCalls, _updatable.CallsCount);
-            Assert.AreEqual(destroyableCalls, _destroyable.CallsCount);
+            if (startableCalls != null)
+                Assert.AreEqual(startableCalls, _startable.CallsCount);
+            if (updatableCalls != null)
+                Assert.AreEqual(updatableCalls, _updatable.CallsCount);
+            if (destroyableCalls != null)
+                Assert.AreEqual(destroyableCalls, _destroyable.CallsCount);
+            if (fixedCalls != null)
+                Assert.AreEqual(fixedCalls, _fixedUpdatable.CallsCount);
+            if (lateCalls != null)
+                Assert.AreEqual(lateCalls, _lateUpdatable.CallsCount);
         }
 
         private class Startable : IStartable
@@ -118,6 +147,26 @@ namespace DELTation.DIFramework.Tests.Runtime
             public int CallsCount { get; private set; }
 
             public void OnUpdate()
+            {
+                CallsCount++;
+            }
+        }
+
+        private class LateUpdatable : ILateUpdatable
+        {
+            public int CallsCount { get; private set; }
+
+            public void OnLateUpdate()
+            {
+                CallsCount++;
+            }
+        }
+
+        private class FixedUpdatable : IFixedUpdatable
+        {
+            public int CallsCount { get; private set; }
+
+            public void OnFixedUpdate()
             {
                 CallsCount++;
             }

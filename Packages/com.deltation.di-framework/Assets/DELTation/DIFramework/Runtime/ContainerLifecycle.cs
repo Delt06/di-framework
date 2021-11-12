@@ -18,6 +18,8 @@ namespace DELTation.DIFramework
         [SerializeField] private DependencyContainerBase _container;
 
         private readonly List<IDestroyable> _destroyables = new List<IDestroyable>();
+        private readonly List<IFixedUpdatable> _fixedUpdatables = new List<IFixedUpdatable>();
+        private readonly List<ILateUpdatable> _lateUpdatables = new List<ILateUpdatable>();
         private readonly List<IStartable> _startables = new List<IStartable>();
         private readonly List<IUpdatable> _updatables = new List<IUpdatable>();
 
@@ -41,6 +43,16 @@ namespace DELTation.DIFramework
         protected virtual void Update()
         {
             InvokeUpdatables();
+        }
+
+        protected virtual void FixedUpdate()
+        {
+            InvokeFixedUpdatables();
+        }
+
+        protected virtual void LateUpdate()
+        {
+            InvokeLateUpdatables();
         }
 
         protected virtual void OnDestroy()
@@ -71,6 +83,24 @@ namespace DELTation.DIFramework
             }
         }
 
+        private void InvokeFixedUpdatables()
+        {
+            // ReSharper disable once ForCanBeConvertedToForeach
+            for (var index = 0; index < _fixedUpdatables.Count; index++)
+            {
+                _fixedUpdatables[index].OnFixedUpdate();
+            }
+        }
+
+        protected virtual void InvokeLateUpdatables()
+        {
+            // ReSharper disable once ForCanBeConvertedToForeach
+            for (var index = 0; index < _lateUpdatables.Count; index++)
+            {
+                _lateUpdatables[index].OnLateUpdate();
+            }
+        }
+
         private void InvokeDestroyables()
         {
             // ReSharper disable once ForCanBeConvertedToForeach
@@ -93,6 +123,10 @@ namespace DELTation.DIFramework
                     _startables.Add(startable);
                 if (obj is IUpdatable updatable)
                     _updatables.Add(updatable);
+                if (obj is IFixedUpdatable fixedUpdatable)
+                    _fixedUpdatables.Add(fixedUpdatable);
+                if (obj is ILateUpdatable lateUpdatable)
+                    _lateUpdatables.Add(lateUpdatable);
                 if (obj is IDestroyable destroyable)
                     _destroyables.Add(destroyable);
             }
