@@ -104,7 +104,7 @@ namespace DELTation.DIFramework.Tests.Runtime
             yield return null;
 
             // Assert
-            AssertThatCallsCountsAreEqual(1, 1, 1, 1, 1);
+            AssertThatCallsCountsAreEqual(1, 1, 1, lateCalls: 1);
         }
 
         private void AddAllObjects()
