@@ -1,4 +1,7 @@
 var searchData=
 [
-  ['update_317',['Update',['../class_d_e_l_tation_1_1_d_i_framework_1_1_container_lifecycle.html#a7a82b4c37ab6d434f707e46e5c6804d0',1,'DELTation::DIFramework::ContainerLifecycle']]]
+  ['shouldbebaked_320',['ShouldBeBaked',['../class_d_e_l_tation_1_1_d_i_framework_1_1_di_settings.html#af2c95474b9e3ff8948739978b4d9d6d9',1,'DELTation::DIFramework::DiSettings']]],
+  ['shouldbeignoredbycontainer_321',['ShouldBeIgnoredByContainer',['../class_d_e_l_tation_1_1_d_i_framework_1_1_containers_extensions.html#a351f77eed3f22022f9646c13877a1ee8',1,'DELTation::DIFramework::ContainersExtensions']]],
+  ['sort_322',['Sort',['../class_d_e_l_tation_1_1_d_i_framework_1_1_sorting_1_1_topological_sorting.html#acf6b44253d3fb3dfe299dab6d35b8d57',1,'DELTation::DIFramework::Sorting::TopologicalSorting']]],
+  ['start_323',['Start',['../class_d_e_l_tation_1_1_d_i_framework_1_1_container_lifecycle.html#adcdfe59c083df11052a2f96f3b01544b',1,'DELTation::DIFramework::ContainerLifecycle']]]
 ];

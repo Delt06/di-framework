@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['pocoinstantiationfunction_293',['PocoInstantiationFunction',['../namespace_d_e_l_tation_1_1_d_i_framework_1_1_baking.html#abc919b1b93c06894f9bbee5f54fdbe9f',1,'DELTation::DIFramework::Baking']]],
-  ['pocoresolutionfunction_294',['PocoResolutionFunction',['../namespace_d_e_l_tation_1_1_d_i_framework_1_1_baking.html#a121c458e4ce07400e23bb6e0e6066a31',1,'DELTation::DIFramework::Baking']]]
+  ['notinjectableexception_305',['NotInjectableException',['../class_d_e_l_tation_1_1_d_i_framework_1_1_exceptions_1_1_not_injectable_exception.html#aa1cde63af5368da5ca4880baa8306314',1,'DELTation::DIFramework::Exceptions::NotInjectableException']]]
 ];

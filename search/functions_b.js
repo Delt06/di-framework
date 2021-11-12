@@ -1,10 +1,8 @@
 var searchData=
 [
-  ['readonly_295',['readonly',['../struct_d_e_l_tation_1_1_d_i_framework_1_1_reporting_1_1_component_resolution_data.html#a8d4ab35fda85dc254d1a0af8455aefc0',1,'DELTation::DIFramework::Reporting::ComponentResolutionData']]],
-  ['register_296',['Register',['../class_d_e_l_tation_1_1_d_i_framework_1_1_container_builder.html#a3840b5db6c7c5c09df3033ba93eef1f5',1,'DELTation::DIFramework::ContainerBuilder']]],
-  ['register_3c_20t_20_3e_297',['Register&lt; T &gt;',['../class_d_e_l_tation_1_1_d_i_framework_1_1_container_builder.html#ae8e4900e429f63211bfcd05d04a90a64',1,'DELTation::DIFramework::ContainerBuilder']]],
-  ['registerifnotnull_298',['RegisterIfNotNull',['../class_d_e_l_tation_1_1_d_i_framework_1_1_container_builder_extensions.html#ab953ef37d4e6cac156976112563b0b6c',1,'DELTation::DIFramework::ContainerBuilderExtensions']]],
-  ['resolutionfunction_299',['ResolutionFunction',['../namespace_d_e_l_tation_1_1_d_i_framework_1_1_baking.html#abc6bb178967c0baac1175ce866aa3b92',1,'DELTation::DIFramework::Baking']]],
-  ['resolve_300',['Resolve',['../class_d_e_l_tation_1_1_d_i_framework_1_1_resolver.html#a2a7fd20883a719b9b537958a1edd3acb',1,'DELTation::DIFramework::Resolver']]],
-  ['resolverreport_301',['ResolverReport',['../class_d_e_l_tation_1_1_d_i_framework_1_1_reporting_1_1_resolver_report.html#a62aaf4a9433c01c7c5b87205b0383352',1,'DELTation::DIFramework::Reporting::ResolverReport']]]
+  ['ondestroy_306',['OnDestroy',['../class_d_e_l_tation_1_1_d_i_framework_1_1_container_lifecycle.html#ab3839c7cc0d72ab26a9e87b428983d67',1,'DELTation.DIFramework.ContainerLifecycle.OnDestroy()'],['../interface_d_e_l_tation_1_1_d_i_framework_1_1_lifecycle_1_1_i_destroyable.html#a095bdf9a7747cf3ea25fe2640e178543',1,'DELTation.DIFramework.Lifecycle.IDestroyable.OnDestroy()']]],
+  ['onfixedupdate_307',['OnFixedUpdate',['../interface_d_e_l_tation_1_1_d_i_framework_1_1_lifecycle_1_1_i_fixed_updatable.html#aa349049c313045ef48830f9c7b0c29e4',1,'DELTation::DIFramework::Lifecycle::IFixedUpdatable']]],
+  ['onlateupdate_308',['OnLateUpdate',['../interface_d_e_l_tation_1_1_d_i_framework_1_1_lifecycle_1_1_i_late_updatable.html#a112b687672191eb93a1a8bff560b7758',1,'DELTation::DIFramework::Lifecycle::ILateUpdatable']]],
+  ['onstart_309',['OnStart',['../interface_d_e_l_tation_1_1_d_i_framework_1_1_lifecycle_1_1_i_startable.html#a2f1c29656ea4e63b84be2dbafe552425',1,'DELTation::DIFramework::Lifecycle::IStartable']]],
+  ['onupdate_310',['OnUpdate',['../interface_d_e_l_tation_1_1_d_i_framework_1_1_lifecycle_1_1_i_updatable.html#a7d02f0620f10f33fabdbf86f73790d6a',1,'DELTation::DIFramework::Lifecycle::IUpdatable']]]
 ];

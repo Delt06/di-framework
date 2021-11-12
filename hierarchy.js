@@ -25,9 +25,11 @@ var hierarchy =
     [ "IEquatable", "class_i_equatable.html", [
       [ "DELTation.DIFramework.Reporting.ComponentResolutionData", "struct_d_e_l_tation_1_1_d_i_framework_1_1_reporting_1_1_component_resolution_data.html", null ]
     ] ],
+    [ "DELTation.DIFramework.Lifecycle.IFixedUpdatable", "interface_d_e_l_tation_1_1_d_i_framework_1_1_lifecycle_1_1_i_fixed_updatable.html", null ],
     [ "DELTation.DIFramework.Containers.IIgnoreByContainer", "interface_d_e_l_tation_1_1_d_i_framework_1_1_containers_1_1_i_ignore_by_container.html", [
       [ "DELTation.DIFramework.Containers.IgnoreByContainer", "class_d_e_l_tation_1_1_d_i_framework_1_1_containers_1_1_ignore_by_container.html", null ]
     ] ],
+    [ "DELTation.DIFramework.Lifecycle.ILateUpdatable", "interface_d_e_l_tation_1_1_d_i_framework_1_1_lifecycle_1_1_i_late_updatable.html", null ],
     [ "DELTation.DIFramework.Resolution.Injection", "class_d_e_l_tation_1_1_d_i_framework_1_1_resolution_1_1_injection.html", null ],
     [ "DELTation.DIFramework.Editor.IShowIconInHierarchy", "interface_d_e_l_tation_1_1_d_i_framework_1_1_editor_1_1_i_show_icon_in_hierarchy.html", [
       [ "DELTation.DIFramework.Resolver", "class_d_e_l_tation_1_1_d_i_framework_1_1_resolver.html", null ],

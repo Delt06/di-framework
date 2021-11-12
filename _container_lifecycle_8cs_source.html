@@ -102,96 +102,135 @@ $(document).ready(function(){initNavTree('_container_lifecycle_8cs_source.html',
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        [SerializeField] <span class="keyword">private</span> <a class="code" href="class_d_e_l_tation_1_1_d_i_framework_1_1_containers_1_1_dependency_container_base.html">DependencyContainerBase</a> _container;</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        <span class="keyword">private</span> readonly List&lt;IDestroyable&gt; _destroyables = <span class="keyword">new</span> List&lt;IDestroyable&gt;();</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        <span class="keyword">private</span> readonly List&lt;IStartable&gt; _startables = <span class="keyword">new</span> List&lt;IStartable&gt;();</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        <span class="keyword">private</span> readonly List&lt;IUpdatable&gt; _updatables = <span class="keyword">new</span> List&lt;IUpdatable&gt;();</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
-<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="class_d_e_l_tation_1_1_d_i_framework_1_1_container_lifecycle.html#aa21127eb560cdf8efe4d8e19dbea18a4">   24</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="class_d_e_l_tation_1_1_d_i_framework_1_1_containers_1_1_dependency_container_base.html">DependencyContainerBase</a> <a class="code" href="class_d_e_l_tation_1_1_d_i_framework_1_1_container_lifecycle.html#aa21127eb560cdf8efe4d8e19dbea18a4">Container</a></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        {</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;            <span class="keyword">get</span> =&gt; _container;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;            <span class="keyword">set</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;            {</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;                <span class="keywordflow">if</span> (value == <span class="keyword">null</span>) <span class="keywordflow">throw</span> <span class="keyword">new</span> ArgumentNullException(nameof(value), <span class="stringliteral">&quot;Container cannot be null.&quot;</span>);</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;                _container = value;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;            }</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        }</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
-<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="class_d_e_l_tation_1_1_d_i_framework_1_1_container_lifecycle.html#adcdfe59c083df11052a2f96f3b01544b">   34</a></span>&#160;        <span class="keyword">protected</span> <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_d_e_l_tation_1_1_d_i_framework_1_1_container_lifecycle.html#adcdfe59c083df11052a2f96f3b01544b">Start</a>()</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        {</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;            AssetThatContainerIsAssigned();</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;            PullObjectsFromContainer();</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;            InvokeStartables();</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        }</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
-<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="class_d_e_l_tation_1_1_d_i_framework_1_1_container_lifecycle.html#a7a82b4c37ab6d434f707e46e5c6804d0">   41</a></span>&#160;        <span class="keyword">protected</span> <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_d_e_l_tation_1_1_d_i_framework_1_1_container_lifecycle.html#a7a82b4c37ab6d434f707e46e5c6804d0">Update</a>()</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        {</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;            InvokeUpdatables();</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        }</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
-<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="class_d_e_l_tation_1_1_d_i_framework_1_1_container_lifecycle.html#ab3839c7cc0d72ab26a9e87b428983d67">   46</a></span>&#160;        <span class="keyword">protected</span> <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_d_e_l_tation_1_1_d_i_framework_1_1_container_lifecycle.html#ab3839c7cc0d72ab26a9e87b428983d67">OnDestroy</a>()</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        {</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            InvokeDestroyables();</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        }</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        <span class="keyword">private</span> <span class="keywordtype">void</span> AssetThatContainerIsAssigned()</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        {</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            Assert.IsNotNull(_container, $<span class="stringliteral">&quot;Container has to be assigned ({gameObject.name}).&quot;</span>);</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        }</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        <span class="keyword">private</span> <span class="keywordtype">void</span> InvokeStartables()</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        {</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            <span class="comment">// ReSharper disable once ForCanBeConvertedToForeach</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            <span class="keywordflow">for</span> (var index = 0; index &lt; _startables.Count; index++)</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            {</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                _startables[index].OnStart();</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            }</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        }</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        <span class="keyword">private</span> <span class="keywordtype">void</span> InvokeUpdatables()</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        {</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            <span class="comment">// ReSharper disable once ForCanBeConvertedToForeach</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;            <span class="keywordflow">for</span> (var index = 0; index &lt; _updatables.Count; index++)</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            {</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;                _updatables[index].OnUpdate();</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            }</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        }</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        <span class="keyword">private</span> <span class="keywordtype">void</span> InvokeDestroyables()</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        {</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            <span class="comment">// ReSharper disable once ForCanBeConvertedToForeach</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            <span class="keywordflow">for</span> (var index = 0; index &lt; _destroyables.Count; index++)</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            {</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                _destroyables[index].OnDestroy();</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            }</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        }</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        <span class="keyword">private</span> <span class="keywordtype">void</span> PullObjectsFromContainer()</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        {</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            var allObjects = <span class="keyword">new</span> List&lt;object&gt;();</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            _container.<a class="code" href="class_d_e_l_tation_1_1_d_i_framework_1_1_containers_1_1_dependency_container_base.html#ac2e089eff17975f788714ab15fe841e8">GetAllRegisteredObjects</a>(allObjects);</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            <span class="keywordflow">for</span> (var index = 0; index &lt; allObjects.Count; index++)</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;            {</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                var obj = allObjects[index];</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                <span class="comment">// ReSharper disable once ConvertIfStatementToSwitchStatement</span></div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;                <span class="keywordflow">if</span> (obj is <a class="code" href="interface_d_e_l_tation_1_1_d_i_framework_1_1_lifecycle_1_1_i_startable.html">IStartable</a> startable)</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;                    _startables.Add(startable);</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;                <span class="keywordflow">if</span> (obj is <a class="code" href="interface_d_e_l_tation_1_1_d_i_framework_1_1_lifecycle_1_1_i_updatable.html">IUpdatable</a> updatable)</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;                    _updatables.Add(updatable);</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                <span class="keywordflow">if</span> (obj is <a class="code" href="interface_d_e_l_tation_1_1_d_i_framework_1_1_lifecycle_1_1_i_destroyable.html">IDestroyable</a> destroyable)</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                    _destroyables.Add(destroyable);</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;            }</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        }</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    }</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;}</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        <span class="keyword">private</span> readonly List&lt;IFixedUpdatable&gt; _fixedUpdatables = <span class="keyword">new</span> List&lt;IFixedUpdatable&gt;();</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        <span class="keyword">private</span> readonly List&lt;ILateUpdatable&gt; _lateUpdatables = <span class="keyword">new</span> List&lt;ILateUpdatable&gt;();</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        <span class="keyword">private</span> readonly List&lt;IStartable&gt; _startables = <span class="keyword">new</span> List&lt;IStartable&gt;();</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        <span class="keyword">private</span> readonly List&lt;IUpdatable&gt; _updatables = <span class="keyword">new</span> List&lt;IUpdatable&gt;();</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
+<div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="class_d_e_l_tation_1_1_d_i_framework_1_1_container_lifecycle.html#aa21127eb560cdf8efe4d8e19dbea18a4">   26</a></span>&#160;        <span class="keyword">public</span> <a class="code" href="class_d_e_l_tation_1_1_d_i_framework_1_1_containers_1_1_dependency_container_base.html">DependencyContainerBase</a> <a class="code" href="class_d_e_l_tation_1_1_d_i_framework_1_1_container_lifecycle.html#aa21127eb560cdf8efe4d8e19dbea18a4">Container</a></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        {</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;            <span class="keyword">get</span> =&gt; _container;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;            <span class="keyword">set</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;            {</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;                <span class="keywordflow">if</span> (value == <span class="keyword">null</span>) <span class="keywordflow">throw</span> <span class="keyword">new</span> ArgumentNullException(nameof(value), <span class="stringliteral">&quot;Container cannot be null.&quot;</span>);</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;                _container = value;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;            }</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        }</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
+<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="class_d_e_l_tation_1_1_d_i_framework_1_1_container_lifecycle.html#adcdfe59c083df11052a2f96f3b01544b">   36</a></span>&#160;        <span class="keyword">protected</span> <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_d_e_l_tation_1_1_d_i_framework_1_1_container_lifecycle.html#adcdfe59c083df11052a2f96f3b01544b">Start</a>()</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        {</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;            AssetThatContainerIsAssigned();</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;            PullObjectsFromContainer();</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;            InvokeStartables();</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        }</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
+<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="class_d_e_l_tation_1_1_d_i_framework_1_1_container_lifecycle.html#a7a82b4c37ab6d434f707e46e5c6804d0">   43</a></span>&#160;        <span class="keyword">protected</span> <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_d_e_l_tation_1_1_d_i_framework_1_1_container_lifecycle.html#a7a82b4c37ab6d434f707e46e5c6804d0">Update</a>()</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        {</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            InvokeUpdatables();</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        }</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="class_d_e_l_tation_1_1_d_i_framework_1_1_container_lifecycle.html#a0b5bc9d89dbb632c33929028bdc1e591">   48</a></span>&#160;        <span class="keyword">protected</span> <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_d_e_l_tation_1_1_d_i_framework_1_1_container_lifecycle.html#a0b5bc9d89dbb632c33929028bdc1e591">FixedUpdate</a>()</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        {</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            InvokeFixedUpdatables();</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        }</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
+<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="class_d_e_l_tation_1_1_d_i_framework_1_1_container_lifecycle.html#a8efe74f6026d021b95984668b12b01d1">   53</a></span>&#160;        <span class="keyword">protected</span> <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_d_e_l_tation_1_1_d_i_framework_1_1_container_lifecycle.html#a8efe74f6026d021b95984668b12b01d1">LateUpdate</a>()</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        {</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            <a class="code" href="class_d_e_l_tation_1_1_d_i_framework_1_1_container_lifecycle.html#aba8be45a41be9a887f38e01fe3ee9bf7">InvokeLateUpdatables</a>();</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        }</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
+<div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="class_d_e_l_tation_1_1_d_i_framework_1_1_container_lifecycle.html#ab3839c7cc0d72ab26a9e87b428983d67">   58</a></span>&#160;        <span class="keyword">protected</span> <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_d_e_l_tation_1_1_d_i_framework_1_1_container_lifecycle.html#ab3839c7cc0d72ab26a9e87b428983d67">OnDestroy</a>()</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        {</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            InvokeDestroyables();</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        }</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <span class="keyword">private</span> <span class="keywordtype">void</span> AssetThatContainerIsAssigned()</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        {</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            Assert.IsNotNull(_container, $<span class="stringliteral">&quot;Container has to be assigned ({gameObject.name}).&quot;</span>);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        }</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        <span class="keyword">private</span> <span class="keywordtype">void</span> InvokeStartables()</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        {</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;            <span class="comment">// ReSharper disable once ForCanBeConvertedToForeach</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            <span class="keywordflow">for</span> (var index = 0; index &lt; _startables.Count; index++)</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            {</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                _startables[index].OnStart();</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            }</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        }</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        <span class="keyword">private</span> <span class="keywordtype">void</span> InvokeUpdatables()</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        {</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            <span class="comment">// ReSharper disable once ForCanBeConvertedToForeach</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            <span class="keywordflow">for</span> (var index = 0; index &lt; _updatables.Count; index++)</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            {</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                _updatables[index].OnUpdate();</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            }</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        }</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        <span class="keyword">private</span> <span class="keywordtype">void</span> InvokeFixedUpdatables()</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        {</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            <span class="comment">// ReSharper disable once ForCanBeConvertedToForeach</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;            <span class="keywordflow">for</span> (var index = 0; index &lt; _fixedUpdatables.Count; index++)</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;            {</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                _fixedUpdatables[index].OnFixedUpdate();</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;            }</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        }</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
+<div class="line"><a name="l00095"></a><span class="lineno"><a class="line" href="class_d_e_l_tation_1_1_d_i_framework_1_1_container_lifecycle.html#aba8be45a41be9a887f38e01fe3ee9bf7">   95</a></span>&#160;        <span class="keyword">protected</span> <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_d_e_l_tation_1_1_d_i_framework_1_1_container_lifecycle.html#aba8be45a41be9a887f38e01fe3ee9bf7">InvokeLateUpdatables</a>()</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        {</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;            <span class="comment">// ReSharper disable once ForCanBeConvertedToForeach</span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;            <span class="keywordflow">for</span> (var index = 0; index &lt; _lateUpdatables.Count; index++)</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            {</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;                _lateUpdatables[index].OnLateUpdate();</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;            }</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        }</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        <span class="keyword">private</span> <span class="keywordtype">void</span> InvokeDestroyables()</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        {</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;            <span class="comment">// ReSharper disable once ForCanBeConvertedToForeach</span></div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;            <span class="keywordflow">for</span> (var index = 0; index &lt; _destroyables.Count; index++)</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;            {</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;                _destroyables[index].OnDestroy();</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;            }</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        }</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160; </div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        <span class="keyword">private</span> <span class="keywordtype">void</span> PullObjectsFromContainer()</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        {</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;            var allObjects = <span class="keyword">new</span> List&lt;object&gt;();</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;            _container.<a class="code" href="class_d_e_l_tation_1_1_d_i_framework_1_1_containers_1_1_dependency_container_base.html#ac2e089eff17975f788714ab15fe841e8">GetAllRegisteredObjects</a>(allObjects);</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160; </div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;            <span class="keywordflow">for</span> (var index = 0; index &lt; allObjects.Count; index++)</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;            {</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;                var obj = allObjects[index];</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;                <span class="comment">// ReSharper disable once ConvertIfStatementToSwitchStatement</span></div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;                <span class="keywordflow">if</span> (obj is <a class="code" href="interface_d_e_l_tation_1_1_d_i_framework_1_1_lifecycle_1_1_i_startable.html">IStartable</a> startable)</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;                    _startables.Add(startable);</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;                <span class="keywordflow">if</span> (obj is <a class="code" href="interface_d_e_l_tation_1_1_d_i_framework_1_1_lifecycle_1_1_i_updatable.html">IUpdatable</a> updatable)</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;                    _updatables.Add(updatable);</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;                <span class="keywordflow">if</span> (obj is <a class="code" href="interface_d_e_l_tation_1_1_d_i_framework_1_1_lifecycle_1_1_i_fixed_updatable.html">IFixedUpdatable</a> fixedUpdatable)</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;                    _fixedUpdatables.Add(fixedUpdatable);</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;                <span class="keywordflow">if</span> (obj is <a class="code" href="interface_d_e_l_tation_1_1_d_i_framework_1_1_lifecycle_1_1_i_late_updatable.html">ILateUpdatable</a> lateUpdatable)</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;                    _lateUpdatables.Add(lateUpdatable);</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;                <span class="keywordflow">if</span> (obj is <a class="code" href="interface_d_e_l_tation_1_1_d_i_framework_1_1_lifecycle_1_1_i_destroyable.html">IDestroyable</a> destroyable)</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;                    _destroyables.Add(destroyable);</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;            }</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;        }</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    }</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;}</div>
 <div class="ttc" id="aclass_d_e_l_tation_1_1_d_i_framework_1_1_container_lifecycle_html"><div class="ttname"><a href="class_d_e_l_tation_1_1_d_i_framework_1_1_container_lifecycle.html">DELTation.DIFramework.ContainerLifecycle</a></div><div class="ttdoc">Pulls all registered objects from a container and calls lifecycle events on them (DIFramework....</div><div class="ttdef"><b>Definition:</b> <a href="_container_lifecycle_8cs_source.html#l00016">ContainerLifecycle.cs:17</a></div></div>
-<div class="ttc" id="aclass_d_e_l_tation_1_1_d_i_framework_1_1_container_lifecycle_html_a7a82b4c37ab6d434f707e46e5c6804d0"><div class="ttname"><a href="class_d_e_l_tation_1_1_d_i_framework_1_1_container_lifecycle.html#a7a82b4c37ab6d434f707e46e5c6804d0">DELTation.DIFramework.ContainerLifecycle.Update</a></div><div class="ttdeci">virtual void Update()</div><div class="ttdef"><b>Definition:</b> <a href="_container_lifecycle_8cs_source.html#l00041">ContainerLifecycle.cs:41</a></div></div>
-<div class="ttc" id="aclass_d_e_l_tation_1_1_d_i_framework_1_1_container_lifecycle_html_aa21127eb560cdf8efe4d8e19dbea18a4"><div class="ttname"><a href="class_d_e_l_tation_1_1_d_i_framework_1_1_container_lifecycle.html#aa21127eb560cdf8efe4d8e19dbea18a4">DELTation.DIFramework.ContainerLifecycle.Container</a></div><div class="ttdeci">DependencyContainerBase Container</div><div class="ttdef"><b>Definition:</b> <a href="_container_lifecycle_8cs_source.html#l00024">ContainerLifecycle.cs:25</a></div></div>
-<div class="ttc" id="aclass_d_e_l_tation_1_1_d_i_framework_1_1_container_lifecycle_html_ab3839c7cc0d72ab26a9e87b428983d67"><div class="ttname"><a href="class_d_e_l_tation_1_1_d_i_framework_1_1_container_lifecycle.html#ab3839c7cc0d72ab26a9e87b428983d67">DELTation.DIFramework.ContainerLifecycle.OnDestroy</a></div><div class="ttdeci">virtual void OnDestroy()</div><div class="ttdef"><b>Definition:</b> <a href="_container_lifecycle_8cs_source.html#l00046">ContainerLifecycle.cs:46</a></div></div>
-<div class="ttc" id="aclass_d_e_l_tation_1_1_d_i_framework_1_1_container_lifecycle_html_adcdfe59c083df11052a2f96f3b01544b"><div class="ttname"><a href="class_d_e_l_tation_1_1_d_i_framework_1_1_container_lifecycle.html#adcdfe59c083df11052a2f96f3b01544b">DELTation.DIFramework.ContainerLifecycle.Start</a></div><div class="ttdeci">virtual void Start()</div><div class="ttdef"><b>Definition:</b> <a href="_container_lifecycle_8cs_source.html#l00034">ContainerLifecycle.cs:34</a></div></div>
+<div class="ttc" id="aclass_d_e_l_tation_1_1_d_i_framework_1_1_container_lifecycle_html_a0b5bc9d89dbb632c33929028bdc1e591"><div class="ttname"><a href="class_d_e_l_tation_1_1_d_i_framework_1_1_container_lifecycle.html#a0b5bc9d89dbb632c33929028bdc1e591">DELTation.DIFramework.ContainerLifecycle.FixedUpdate</a></div><div class="ttdeci">virtual void FixedUpdate()</div><div class="ttdef"><b>Definition:</b> <a href="_container_lifecycle_8cs_source.html#l00048">ContainerLifecycle.cs:48</a></div></div>
+<div class="ttc" id="aclass_d_e_l_tation_1_1_d_i_framework_1_1_container_lifecycle_html_a7a82b4c37ab6d434f707e46e5c6804d0"><div class="ttname"><a href="class_d_e_l_tation_1_1_d_i_framework_1_1_container_lifecycle.html#a7a82b4c37ab6d434f707e46e5c6804d0">DELTation.DIFramework.ContainerLifecycle.Update</a></div><div class="ttdeci">virtual void Update()</div><div class="ttdef"><b>Definition:</b> <a href="_container_lifecycle_8cs_source.html#l00043">ContainerLifecycle.cs:43</a></div></div>
+<div class="ttc" id="aclass_d_e_l_tation_1_1_d_i_framework_1_1_container_lifecycle_html_a8efe74f6026d021b95984668b12b01d1"><div class="ttname"><a href="class_d_e_l_tation_1_1_d_i_framework_1_1_container_lifecycle.html#a8efe74f6026d021b95984668b12b01d1">DELTation.DIFramework.ContainerLifecycle.LateUpdate</a></div><div class="ttdeci">virtual void LateUpdate()</div><div class="ttdef"><b>Definition:</b> <a href="_container_lifecycle_8cs_source.html#l00053">ContainerLifecycle.cs:53</a></div></div>
+<div class="ttc" id="aclass_d_e_l_tation_1_1_d_i_framework_1_1_container_lifecycle_html_aa21127eb560cdf8efe4d8e19dbea18a4"><div class="ttname"><a href="class_d_e_l_tation_1_1_d_i_framework_1_1_container_lifecycle.html#aa21127eb560cdf8efe4d8e19dbea18a4">DELTation.DIFramework.ContainerLifecycle.Container</a></div><div class="ttdeci">DependencyContainerBase Container</div><div class="ttdef"><b>Definition:</b> <a href="_container_lifecycle_8cs_source.html#l00026">ContainerLifecycle.cs:27</a></div></div>
+<div class="ttc" id="aclass_d_e_l_tation_1_1_d_i_framework_1_1_container_lifecycle_html_ab3839c7cc0d72ab26a9e87b428983d67"><div class="ttname"><a href="class_d_e_l_tation_1_1_d_i_framework_1_1_container_lifecycle.html#ab3839c7cc0d72ab26a9e87b428983d67">DELTation.DIFramework.ContainerLifecycle.OnDestroy</a></div><div class="ttdeci">virtual void OnDestroy()</div><div class="ttdef"><b>Definition:</b> <a href="_container_lifecycle_8cs_source.html#l00058">ContainerLifecycle.cs:58</a></div></div>
+<div class="ttc" id="aclass_d_e_l_tation_1_1_d_i_framework_1_1_container_lifecycle_html_aba8be45a41be9a887f38e01fe3ee9bf7"><div class="ttname"><a href="class_d_e_l_tation_1_1_d_i_framework_1_1_container_lifecycle.html#aba8be45a41be9a887f38e01fe3ee9bf7">DELTation.DIFramework.ContainerLifecycle.InvokeLateUpdatables</a></div><div class="ttdeci">virtual void InvokeLateUpdatables()</div><div class="ttdef"><b>Definition:</b> <a href="_container_lifecycle_8cs_source.html#l00095">ContainerLifecycle.cs:95</a></div></div>
+<div class="ttc" id="aclass_d_e_l_tation_1_1_d_i_framework_1_1_container_lifecycle_html_adcdfe59c083df11052a2f96f3b01544b"><div class="ttname"><a href="class_d_e_l_tation_1_1_d_i_framework_1_1_container_lifecycle.html#adcdfe59c083df11052a2f96f3b01544b">DELTation.DIFramework.ContainerLifecycle.Start</a></div><div class="ttdeci">virtual void Start()</div><div class="ttdef"><b>Definition:</b> <a href="_container_lifecycle_8cs_source.html#l00036">ContainerLifecycle.cs:36</a></div></div>
 <div class="ttc" id="aclass_d_e_l_tation_1_1_d_i_framework_1_1_containers_1_1_dependency_container_base_html"><div class="ttname"><a href="class_d_e_l_tation_1_1_d_i_framework_1_1_containers_1_1_dependency_container_base.html">DELTation.DIFramework.Containers.DependencyContainerBase</a></div><div class="ttdef"><b>Definition:</b> <a href="_dependency_container_base_8cs_source.html#l00007">DependencyContainerBase.cs:8</a></div></div>
 <div class="ttc" id="aclass_d_e_l_tation_1_1_d_i_framework_1_1_containers_1_1_dependency_container_base_html_ac2e089eff17975f788714ab15fe841e8"><div class="ttname"><a href="class_d_e_l_tation_1_1_d_i_framework_1_1_containers_1_1_dependency_container_base.html#ac2e089eff17975f788714ab15fe841e8">DELTation.DIFramework.Containers.DependencyContainerBase.GetAllRegisteredObjects</a></div><div class="ttdeci">void GetAllRegisteredObjects(ICollection&lt; object &gt; objects)</div><div class="ttdoc">Populates the provided set with a collection of all objects registered in the container....</div><div class="ttdef"><b>Definition:</b> <a href="_dependency_container_base_8cs_source.html#l00024">DependencyContainerBase.cs:24</a></div></div>
 <div class="ttc" id="aclass_mono_behaviour_html"><div class="ttname"><a href="class_mono_behaviour.html">MonoBehaviour</a></div></div>
 <div class="ttc" id="ainterface_d_e_l_tation_1_1_d_i_framework_1_1_lifecycle_1_1_i_destroyable_html"><div class="ttname"><a href="interface_d_e_l_tation_1_1_d_i_framework_1_1_lifecycle_1_1_i_destroyable.html">DELTation.DIFramework.Lifecycle.IDestroyable</a></div><div class="ttdef"><b>Definition:</b> <a href="_i_destroyable_8cs_source.html#l00003">IDestroyable.cs:4</a></div></div>
+<div class="ttc" id="ainterface_d_e_l_tation_1_1_d_i_framework_1_1_lifecycle_1_1_i_fixed_updatable_html"><div class="ttname"><a href="interface_d_e_l_tation_1_1_d_i_framework_1_1_lifecycle_1_1_i_fixed_updatable.html">DELTation.DIFramework.Lifecycle.IFixedUpdatable</a></div><div class="ttdef"><b>Definition:</b> <a href="_i_fixed_updatable_8cs_source.html#l00003">IFixedUpdatable.cs:4</a></div></div>
+<div class="ttc" id="ainterface_d_e_l_tation_1_1_d_i_framework_1_1_lifecycle_1_1_i_late_updatable_html"><div class="ttname"><a href="interface_d_e_l_tation_1_1_d_i_framework_1_1_lifecycle_1_1_i_late_updatable.html">DELTation.DIFramework.Lifecycle.ILateUpdatable</a></div><div class="ttdef"><b>Definition:</b> <a href="_i_late_updatable_8cs_source.html#l00003">ILateUpdatable.cs:4</a></div></div>
 <div class="ttc" id="ainterface_d_e_l_tation_1_1_d_i_framework_1_1_lifecycle_1_1_i_startable_html"><div class="ttname"><a href="interface_d_e_l_tation_1_1_d_i_framework_1_1_lifecycle_1_1_i_startable.html">DELTation.DIFramework.Lifecycle.IStartable</a></div><div class="ttdef"><b>Definition:</b> <a href="_i_startable_8cs_source.html#l00003">IStartable.cs:4</a></div></div>
 <div class="ttc" id="ainterface_d_e_l_tation_1_1_d_i_framework_1_1_lifecycle_1_1_i_updatable_html"><div class="ttname"><a href="interface_d_e_l_tation_1_1_d_i_framework_1_1_lifecycle_1_1_i_updatable.html">DELTation.DIFramework.Lifecycle.IUpdatable</a></div><div class="ttdef"><b>Definition:</b> <a href="_i_updatable_8cs_source.html#l00003">IUpdatable.cs:4</a></div></div>
 <div class="ttc" id="anamespace_d_e_l_tation_1_1_d_i_framework_1_1_containers_html"><div class="ttname"><a href="namespace_d_e_l_tation_1_1_d_i_framework_1_1_containers.html">DELTation.DIFramework.Containers</a></div><div class="ttdef"><b>Definition:</b> <a href="_children_dependency_container_8cs_source.html#l00004">ChildrenDependencyContainer.cs:5</a></div></div>
