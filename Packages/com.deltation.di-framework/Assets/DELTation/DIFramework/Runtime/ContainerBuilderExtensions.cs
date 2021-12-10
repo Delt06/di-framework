@@ -39,7 +39,7 @@ namespace DELTation.DIFramework
         /// <returns>The same container builder.</returns>
         /// <exception cref="ArgumentNullException">If <paramref name="containerBuilder" /> is null.</exception>
         [NotNull]
-        public static ContainerBuilder TryResolveGloballyAndRegister<T>(
+        public static ContainerBuilder TryResolveGloballyAndRegister<[MeansImplicitUse] T>(
             [NotNull] this ContainerBuilder containerBuilder) where T : class
         {
             if (containerBuilder == null) throw new ArgumentNullException(nameof(containerBuilder));

@@ -19,7 +19,7 @@ namespace DELTation.DIFramework
         /// </summary>
         /// <typeparam name="T">Type of the dependency.</typeparam>
         /// <returns>The builder.</returns>
-        public ContainerBuilder Register<T>() where T : class
+        public ContainerBuilder Register<[MeansImplicitUse] T>() where T : class
         {
             _dependencies.Add(new Dependency(typeof(T)));
             return this;
