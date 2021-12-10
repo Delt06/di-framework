@@ -2,7 +2,7 @@
 using UnityEditor;
 
 #if ODIN_INSPECTOR
-using EditorBase = using Sirenix.OdinInspector.Editor.OdinEditor;
+using EditorBase = Sirenix.OdinInspector.Editor.OdinEditor;
 #else
 using EditorBase = UnityEditor.Editor;
 #endif
