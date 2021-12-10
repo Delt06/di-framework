@@ -1,10 +1,17 @@
 ﻿using DELTation.DIFramework.Containers;
 using UnityEditor;
 
+#if ODIN_INSPECTOR
+using Sirenix.OdinInspector.Editor;
+using EditorBase = OdinEditor;
+#else
+using EditorBase = UnityEditor.Editor;
+#endif
+
 namespace DELTation.DIFramework.Editor
 {
     [CustomEditor(typeof(DependencyContainerBase), true, isFallback = true)]
-    public class DependencyContainerBaseCustomEditor : UnityEditor.Editor
+    public class DependencyContainerBaseCustomEditor : EditorBase
     {
         public override void OnInspectorGUI()
         {
