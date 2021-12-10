@@ -26,5 +26,5 @@ var searchData=
   ['containerlifecycle_2ecs_30',['ContainerLifecycle.cs',['../_container_lifecycle_8cs.html',1,'']]],
   ['containersextensions_31',['ContainersExtensions',['../class_d_e_l_tation_1_1_d_i_framework_1_1_containers_extensions.html',1,'DELTation::DIFramework']]],
   ['containersextensions_2ecs_32',['ContainersExtensions.cs',['../_containers_extensions_8cs.html',1,'']]],
-  ['create_3c_20t_20_3e_33',['Create&lt; T &gt;',['../class_d_e_l_tation_1_1_d_i_framework_1_1_di.html#a65b6fd34e14cfb468816ad5111b3cc64',1,'DELTation::DIFramework::Di']]]
+  ['create_3c_5bmeansimplicituse_5d_20t_20_3e_33',['Create&lt;[MeansImplicitUse] T &gt;',['../class_d_e_l_tation_1_1_d_i_framework_1_1_di.html#ac87dca2befb28a710dbeca7d792b7950',1,'DELTation::DIFramework::Di']]]
 ];

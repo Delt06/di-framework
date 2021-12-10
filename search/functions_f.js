@@ -9,6 +9,6 @@ var searchData=
   ['tryresolve_3c_20t_20_3e_330',['TryResolve&lt; T &gt;',['../class_d_e_l_tation_1_1_d_i_framework_1_1_containers_extensions.html#a3638d3d26d986b608dbf36ec40c1eb4a',1,'DELTation::DIFramework::ContainersExtensions']]],
   ['tryresolveglobally_331',['TryResolveGlobally',['../class_d_e_l_tation_1_1_d_i_framework_1_1_di.html#a55c5619cd370a70ffce829be81de180d',1,'DELTation::DIFramework::Di']]],
   ['tryresolveglobally_3c_20t_20_3e_332',['TryResolveGlobally&lt; T &gt;',['../class_d_e_l_tation_1_1_d_i_framework_1_1_di.html#a6461e983836af7ababfd40adcdbbc19d',1,'DELTation::DIFramework::Di']]],
-  ['tryresolvegloballyandregister_3c_20t_20_3e_333',['TryResolveGloballyAndRegister&lt; T &gt;',['../class_d_e_l_tation_1_1_d_i_framework_1_1_container_builder_extensions.html#a1b48f18ff237aebcc7c153c109969bd2',1,'DELTation::DIFramework::ContainerBuilderExtensions']]],
+  ['tryresolvegloballyandregister_3c_5bmeansimplicituse_5d_20t_20_3e_333',['TryResolveGloballyAndRegister&lt;[MeansImplicitUse] T &gt;',['../class_d_e_l_tation_1_1_d_i_framework_1_1_container_builder_extensions.html#a070a90b82d6fdc5684db33bd317ea2d5',1,'DELTation::DIFramework::ContainerBuilderExtensions']]],
   ['trysorttopologically_334',['TrySortTopologically',['../class_d_e_l_tation_1_1_d_i_framework_1_1_container_builder.html#ad2faa9af3edf487cd204646f6e5acd8d',1,'DELTation::DIFramework::ContainerBuilder']]]
 ];
