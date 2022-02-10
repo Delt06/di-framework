@@ -52,7 +52,7 @@ namespace DELTation.DIFramework.Resolution
             _cache.Clear();
         }
 
-        
+
         private static bool UseBakedData
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
