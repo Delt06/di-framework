@@ -1,49 +1,57 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using JetBrains.Annotations;
+using UnityEditor;
 using UnityEngine;
 
 namespace DELTation.DIFramework
 {
     public sealed class DiSettings : ScriptableObject
     {
+        private static DiSettings _instance;
+        [SerializeField] private DependencySource _defaultDependencySource = DependencySources.All;
         [SerializeField] private bool _showIconsInHierarchy = true;
         [SerializeField] private bool _showMissingResolverWarnings = true;
         [SerializeField] private bool _useBakedData = true;
-        [SerializeField] private bool _bakeOnBuild = false;
+        [SerializeField] private bool _bakeOnBuild;
         [SerializeField] private string _bakedAssembliesRegex = @"^Assembly-CSharp$";
 
-        public bool ShowIconsInHierarchy => _showIconsInHierarchy;
-
-        public bool ShowMissingResolverWarnings => _showMissingResolverWarnings;
-
-        public bool UseBakedData => _useBakedData;
-
-        public bool BakeOnBuild => _bakeOnBuild;
-
-        public bool ShouldBeBaked([NotNull] Assembly assembly)
+        public DependencySource DefaultDependencySource
         {
-            if (assembly == null) throw new ArgumentNullException(nameof(assembly));
-            var assemblyName = assembly.GetName().Name;
-            var match = Regex.Match(assemblyName, _bakedAssembliesRegex);
-            return match.Success;
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => _defaultDependencySource;
         }
 
-        private void OnValidate()
+        public bool ShowIconsInHierarchy
         {
-            _bakedAssembliesRegex = _bakedAssembliesRegex?.Trim() ?? string.Empty;
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => _showIconsInHierarchy;
         }
 
-        public static bool TryGetInstance(out DiSettings settings)
+        public bool ShowMissingResolverWarnings
         {
-            settings = Instance;
-            return settings != null;
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => _showMissingResolverWarnings;
+        }
+
+        public bool UseBakedData
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => _useBakedData;
+        }
+
+        public bool BakeOnBuild
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => _bakeOnBuild;
         }
 
         private static DiSettings Instance
         {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get
             {
                 if (_instance) return _instance;
@@ -56,8 +64,31 @@ namespace DELTation.DIFramework
             }
         }
 
+        private void OnValidate()
+        {
+            _bakedAssembliesRegex = _bakedAssembliesRegex?.Trim() ?? string.Empty;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool ShouldBeBaked([NotNull] Assembly assembly)
+        {
+            if (assembly == null) throw new ArgumentNullException(nameof(assembly));
+            var assemblyName = assembly.GetName().Name;
+            var match = Regex.Match(assemblyName, _bakedAssembliesRegex);
+            return match.Success;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool TryGetInstance(out DiSettings settings)
+        {
+            settings = Instance;
+            return settings != null;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static DiSettings LoadSettingsOrDefault() => Resources.LoadAll<DiSettings>("").FirstOrDefault();
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static DiSettings CreateSettings()
         {
             var settings = CreateInstance<DiSettings>();
@@ -68,16 +99,14 @@ namespace DELTation.DIFramework
             const string fullFolderName = parentFolder + "/" + folder;
             const string assetPath = fullFolderName + "/DI Settings.asset";
 
-            if (!UnityEditor.AssetDatabase.IsValidFolder(fullFolderName))
-                UnityEditor.AssetDatabase.CreateFolder(parentFolder, folder);
+            if (!AssetDatabase.IsValidFolder(fullFolderName))
+                AssetDatabase.CreateFolder(parentFolder, folder);
 
-            UnityEditor.AssetDatabase.CreateAsset(settings, assetPath);
-            UnityEditor.AssetDatabase.SaveAssets();
+            AssetDatabase.CreateAsset(settings, assetPath);
+            AssetDatabase.SaveAssets();
 #endif
 
             return settings;
         }
-
-        private static DiSettings _instance;
     }
 }

@@ -9,7 +9,7 @@
 
 A Unity framework to inject dependencies into your components. The project contains a simple demo game to demonstrate the framework in action.
 
-> Developed and tested with Unity 2019.4.17f1 LTS
+> Developed and tested with Unity 2020.3.16f1 LTS
 
 ## Table of contents
 - [Key Features and Concepts](#key-features-and-concepts)

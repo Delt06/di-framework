@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 
 namespace DELTation.DIFramework.Pooling
 {
     internal static class ListPool<T>
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static List<T> Rent()
         {
             if (FreeLists.Count == 0)
@@ -19,6 +21,7 @@ namespace DELTation.DIFramework.Pooling
             return lastList;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Return([NotNull] List<T> list)
         {
             if (list == null) throw new ArgumentNullException(nameof(list));

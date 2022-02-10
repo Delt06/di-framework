@@ -2,13 +2,26 @@
 
 namespace Demo.Scripts.Bullets
 {
-    public sealed class BulletFactory : MonoBehaviour, IProjectileFactory<Bullet>
+    public sealed class BulletFactory : IProjectileFactory<Bullet>
     {
-        [SerializeField] private Bullet _prefab = default;
-        [SerializeField, Min(0f)] private float _powerfulSpeedMultiplier = 2f;
+        private readonly ILogger _logger;
+        private readonly float _powerfulSpeedMultiplier;
+        private readonly Bullet _prefab;
+        private readonly Transform _transform;
 
-        public Bullet Create(Vector3 position, Quaternion rotation) =>
-            Instantiate(_prefab, position, rotation, transform);
+        public BulletFactory(Transform transform, Bullet prefab, float powerfulSpeedMultiplier, ILogger logger)
+        {
+            _transform = transform;
+            _prefab = prefab;
+            _powerfulSpeedMultiplier = powerfulSpeedMultiplier;
+            _logger = logger;
+        }
+
+        public Bullet Create(Vector3 position, Quaternion rotation)
+        {
+            _logger.Log($"Creating a bullet at {position}.");
+            return Object.Instantiate(_prefab, position, rotation, _transform);
+        }
 
         public Bullet CreatePowerful(Vector3 position, Quaternion rotation)
         {

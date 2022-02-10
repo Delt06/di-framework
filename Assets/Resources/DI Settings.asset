@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0a8b0f001d046b3aad3b36023e6de94, type: 3}
   m_Name: DI Settings
   m_EditorClassIdentifier: 
+  _defaultDependencySource: -1
   _showIconsInHierarchy: 1
   _showMissingResolverWarnings: 1
   _useBakedData: 1

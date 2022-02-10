@@ -165,6 +165,7 @@ namespace DELTation.DIFramework.Resolution
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool TryGetAffectedComponentsFast(List<(MonoBehaviour component, int depth)> affectedComponents,
             Transform root, [CanBeNull] Func<MonoBehaviour, bool> isAffectedExtraCondition = null)
         {
@@ -202,9 +203,11 @@ namespace DELTation.DIFramework.Resolution
             return extraConditionIsMet || HasAtLeastOneConstructor(component);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static bool HasAtLeastOneConstructor(MonoBehaviour component) =>
             GetConstructMethods(component.GetType()).Count > 0;
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<(MonoBehaviour component, int depth)> GetAffectedComponents(Transform root,
             [CanBeNull] Func<MonoBehaviour, bool> isAffectedExtraCondition = null, int depth = 0)
         {

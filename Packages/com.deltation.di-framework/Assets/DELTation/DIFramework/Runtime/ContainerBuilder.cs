@@ -1,21 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 using DELTation.DIFramework.Pooling;
 using DELTation.DIFramework.Resolution;
 using DELTation.DIFramework.Sorting;
 using JetBrains.Annotations;
+using UnityEngine;
 using static DELTation.DIFramework.Resolution.PocoInjection;
 
 namespace DELTation.DIFramework
 {
     /// <summary>
-    /// Allows to build a custom container.
+    ///     Allows to build a custom container.
     /// </summary>
     public sealed class ContainerBuilder
     {
+        private readonly List<Dependency> _dependencies = new List<Dependency>();
+
+        private readonly ResolutionFunction _resolutionFunction;
+
+        internal ContainerBuilder([NotNull] ResolutionFunction resolutionFunction) => _resolutionFunction =
+            resolutionFunction ?? throw new ArgumentNullException(nameof(resolutionFunction));
+
+        internal int DependenciesCount => _dependencies.Count;
+
         /// <summary>
-        /// Registers a new dependency of the given type.
-        /// An instance of that type will be automatically created.
+        ///     Registers a new dependency of the given type.
+        ///     An instance of that type will be automatically created.
         /// </summary>
         /// <typeparam name="T">Type of the dependency.</typeparam>
         /// <returns>The builder.</returns>
@@ -26,15 +39,65 @@ namespace DELTation.DIFramework
         }
 
         /// <summary>
-        /// Registers a new dependency from the given object.
+        ///     Registers a new dependency that will be created using the given delegate.
+        /// </summary>
+        /// <param name="factoryMethod">A delegate that creates a dependency.</param>
+        /// <returns>The builder.</returns>
+        internal ContainerBuilder RegisterFromMethod([NotNull] Delegate factoryMethod)
+        {
+            if (factoryMethod == null) throw new ArgumentNullException(nameof(factoryMethod));
+            _dependencies.Add(new Dependency(factoryMethod));
+            return this;
+        }
+
+        internal bool DependenciesCanBeResolved(
+            [NotNull] List<(Type dependent, Type unresolvedDependency)> unresolvedDependencies)
+        {
+            if (unresolvedDependencies == null) throw new ArgumentNullException(nameof(unresolvedDependencies));
+
+            var allCanBeResolved = true;
+            var localUnresolvedDependencies = new List<Type>();
+            var possibleDependencyResolvers = new List<Type>();
+
+            for (var index = 0; index < _dependencies.Count; index++)
+            {
+                var dependent = _dependencies[index];
+                possibleDependencyResolvers.Clear();
+
+                for (var i = 0; i < index; i++)
+                {
+                    possibleDependencyResolvers.Add(_dependencies[i].GetResultingType());
+                }
+
+                localUnresolvedDependencies.Clear();
+                if (Dependency.DependenciesCanBeResolved(dependent, possibleDependencyResolvers,
+                        localUnresolvedDependencies
+                    )) continue;
+
+                foreach (var localUnresolvedDependency in localUnresolvedDependencies)
+                {
+                    unresolvedDependencies.Add((dependent.GetResultingType(), localUnresolvedDependency));
+                }
+
+                allCanBeResolved = false;
+            }
+
+            return allCanBeResolved;
+        }
+
+        /// <summary>
+        ///     Registers a new dependency from the given object.
         /// </summary>
         /// <param name="obj">Object to register as dependency.</param>
         /// <returns>The builder.</returns>
-        /// <exception cref="ArgumentNullException">When the <paramref name="obj"/> is null.</exception>
+        /// <exception cref="ArgumentNullException">When the <paramref name="obj" /> is null.</exception>
         public ContainerBuilder Register([NotNull] object obj)
         {
-            if (obj == null) throw new ArgumentNullException(nameof(obj));
-            _dependencies.Add(new Dependency(obj));
+            var isNull = UnityUtils.IsNullOrUnityNull(obj);
+            if (Application.isPlaying && isNull)
+                throw new ArgumentNullException(nameof(obj));
+            if (!isNull)
+                _dependencies.Add(new Dependency(obj));
             return this;
         }
 
@@ -51,14 +114,11 @@ namespace DELTation.DIFramework
             {
                 for (var j = 0; j < _dependencies.Count; j++)
                 {
-                    var dependency1 = _dependencies[i];
-                    var dependency2 = _dependencies[j];
+                    var dependent = _dependencies[i];
+                    var dependency = _dependencies[j];
+                    if (!Dependency.DependsOn(dependent, dependency)) continue;
 
-                    var type1 = dependency1.GetTypeOrObjectType();
-                    var type2 = dependency2.GetTypeOrObjectType();
-                    if (!Dependency.DependsOn(type2, type1)) continue;
-
-                    graph[i].Add(j);
+                    graph[j].Add(i);
                 }
             }
 
@@ -94,7 +154,7 @@ namespace DELTation.DIFramework
             return true;
         }
 
-        private void SortTopologically(ICollection<int> result, out bool loop)
+        internal void SortTopologically(ICollection<int> result, out bool loop)
         {
             var graph = ListPool<List<int>>.Rent();
 
@@ -107,14 +167,11 @@ namespace DELTation.DIFramework
             {
                 for (var j = 0; j < _dependencies.Count; j++)
                 {
-                    var dependency1 = _dependencies[i];
-                    var dependency2 = _dependencies[j];
+                    var dependent = _dependencies[i];
+                    var dependency = _dependencies[j];
+                    if (!Dependency.DependsOn(dependent, dependency)) continue;
 
-                    var type1 = dependency1.GetTypeOrObjectType();
-                    var type2 = dependency2.GetTypeOrObjectType();
-                    if (!Dependency.DependsOn(type2, type1)) continue;
-
-                    graph[i].Add(j);
+                    graph[j].Add(i);
                 }
             }
 
@@ -141,6 +198,12 @@ namespace DELTation.DIFramework
                 return instance;
             }
 
+            if (TryGetFactoryMethodDelegate(index, out var factoryMethodDelegate))
+            {
+                var instance = factoryMethodDelegate.Instantiate(_resolutionFunction);
+                return instance;
+            }
+
             throw InvalidStateException();
         }
 
@@ -149,14 +212,7 @@ namespace DELTation.DIFramework
         internal Type GetType(int index)
         {
             ValidateIndex(index);
-
-            if (TryGetObject(index, out var obj))
-                return obj.GetType();
-
-            if (TryGetType(index, out var type))
-                return type;
-
-            throw InvalidStateException();
+            return _dependencies[index].GetResultingType();
         }
 
         private void ValidateIndex(int index)
@@ -164,69 +220,155 @@ namespace DELTation.DIFramework
             if (index < 0 || index >= DependenciesCount) throw new ArgumentOutOfRangeException(nameof(index));
         }
 
-        internal int DependenciesCount => _dependencies.Count;
-
         private bool TryGetObject(int index, out object obj) => _dependencies[index].TryGetObject(out obj);
 
         private bool TryGetType(int index, out Type type) => _dependencies[index].TryGetType(out type);
 
+        private bool TryGetFactoryMethodDelegate(int index, out FactoryMethodDelegate factoryMethodDelegate) =>
+            _dependencies[index].TryGetFactoryMethodDelegate(out factoryMethodDelegate);
+
         private static InvalidOperationException InvalidStateException() =>
-            new InvalidOperationException("Invalid state: either object or type should be not null.");
+            new InvalidOperationException("Invalid state.");
 
-        internal ContainerBuilder([NotNull] ResolutionFunction resolutionFunction) => _resolutionFunction =
-            resolutionFunction ?? throw new ArgumentNullException(nameof(resolutionFunction));
-
-        private readonly ResolutionFunction _resolutionFunction;
-        private readonly List<Dependency> _dependencies = new List<Dependency>();
-
-        private readonly struct Dependency : IEquatable<Dependency>
+        internal readonly struct Dependency : IEquatable<Dependency>
         {
             [CanBeNull] private readonly object _object;
             [CanBeNull] private readonly Type _type;
+            private readonly FactoryMethodDelegate _factoryMethodDelegate;
 
             public Dependency([NotNull] object @object)
             {
                 _object = @object ?? throw new ArgumentNullException(nameof(@object));
                 _type = null;
+                _factoryMethodDelegate = default;
             }
 
             public Dependency([NotNull] Type type)
             {
                 _object = null;
                 _type = type ?? throw new ArgumentNullException(nameof(type));
+                _factoryMethodDelegate = default;
             }
 
-            public Type GetTypeOrObjectType() => _object != null ? _object.GetType() : _type;
+            public Dependency(FactoryMethodDelegate factoryMethodDelegate)
+            {
+                _object = null;
+                _type = null;
+                _factoryMethodDelegate = factoryMethodDelegate;
+            }
 
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public Type GetResultingType()
+            {
+                if (TryGetObject(out var @object))
+                    return @object.GetType();
+                if (TryGetType(out var type))
+                    return type;
+                if (TryGetFactoryMethodDelegate(out var factoryMethodDelegate))
+                    return factoryMethodDelegate.ReturnType;
+
+                throw InvalidStateException();
+            }
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool TryGetObject(out object obj)
             {
                 obj = _object;
                 return obj != null;
             }
 
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool TryGetType(out Type type)
             {
                 type = _type;
                 return type != null;
             }
 
-            public static bool DependsOn([NotNull] Type type1, [NotNull] Type type2)
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public bool TryGetFactoryMethodDelegate(out FactoryMethodDelegate factoryMethodDelegate)
             {
-                if (type1 == null) throw new ArgumentNullException(nameof(type1));
-                if (type2 == null) throw new ArgumentNullException(nameof(type2));
-                if (!TryGetInjectableConstructorParameters(type1, out var parameters)) return false;
-
-                foreach (var parameter in parameters)
+                if (_factoryMethodDelegate.IsValid)
                 {
-                    var parameterType = parameter.ParameterType;
-                    if (parameterType.IsAssignableFrom(type2))
+                    factoryMethodDelegate = _factoryMethodDelegate;
+                    return true;
+                }
+
+                factoryMethodDelegate = default;
+                return false;
+            }
+
+            internal static bool DependenciesCanBeResolved(Dependency dependent, List<Type> possibleDependencyResolvers,
+                List<Type> unresolvedDependencies)
+            {
+                if (dependent.TryGetObject(out _))
+                    return true;
+
+                if (dependent.TryGetType(out var type))
+                    return TryGetInjectableConstructorParameters(type, out var parameters) &&
+                           DependenciesCanBeResolved(parameters, possibleDependencyResolvers, unresolvedDependencies);
+
+                if (dependent.TryGetFactoryMethodDelegate(out var factoryMethodDelegate))
+                    return DependenciesCanBeResolved(factoryMethodDelegate.ParameterTypes, possibleDependencyResolvers,
+                        unresolvedDependencies
+                    );
+
+                throw InvalidStateException();
+            }
+
+            private static bool DependenciesCanBeResolved(IEnumerable<ParameterInfo> dependencies,
+                IReadOnlyCollection<Type> possibleDependencyResolvers, List<Type> unresolvedDependencies)
+            {
+                bool CanBeResolved(ParameterInfo dependency) =>
+                    possibleDependencyResolvers.Any(possibleDependency =>
+                        dependency.ParameterType.IsAssignableFrom(possibleDependency)
+                    );
+
+                var canResolveAll = true;
+
+                foreach (var dependency in dependencies)
+                {
+                    if (CanBeResolved(dependency)) continue;
+
+                    canResolveAll = false;
+                    unresolvedDependencies.Add(dependency.ParameterType);
+                }
+
+                return canResolveAll;
+            }
+
+            public static bool DependsOn(Dependency dependent, Dependency dependency)
+            {
+                if (dependent.TryGetObject(out _))
+                    return false;
+
+                var dependencyType = dependency.GetResultingType();
+                if (dependent.TryGetType(out var type))
+                    return TryGetInjectableConstructorParameters(type, out var parameters) &&
+                           DependsOn(parameters, dependencyType);
+
+                if (dependent.TryGetFactoryMethodDelegate(out var factoryMethodDelegate))
+                    return DependsOn(factoryMethodDelegate.ParameterTypes, dependencyType);
+
+                throw InvalidStateException();
+            }
+
+            private static bool DependsOn([NotNull] IReadOnlyList<ParameterInfo> dependents, [NotNull] Type dependency)
+            {
+                if (dependents == null) throw new ArgumentNullException(nameof(dependents));
+                if (dependency == null) throw new ArgumentNullException(nameof(dependency));
+
+                foreach (var dependent in dependents)
+                {
+                    if (dependent.ParameterType.IsAssignableFrom(dependency))
                         return true;
                 }
 
                 return false;
             }
 
-            public bool Equals(Dependency other) => Equals(_object, other._object) && _type == other._type;
+            public bool Equals(Dependency other) => Equals(_object, other._object) &&
+                                                    _type == other._type &&
+                                                    _factoryMethodDelegate.Equals(other._factoryMethodDelegate);
 
             public override bool Equals(object obj) => obj is Dependency other && Equals(other);
 
@@ -234,8 +376,10 @@ namespace DELTation.DIFramework
             {
                 unchecked
                 {
-                    return ((_object != null ? _object.GetHashCode() : 0) * 397) ^
-                           (_type != null ? _type.GetHashCode() : 0);
+                    var hashCode = _object != null ? _object.GetHashCode() : 0;
+                    hashCode = (hashCode * 397) ^ (_type != null ? _type.GetHashCode() : 0);
+                    hashCode = (hashCode * 397) ^ _factoryMethodDelegate.GetHashCode();
+                    return hashCode;
                 }
             }
         }
