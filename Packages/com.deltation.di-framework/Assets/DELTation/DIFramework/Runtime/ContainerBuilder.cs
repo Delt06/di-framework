@@ -4,18 +4,28 @@ using DELTation.DIFramework.Pooling;
 using DELTation.DIFramework.Resolution;
 using DELTation.DIFramework.Sorting;
 using JetBrains.Annotations;
+using UnityEngine;
 using static DELTation.DIFramework.Resolution.PocoInjection;
 
 namespace DELTation.DIFramework
 {
     /// <summary>
-    /// Allows to build a custom container.
+    ///     Allows to build a custom container.
     /// </summary>
     public sealed class ContainerBuilder
     {
+        private readonly List<Dependency> _dependencies = new List<Dependency>();
+
+        private readonly ResolutionFunction _resolutionFunction;
+
+        internal ContainerBuilder([NotNull] ResolutionFunction resolutionFunction) => _resolutionFunction =
+            resolutionFunction ?? throw new ArgumentNullException(nameof(resolutionFunction));
+
+        internal int DependenciesCount => _dependencies.Count;
+
         /// <summary>
-        /// Registers a new dependency of the given type.
-        /// An instance of that type will be automatically created.
+        ///     Registers a new dependency of the given type.
+        ///     An instance of that type will be automatically created.
         /// </summary>
         /// <typeparam name="T">Type of the dependency.</typeparam>
         /// <returns>The builder.</returns>
@@ -26,15 +36,18 @@ namespace DELTation.DIFramework
         }
 
         /// <summary>
-        /// Registers a new dependency from the given object.
+        ///     Registers a new dependency from the given object.
         /// </summary>
         /// <param name="obj">Object to register as dependency.</param>
         /// <returns>The builder.</returns>
-        /// <exception cref="ArgumentNullException">When the <paramref name="obj"/> is null.</exception>
+        /// <exception cref="ArgumentNullException">When the <paramref name="obj" /> is null.</exception>
         public ContainerBuilder Register([NotNull] object obj)
         {
-            if (obj == null) throw new ArgumentNullException(nameof(obj));
-            _dependencies.Add(new Dependency(obj));
+            var isNull = UnityUtils.IsNullOrUnityNull(obj);
+            if (Application.isPlaying && isNull)
+                throw new ArgumentNullException(nameof(obj));
+            if (!isNull)
+                _dependencies.Add(new Dependency(obj));
             return this;
         }
 
@@ -164,20 +177,12 @@ namespace DELTation.DIFramework
             if (index < 0 || index >= DependenciesCount) throw new ArgumentOutOfRangeException(nameof(index));
         }
 
-        internal int DependenciesCount => _dependencies.Count;
-
         private bool TryGetObject(int index, out object obj) => _dependencies[index].TryGetObject(out obj);
 
         private bool TryGetType(int index, out Type type) => _dependencies[index].TryGetType(out type);
 
         private static InvalidOperationException InvalidStateException() =>
             new InvalidOperationException("Invalid state: either object or type should be not null.");
-
-        internal ContainerBuilder([NotNull] ResolutionFunction resolutionFunction) => _resolutionFunction =
-            resolutionFunction ?? throw new ArgumentNullException(nameof(resolutionFunction));
-
-        private readonly ResolutionFunction _resolutionFunction;
-        private readonly List<Dependency> _dependencies = new List<Dependency>();
 
         private readonly struct Dependency : IEquatable<Dependency>
         {

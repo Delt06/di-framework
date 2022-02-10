@@ -1,7 +1,6 @@
 ﻿using System;
 using JetBrains.Annotations;
 using UnityEngine.Assertions;
-using Object = UnityEngine.Object;
 
 namespace DELTation.DIFramework
 {
@@ -22,14 +21,11 @@ namespace DELTation.DIFramework
             [CanBeNull] object obj)
         {
             if (containerBuilder == null) throw new ArgumentNullException(nameof(containerBuilder));
-            if (IsNullOrUnityNull(obj)) return containerBuilder;
+            if (UnityUtils.IsNullOrUnityNull(obj)) return containerBuilder;
 
             Assert.IsNotNull(obj);
             return containerBuilder.Register(obj);
         }
-
-        private static bool IsNullOrUnityNull([CanBeNull] object obj) =>
-            obj is Object unityObj ? unityObj == null : obj == null;
 
         /// <summary>
         ///     Try to resolve a dependency globally. If resolved, register it.
