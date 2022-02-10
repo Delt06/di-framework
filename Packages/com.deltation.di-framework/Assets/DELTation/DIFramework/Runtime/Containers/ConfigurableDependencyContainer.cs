@@ -38,6 +38,13 @@ namespace DELTation.DIFramework.Containers
             _cache.AddAllObjectsTo(objects);
         }
 
+        public void GetAllRegisteredObjectsOfType<T>(ICollection<T> objects) where T : class
+        {
+            if (objects == null) throw new ArgumentNullException(nameof(objects));
+            EnsureInitialized();
+            _cache.AddAllObjectsOfTypeTo(objects);
+        }
+
         public bool TryResolve(Type type, out object dependency)
         {
             if (type == null) throw new ArgumentNullException(nameof(type));

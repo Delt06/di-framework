@@ -36,6 +36,13 @@ namespace DELTation.DIFramework.Containers
             InnerContainer.GetAllRegisteredObjects(objects);
         }
 
+        /// <inheritdoc />
+        public void GetAllRegisteredObjectsOfType<T>(ICollection<T> objects) where T : class
+        {
+            if (objects == null) throw new ArgumentNullException(nameof(objects));
+            InnerContainer.GetAllRegisteredObjectsOfType(objects);
+        }
+
         /// <summary>
         ///     Check dependency graph for loops.
         /// </summary>

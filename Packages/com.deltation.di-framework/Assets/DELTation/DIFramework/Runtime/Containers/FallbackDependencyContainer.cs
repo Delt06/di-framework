@@ -7,11 +7,13 @@ using Object = UnityEngine.Object;
 namespace DELTation.DIFramework.Containers
 {
     /// <summary>
-    /// Container that searches for objects using FindObjectOfType.
+    ///     Container that searches for objects using FindObjectOfType.
     /// </summary>
     [DisallowMultipleComponent, AddComponentMenu("Dependency Container/Fallback Dependency Container")]
     public sealed class FallbackDependencyContainer : MonoBehaviour, IDependencyContainer
     {
+        private readonly TypedCache _cache = new TypedCache();
+
         public bool CanBeResolvedSafe(Type type)
         {
             if (type == null) throw new ArgumentNullException(nameof(type));
@@ -19,6 +21,11 @@ namespace DELTation.DIFramework.Containers
         }
 
         void IDependencyContainer.GetAllRegisteredObjects(ICollection<object> objects)
+        {
+            if (objects == null) throw new ArgumentNullException(nameof(objects));
+        }
+
+        public void GetAllRegisteredObjectsOfType<T>(ICollection<T> objects) where T : class
         {
             if (objects == null) throw new ArgumentNullException(nameof(objects));
         }
@@ -55,7 +62,5 @@ namespace DELTation.DIFramework.Containers
             dependency = default;
             return false;
         }
-
-        private readonly TypedCache _cache = new TypedCache();
     }
 }
