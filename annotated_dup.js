@@ -10,8 +10,8 @@ var annotated_dup =
           [ "ConfigurableDependencyContainer", "class_d_e_l_tation_1_1_d_i_framework_1_1_containers_1_1_configurable_dependency_container.html", "class_d_e_l_tation_1_1_d_i_framework_1_1_containers_1_1_configurable_dependency_container" ],
           [ "DependencyContainerBase", "class_d_e_l_tation_1_1_d_i_framework_1_1_containers_1_1_dependency_container_base.html", "class_d_e_l_tation_1_1_d_i_framework_1_1_containers_1_1_dependency_container_base" ],
           [ "FallbackDependencyContainer", "class_d_e_l_tation_1_1_d_i_framework_1_1_containers_1_1_fallback_dependency_container.html", "class_d_e_l_tation_1_1_d_i_framework_1_1_containers_1_1_fallback_dependency_container" ],
-          [ "IIgnoreByContainer", "interface_d_e_l_tation_1_1_d_i_framework_1_1_containers_1_1_i_ignore_by_container.html", null ],
           [ "IgnoreByContainer", "class_d_e_l_tation_1_1_d_i_framework_1_1_containers_1_1_ignore_by_container.html", null ],
+          [ "IIgnoreByContainer", "interface_d_e_l_tation_1_1_d_i_framework_1_1_containers_1_1_i_ignore_by_container.html", null ],
           [ "ListDependencyContainer", "class_d_e_l_tation_1_1_d_i_framework_1_1_containers_1_1_list_dependency_container.html", "class_d_e_l_tation_1_1_d_i_framework_1_1_containers_1_1_list_dependency_container" ]
         ] ],
         [ "Editor", "namespace_d_e_l_tation_1_1_d_i_framework_1_1_editor.html", [
@@ -48,6 +48,7 @@ var annotated_dup =
         [ "ContainersExtensions", "class_d_e_l_tation_1_1_d_i_framework_1_1_containers_extensions.html", "class_d_e_l_tation_1_1_d_i_framework_1_1_containers_extensions" ],
         [ "Di", "class_d_e_l_tation_1_1_d_i_framework_1_1_di.html", "class_d_e_l_tation_1_1_d_i_framework_1_1_di" ],
         [ "DiSettings", "class_d_e_l_tation_1_1_d_i_framework_1_1_di_settings.html", "class_d_e_l_tation_1_1_d_i_framework_1_1_di_settings" ],
+        [ "FactoryMethodDelegate", "struct_d_e_l_tation_1_1_d_i_framework_1_1_factory_method_delegate.html", "struct_d_e_l_tation_1_1_d_i_framework_1_1_factory_method_delegate" ],
         [ "IDependencyContainer", "interface_d_e_l_tation_1_1_d_i_framework_1_1_i_dependency_container.html", "interface_d_e_l_tation_1_1_d_i_framework_1_1_i_dependency_container" ],
         [ "Resolver", "class_d_e_l_tation_1_1_d_i_framework_1_1_resolver.html", "class_d_e_l_tation_1_1_d_i_framework_1_1_resolver" ],
         [ "RootDependencyContainer", "class_d_e_l_tation_1_1_d_i_framework_1_1_root_dependency_container.html", "class_d_e_l_tation_1_1_d_i_framework_1_1_root_dependency_container" ]

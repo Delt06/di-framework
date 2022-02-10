@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['bakedinjectionfunctionscount_352',['BakedInjectionFunctionsCount',['../class_d_e_l_tation_1_1_d_i_framework_1_1_baking_1_1_baked_injection.html#a195e6b071bc76ab9a6125f45ce0879c1',1,'DELTation::DIFramework::Baking::BakedInjection']]],
-  ['bakedpocoinstantiationfunctionscount_353',['BakedPocoInstantiationFunctionsCount',['../class_d_e_l_tation_1_1_d_i_framework_1_1_baking_1_1_baked_injection.html#a1dc422f5bbb8ae0660d3cc5a8200700a',1,'DELTation::DIFramework::Baking::BakedInjection']]],
-  ['bakeonbuild_354',['BakeOnBuild',['../class_d_e_l_tation_1_1_d_i_framework_1_1_di_settings.html#ad30b0b1b8a2a1875e54c592819a14445',1,'DELTation::DIFramework::DiSettings']]]
+  ['bakedinjectionfunctionscount_0',['BakedInjectionFunctionsCount',['../class_d_e_l_tation_1_1_d_i_framework_1_1_baking_1_1_baked_injection.html#a195e6b071bc76ab9a6125f45ce0879c1',1,'DELTation::DIFramework::Baking::BakedInjection']]],
+  ['bakedpocoinstantiationfunctionscount_1',['BakedPocoInstantiationFunctionsCount',['../class_d_e_l_tation_1_1_d_i_framework_1_1_baking_1_1_baked_injection.html#a1dc422f5bbb8ae0660d3cc5a8200700a',1,'DELTation::DIFramework::Baking::BakedInjection']]],
+  ['bakeonbuild_2',['BakeOnBuild',['../class_d_e_l_tation_1_1_d_i_framework_1_1_di_settings.html#ad30b0b1b8a2a1875e54c592819a14445',1,'DELTation::DIFramework::DiSettings']]]
 ];

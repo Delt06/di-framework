@@ -23,6 +23,7 @@ var hierarchy =
     ] ],
     [ "DELTation.DIFramework.Lifecycle.IDestroyable", "interface_d_e_l_tation_1_1_d_i_framework_1_1_lifecycle_1_1_i_destroyable.html", null ],
     [ "IEquatable", "class_i_equatable.html", [
+      [ "DELTation.DIFramework.FactoryMethodDelegate", "struct_d_e_l_tation_1_1_d_i_framework_1_1_factory_method_delegate.html", null ],
       [ "DELTation.DIFramework.Reporting.ComponentResolutionData", "struct_d_e_l_tation_1_1_d_i_framework_1_1_reporting_1_1_component_resolution_data.html", null ]
     ] ],
     [ "DELTation.DIFramework.Lifecycle.IFixedUpdatable", "interface_d_e_l_tation_1_1_d_i_framework_1_1_lifecycle_1_1_i_fixed_updatable.html", null ],

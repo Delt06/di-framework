@@ -1,8 +1,8 @@
 var class_d_e_l_tation_1_1_d_i_framework_1_1_resolution_1_1_injection =
 [
     [ "GetAffectedComponents", "class_d_e_l_tation_1_1_d_i_framework_1_1_resolution_1_1_injection.html#abde11fa29644e60ea6848110cf09dc70", null ],
-    [ "GetAllDependenciesOf", "class_d_e_l_tation_1_1_d_i_framework_1_1_resolution_1_1_injection.html#a69c8b45eccb763ad6ca0ce23ea9ecf75", null ],
-    [ "GetConstructMethods", "class_d_e_l_tation_1_1_d_i_framework_1_1_resolution_1_1_injection.html#aa2786d5daaf6bf50489f6b6ad11c14d7", null ],
+    [ "GetAllDependenciesOf", "class_d_e_l_tation_1_1_d_i_framework_1_1_resolution_1_1_injection.html#ae2cf2447352c71694341a64ec328ca63", null ],
+    [ "GetConstructMethods", "class_d_e_l_tation_1_1_d_i_framework_1_1_resolution_1_1_injection.html#a10cc45fc73701ec93f1d68a4b3f4b2df", null ],
     [ "InvalidateCache", "class_d_e_l_tation_1_1_d_i_framework_1_1_resolution_1_1_injection.html#a8705b9b42d2736d4a2612ca0397d0a76", null ],
     [ "IsInjectable", "class_d_e_l_tation_1_1_d_i_framework_1_1_resolution_1_1_injection.html#adf0ce0b477ba4bf89e9e14708e7669c6", null ],
     [ "TryGetInjectableParameters", "class_d_e_l_tation_1_1_d_i_framework_1_1_resolution_1_1_injection.html#a66cc2de7a9b87ad47852a3135b83a976", null ],
