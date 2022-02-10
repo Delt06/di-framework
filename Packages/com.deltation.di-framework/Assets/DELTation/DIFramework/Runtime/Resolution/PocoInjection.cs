@@ -10,6 +10,9 @@ namespace DELTation.DIFramework.Resolution
 {
     public static class PocoInjection
     {
+        private static readonly IDictionary<Type, IReadOnlyList<ParameterInfo>> ParametersCache =
+            new Dictionary<Type, IReadOnlyList<ParameterInfo>>();
+
         public static bool IsInjectable([NotNull] Type type)
         {
             if (type == null) throw new ArgumentNullException(nameof(type));
@@ -123,8 +126,5 @@ namespace DELTation.DIFramework.Resolution
         }
 
         internal delegate bool ResolutionFunction([NotNull] Type type, out object @object);
-
-        private static readonly IDictionary<Type, IReadOnlyList<ParameterInfo>> ParametersCache =
-            new Dictionary<Type, IReadOnlyList<ParameterInfo>>();
     }
 }

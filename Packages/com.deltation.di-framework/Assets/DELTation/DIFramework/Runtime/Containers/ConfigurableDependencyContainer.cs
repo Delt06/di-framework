@@ -8,39 +8,12 @@ namespace DELTation.DIFramework.Containers
 {
     public sealed class ConfigurableDependencyContainer : IDependencyContainer
     {
+        private readonly TypedCache _cache = new TypedCache();
         private readonly Action<ContainerBuilder> _composeDependencies;
+        private bool _initialized;
 
         public ConfigurableDependencyContainer([NotNull] Action<ContainerBuilder> composeDependencies) =>
             _composeDependencies = composeDependencies ?? throw new ArgumentNullException(nameof(composeDependencies));
-
-        /// <summary>
-        /// Check dependency graph for loops.
-        /// </summary>
-        /// <returns>True if there is a loop, false otherwise.</returns>
-        public bool HasLoops()
-        {
-            var builder = new ContainerBuilder(TryResolve);
-            _composeDependencies(builder);
-            return !builder.TrySortTopologically(true);
-        }
-
-        private void EnsureInitialized()
-        {
-            if (_initialized) return;
-
-            _initialized = true;
-
-            var builder = new ContainerBuilder(TryResolve);
-            _composeDependencies(builder);
-            if (!builder.TrySortTopologically())
-                throw new DependencyLoopException();
-
-            for (var index = 0; index < builder.DependenciesCount; index++)
-            {
-                var @object = builder.GetOrCreateObject(index);
-                Register(@object);
-            }
-        }
 
         public bool CanBeResolvedSafe(Type type)
         {
@@ -65,6 +38,50 @@ namespace DELTation.DIFramework.Containers
             _cache.AddAllObjectsTo(objects);
         }
 
+        public bool TryResolve(Type type, out object dependency)
+        {
+            if (type == null) throw new ArgumentNullException(nameof(type));
+            EnsureInitialized();
+            return _cache.TryGet(type, out dependency);
+        }
+
+        /// <summary>
+        ///     Check dependency graph for loops.
+        /// </summary>
+        /// <returns>True if there is a loop, false otherwise.</returns>
+        public bool HasLoops()
+        {
+            var builder = new ContainerBuilder(TryResolve);
+            _composeDependencies(builder);
+            return !builder.TrySortTopologically(true);
+        }
+
+        internal bool DependenciesCanBeResolved(
+            [NotNull] List<(Type dependent, Type unresolvedDependency)> unresolvedDependencies)
+        {
+            var builder = new ContainerBuilder(TryResolve);
+            _composeDependencies(builder);
+            return builder.DependenciesCanBeResolved(unresolvedDependencies);
+        }
+
+        private void EnsureInitialized()
+        {
+            if (_initialized) return;
+
+            _initialized = true;
+
+            var builder = new ContainerBuilder(TryResolve);
+            _composeDependencies(builder);
+            if (!builder.TrySortTopologically())
+                throw new DependencyLoopException();
+
+            for (var index = 0; index < builder.DependenciesCount; index++)
+            {
+                var @object = builder.GetOrCreateObject(index);
+                Register(@object);
+            }
+        }
+
         private static bool ConformsTo(ContainerBuilder builder, int index, Type checkedType) =>
             checkedType.IsAssignableFrom(builder.GetType(index));
 
@@ -79,15 +96,5 @@ namespace DELTation.DIFramework.Containers
             var type = dependency.GetType();
             throw new DependencyAlreadyRegistered(type, registeredDependency);
         }
-
-        public bool TryResolve(Type type, out object dependency)
-        {
-            if (type == null) throw new ArgumentNullException(nameof(type));
-            EnsureInitialized();
-            return _cache.TryGet(type, out dependency);
-        }
-
-        private readonly TypedCache _cache = new TypedCache();
-        private bool _initialized;
     }
 }

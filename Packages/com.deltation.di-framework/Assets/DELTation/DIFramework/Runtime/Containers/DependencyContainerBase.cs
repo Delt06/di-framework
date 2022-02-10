@@ -1,11 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace DELTation.DIFramework.Containers
 {
     public abstract class DependencyContainerBase : MonoBehaviour, IDependencyContainer
     {
+        private ConfigurableDependencyContainer _innerContainer;
+
+        private ConfigurableDependencyContainer InnerContainer => _innerContainer ??
+                                                                  (_innerContainer =
+                                                                      new ConfigurableDependencyContainer(
+                                                                          ComposeDependencies
+                                                                      ));
+
         /// <inheritdoc />
         public bool TryResolve(Type type, out object dependency)
         {
@@ -28,19 +37,15 @@ namespace DELTation.DIFramework.Containers
         }
 
         /// <summary>
-        /// Check dependency graph for loops.
+        ///     Check dependency graph for loops.
         /// </summary>
         /// <returns>True if there is a loop, false otherwise.</returns>
         public bool HasLoops() => InnerContainer.HasLoops();
 
+        internal bool DependenciesCanBeResolved(
+            [NotNull] List<(Type dependent, Type unresolvedDependency)> unresolvedDependencies) =>
+            InnerContainer.DependenciesCanBeResolved(unresolvedDependencies);
+
         protected abstract void ComposeDependencies(ContainerBuilder builder);
-
-        private ConfigurableDependencyContainer InnerContainer => _innerContainer ??
-                                                                  (_innerContainer =
-                                                                      new ConfigurableDependencyContainer(
-                                                                          ComposeDependencies
-                                                                      ));
-
-        private ConfigurableDependencyContainer _innerContainer;
     }
 }

@@ -41,5 +41,143 @@ namespace DELTation.DIFramework
             if (containerBuilder == null) throw new ArgumentNullException(nameof(containerBuilder));
             return Di.TryResolveGlobally(out T service) ? containerBuilder.Register(service) : containerBuilder;
         }
+
+        /// <summary>
+        ///     Register a dependency from the given factory method.
+        /// </summary>
+        /// <param name="containerBuilder">Container builder to register dependency in.</param>
+        /// <param name="factoryMethod">Factory method that creates a dependency.</param>
+        /// <typeparam name="TR">Dependency type.</typeparam>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        [NotNull]
+        public static ContainerBuilder RegisterFromMethod<TR>([NotNull] this ContainerBuilder containerBuilder,
+            [NotNull] FactoryMethod<TR> factoryMethod)
+            where TR : class
+        {
+            if (factoryMethod == null) throw new ArgumentNullException(nameof(factoryMethod));
+            containerBuilder.RegisterFromMethod(factoryMethod);
+            return containerBuilder;
+        }
+
+        /// <summary>
+        ///     Register a dependency from the given factory method.
+        /// </summary>
+        /// <param name="containerBuilder">Container builder to register dependency in.</param>
+        /// <param name="factoryMethod">Factory method that creates a dependency.</param>
+        /// <typeparam name="TR">Dependency type.</typeparam>
+        /// <typeparam name="T1">Dependency of the created object.</typeparam>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        [NotNull]
+        public static ContainerBuilder RegisterFromMethod<TR, T1>([NotNull] this ContainerBuilder containerBuilder,
+            [NotNull] FactoryMethod<TR, T1> factoryMethod)
+            where TR : class
+            where T1 : class
+        {
+            if (factoryMethod == null) throw new ArgumentNullException(nameof(factoryMethod));
+            containerBuilder.RegisterFromMethod(factoryMethod);
+            return containerBuilder;
+        }
+
+        /// <summary>
+        ///     Register a dependency from the given factory method.
+        /// </summary>
+        /// <param name="containerBuilder">Container builder to register dependency in.</param>
+        /// <param name="factoryMethod">Factory method that creates a dependency.</param>
+        /// <typeparam name="TR">Dependency type.</typeparam>
+        /// <typeparam name="T1">Dependency of the created object.</typeparam>
+        /// <typeparam name="T2">Dependency of the created object.</typeparam>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        [NotNull]
+        public static ContainerBuilder RegisterFromMethod<TR, T1, T2>([NotNull] this ContainerBuilder containerBuilder,
+            [NotNull] FactoryMethod<TR, T1, T2> factoryMethod)
+            where TR : class
+            where T1 : class
+            where T2 : class
+        {
+            if (factoryMethod == null) throw new ArgumentNullException(nameof(factoryMethod));
+            containerBuilder.RegisterFromMethod(factoryMethod);
+            return containerBuilder;
+        }
+
+        /// <summary>
+        ///     Register a dependency from the given factory method.
+        /// </summary>
+        /// <param name="containerBuilder">Container builder to register dependency in.</param>
+        /// <param name="factoryMethod">Factory method that creates a dependency.</param>
+        /// <typeparam name="TR">Dependency type.</typeparam>
+        /// <typeparam name="T1">Dependency of the created object.</typeparam>
+        /// <typeparam name="T2">Dependency of the created object.</typeparam>
+        /// <typeparam name="T3">Dependency of the created object.</typeparam>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        [NotNull]
+        public static ContainerBuilder RegisterFromMethod<TR, T1, T2, T3>(
+            [NotNull] this ContainerBuilder containerBuilder,
+            [NotNull] FactoryMethod<TR, T1, T2, T3> factoryMethod) where TR : class
+            where T1 : class
+            where T2 : class
+            where T3 : class
+        {
+            if (factoryMethod == null) throw new ArgumentNullException(nameof(factoryMethod));
+            containerBuilder.RegisterFromMethod(factoryMethod);
+            return containerBuilder;
+        }
+
+        /// <summary>
+        ///     Register a dependency from the given factory method.
+        /// </summary>
+        /// <param name="containerBuilder">Container builder to register dependency in.</param>
+        /// <param name="factoryMethod">Factory method that creates a dependency.</param>
+        /// <typeparam name="TR">Dependency type.</typeparam>
+        /// <typeparam name="T1">Dependency of the created object.</typeparam>
+        /// <typeparam name="T2">Dependency of the created object.</typeparam>
+        /// <typeparam name="T3">Dependency of the created object.</typeparam>
+        /// <typeparam name="T4">Dependency of the created object.</typeparam>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        [NotNull]
+        public static ContainerBuilder RegisterFromMethod<TR, T1, T2, T3, T4>(
+            [NotNull] this ContainerBuilder containerBuilder,
+            [NotNull] FactoryMethod<TR, T1, T2, T3, T4> factoryMethod) where TR : class
+            where T1 : class
+            where T2 : class
+            where T3 : class
+            where T4 : class
+        {
+            if (factoryMethod == null) throw new ArgumentNullException(nameof(factoryMethod));
+            containerBuilder.RegisterFromMethod(factoryMethod);
+            return containerBuilder;
+        }
+
+        /// <summary>
+        ///     Register a dependency from the given factory method.
+        /// </summary>
+        /// <param name="containerBuilder">Container builder to register dependency in.</param>
+        /// <param name="factoryMethod">Factory method that creates a dependency.</param>
+        /// <typeparam name="TR">Dependency type.</typeparam>
+        /// <typeparam name="T1">Dependency of the created object.</typeparam>
+        /// <typeparam name="T2">Dependency of the created object.</typeparam>
+        /// <typeparam name="T3">Dependency of the created object.</typeparam>
+        /// <typeparam name="T4">Dependency of the created object.</typeparam>
+        /// <typeparam name="T5">Dependency of the created object.</typeparam>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        [NotNull]
+        public static ContainerBuilder RegisterFromMethod<TR, T1, T2, T3, T4, T5>(
+            [NotNull] this ContainerBuilder containerBuilder,
+            [NotNull] FactoryMethod<TR, T1, T2, T3, T4, T5> factoryMethod) where TR : class
+            where T1 : class
+            where T2 : class
+            where T3 : class
+            where T4 : class
+            where T5 : class
+        {
+            if (factoryMethod == null) throw new ArgumentNullException(nameof(factoryMethod));
+            containerBuilder.RegisterFromMethod(factoryMethod);
+            return containerBuilder;
+        }
     }
 }
