@@ -6,11 +6,15 @@ using UnityEngine;
 
 namespace DELTation.DIFramework.Editor
 {
-    [CustomEditor(typeof(Resolver))]
+    [CustomEditor(typeof(Resolver)), CanEditMultipleObjects]
     internal sealed class ResolverCustomEditor : UnityEditor.Editor
     {
-        private GUIStyle _headerStyle;
+        private static readonly StringBuilder StringBuilder = new StringBuilder();
+        private SerializedProperty _dependencySourceProp;
+        private SerializedProperty _destroyWhenFinishedProp;
         private bool _foldout;
+        private GUIStyle _headerStyle;
+        private SerializedProperty _overrideDependencySourceProp;
         private ResolverReport _report;
 
         private void OnEnable()
@@ -25,13 +29,26 @@ namespace DELTation.DIFramework.Editor
             };
 
             _report = new ResolverReport((Resolver) serializedObject.targetObject);
+
+            _overrideDependencySourceProp = serializedObject.FindProperty("_overrideDependencySource");
+            _dependencySourceProp = serializedObject.FindProperty("_dependencySource");
+            _destroyWhenFinishedProp = serializedObject.FindProperty("_destroyWhenFinished");
         }
 
         public override void OnInspectorGUI()
         {
-            base.OnInspectorGUI();
-
             _report.Generate();
+
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.PropertyField(_overrideDependencySourceProp);
+            if (_overrideDependencySourceProp.boolValue)
+                EditorGUILayout.PropertyField(_dependencySourceProp);
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.PropertyField(_destroyWhenFinishedProp);
+            serializedObject.ApplyModifiedProperties();
+
+            if (serializedObject.isEditingMultipleObjects) return;
 
             EditorGUILayout.Space();
 
@@ -130,8 +147,6 @@ namespace DELTation.DIFramework.Editor
 
             GUILayout.Box(content);
         }
-
-        private static readonly StringBuilder StringBuilder = new StringBuilder();
 
         private static string GetDependencySourceIndicator(DependencySource source)
         {

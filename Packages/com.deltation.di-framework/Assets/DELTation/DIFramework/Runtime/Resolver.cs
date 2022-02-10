@@ -8,13 +8,18 @@ namespace DELTation.DIFramework
     [DisallowMultipleComponent]
     public sealed class Resolver : MonoBehaviour, IInitializable, IResolver, IShowIconInHierarchy
     {
-        [SerializeField] private DependencySource _dependencySource = DependencySources.All;
-        [SerializeField] private bool _destroyWhenFinished = true;
+        [SerializeField, HideInInspector] private bool _overrideDependencySource;
+        [SerializeField, HideInInspector] private DependencySource _dependencySource = DependencySources.All;
+        [SerializeField, HideInInspector] private bool _destroyWhenFinished = true;
+
+        private bool _resolved;
 
         private void Awake()
         {
             Resolve();
         }
+
+        void IInitializable.EnsureInitialized() => Resolve();
 
         public void Resolve()
         {
@@ -38,10 +43,13 @@ namespace DELTation.DIFramework
             return canBeResolvedSafe;
         }
 
-        private CachedComponentResolver RentResolver() => ResolverPool.Rent(gameObject, _dependencySource);
-
-        void IInitializable.EnsureInitialized() => Resolve();
-
-        private bool _resolved;
+        private CachedComponentResolver RentResolver()
+        {
+            var defaultDependencySource = DiSettings.TryGetInstance(out var settings)
+                ? settings.DefaultDependencySource
+                : DependencySources.All;
+            var dependencySource = _overrideDependencySource ? _dependencySource : defaultDependencySource;
+            return ResolverPool.Rent(gameObject, dependencySource);
+        }
     }
 }
