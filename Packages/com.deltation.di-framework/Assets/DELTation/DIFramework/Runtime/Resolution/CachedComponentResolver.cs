@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using DELTation.DIFramework.Baking;
 using DELTation.DIFramework.Exceptions;
 using UnityEngine;
@@ -33,6 +34,7 @@ namespace DELTation.DIFramework.Resolution
             return DependencySource.CanBeResolvedSafe(context, type, out actualSource);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Resolve()
         {
             _affectedComponents.Clear();
@@ -50,11 +52,18 @@ namespace DELTation.DIFramework.Resolution
             _cache.Clear();
         }
 
-        private static bool UseBakedData => DiSettings.TryGetInstance(out var settings) &&
-                                            settings.UseBakedData;
+        
+        private static bool UseBakedData
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => DiSettings.TryGetInstance(out var settings) &&
+                   settings.UseBakedData;
+        }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static bool IsAffectedExtraCondition(MonoBehaviour mb) => BakedInjection.IsInjectionBaked(mb.GetType());
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void Inject(MonoBehaviour component)
         {
             if (UseBakedData && BakedInjection.TryInject(component, _resolutionFunction))
@@ -68,6 +77,7 @@ namespace DELTation.DIFramework.Resolution
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void InjectThrough(MonoBehaviour component, MethodInfo method)
         {
             if (!Injection.TryGetInjectableParameters(method, out var parameters))

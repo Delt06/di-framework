@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using DELTation.DIFramework.Editor;
 using DELTation.DIFramework.Resolution;
 using UnityEngine;
@@ -21,6 +22,7 @@ namespace DELTation.DIFramework
 
         void IInitializable.EnsureInitialized() => Resolve();
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Resolve()
         {
             if (_resolved) return;
@@ -43,6 +45,7 @@ namespace DELTation.DIFramework
             return canBeResolvedSafe;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private CachedComponentResolver RentResolver()
         {
             var defaultDependencySource = DiSettings.TryGetInstance(out var settings)

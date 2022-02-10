@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 
 namespace DELTation.DIFramework
 {
     internal sealed class TypedCache
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal void AddAllObjectsTo([NotNull] ICollection<object> targetList)
         {
             if (targetList == null) throw new ArgumentNullException(nameof(targetList));
@@ -16,6 +18,7 @@ namespace DELTation.DIFramework
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool TryGet<T>(out T obj) where T : class
         {
             if (TryGet(typeof(T), out var foundObject))
@@ -28,6 +31,7 @@ namespace DELTation.DIFramework
             return false;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool TryGet([NotNull] Type type, out object obj)
         {
             if (_objects.TryGetValue(type, out obj))
@@ -40,6 +44,7 @@ namespace DELTation.DIFramework
             return false;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private bool TryFindInSubclasses([NotNull] Type type, out object obj)
         {
             foreach (var existingObject in _allObjects)
@@ -56,6 +61,7 @@ namespace DELTation.DIFramework
             return false;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool TryRegister([NotNull] object obj, out object existingObject)
         {
             if (obj == null) throw new ArgumentNullException(nameof(obj));
@@ -69,6 +75,7 @@ namespace DELTation.DIFramework
             return true;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Clear()
         {
             _allObjects.Clear();

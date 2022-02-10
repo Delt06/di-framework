@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using JetBrains.Annotations;
 using UnityEditor;
@@ -18,18 +19,39 @@ namespace DELTation.DIFramework
         [SerializeField] private bool _bakeOnBuild;
         [SerializeField] private string _bakedAssembliesRegex = @"^Assembly-CSharp$";
 
-        public DependencySource DefaultDependencySource => _defaultDependencySource;
+        public DependencySource DefaultDependencySource
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => _defaultDependencySource;
+        }
 
-        public bool ShowIconsInHierarchy => _showIconsInHierarchy;
+        public bool ShowIconsInHierarchy
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => _showIconsInHierarchy;
+        }
 
-        public bool ShowMissingResolverWarnings => _showMissingResolverWarnings;
+        public bool ShowMissingResolverWarnings
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => _showMissingResolverWarnings;
+        }
 
-        public bool UseBakedData => _useBakedData;
+        public bool UseBakedData
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => _useBakedData;
+        }
 
-        public bool BakeOnBuild => _bakeOnBuild;
+        public bool BakeOnBuild
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => _bakeOnBuild;
+        }
 
         private static DiSettings Instance
         {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get
             {
                 if (_instance) return _instance;
@@ -47,6 +69,7 @@ namespace DELTation.DIFramework
             _bakedAssembliesRegex = _bakedAssembliesRegex?.Trim() ?? string.Empty;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool ShouldBeBaked([NotNull] Assembly assembly)
         {
             if (assembly == null) throw new ArgumentNullException(nameof(assembly));
@@ -55,14 +78,17 @@ namespace DELTation.DIFramework
             return match.Success;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool TryGetInstance(out DiSettings settings)
         {
             settings = Instance;
             return settings != null;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static DiSettings LoadSettingsOrDefault() => Resources.LoadAll<DiSettings>("").FirstOrDefault();
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static DiSettings CreateSettings()
         {
             var settings = CreateInstance<DiSettings>();
