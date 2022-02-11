@@ -69,7 +69,11 @@ namespace DELTation.DIFramework.Editor
                 if (index == list.arraySize - 1)
                     EditorGUI.EndDisabledGroup();
 
-                if (MiniButton("+")) list.InsertArrayElementAtIndex(index);
+                if (MiniButton("+"))
+                {
+                    list.InsertArrayElementAtIndex(index);
+                    list.GetArrayElementAtIndex(index + 1).objectReferenceValue = null;
+                }
 
                 if (MiniButton("-")) DeleteArrayElementAtIndex(list, index);
 
