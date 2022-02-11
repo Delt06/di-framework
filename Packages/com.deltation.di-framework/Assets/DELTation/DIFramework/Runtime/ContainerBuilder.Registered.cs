@@ -14,7 +14,7 @@ namespace DELTation.DIFramework
 
     internal class InternalOnlyTag { }
 
-    public partial class ContainerBuilder
+    internal partial class ContainerBuilder
     {
         /// <inheritdoc />
         public IRegisteredContainerBuilder AsInternal()

@@ -7,7 +7,7 @@ using static DELTation.DIFramework.ContainersExtensions;
 
 namespace DELTation.DIFramework.Containers
 {
-    public sealed class ConfigurableDependencyContainer : IDependencyContainer
+    internal sealed class ConfigurableDependencyContainer : IDependencyContainer
     {
         private readonly TypedCache _cache = new TypedCache();
         private readonly Action<ContainerBuilder> _composeDependencies;
@@ -147,7 +147,7 @@ namespace DELTation.DIFramework.Containers
                 return tags != null && tags.Contains(tag);
             }
 
-            public void AddTag(TKey key, Type tag)
+            private void AddTag(TKey key, Type tag)
             {
                 if (!_tags.TryGetValue(key, out var tags))
                     _tags[key] = tags = new HashSet<Type>();

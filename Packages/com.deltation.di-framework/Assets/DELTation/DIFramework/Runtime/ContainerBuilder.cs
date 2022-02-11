@@ -17,7 +17,7 @@ namespace DELTation.DIFramework
     /// <summary>
     ///     Allows to build a custom container.
     /// </summary>
-    public sealed partial class ContainerBuilder : IAnyOperationContainerBuilder
+    internal sealed partial class ContainerBuilder : IAnyOperationContainerBuilder
     {
         private readonly List<Dependency> _dependencies = new List<Dependency>();
 
@@ -49,18 +49,18 @@ namespace DELTation.DIFramework
             return OnRegisteredLast();
         }
 
-        public IRegisteredContainerBuilder OnDidNotRegisterLast()
-        {
-            WasAbleToRegisterLast = false;
-            return this;
-        }
-
         /// <inheritdoc />
         public IRegisteredContainerBuilder RegisterFromMethodAsDelegate(Delegate factoryMethod)
         {
             if (factoryMethod == null) throw new ArgumentNullException(nameof(factoryMethod));
             _dependencies.Add(new Dependency(factoryMethod));
             return OnRegisteredLast();
+        }
+
+        internal IRegisteredContainerBuilder OnDidNotRegisterLast()
+        {
+            WasAbleToRegisterLast = false;
+            return this;
         }
 
         private void AddTag(int index, Type tag)

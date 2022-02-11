@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 
 namespace DELTation.DIFramework
@@ -21,13 +22,26 @@ namespace DELTation.DIFramework
         /// <exception cref="ArgumentNullException">When the <paramref name="obj" /> is null.</exception>
         IRegisteredContainerBuilder Register([NotNull] object obj);
 
-        IRegisteredContainerBuilder OnDidNotRegisterLast();
-
         /// <summary>
         ///     Registers a new dependency that will be created using the given delegate.
         /// </summary>
         /// <param name="factoryMethod">A delegate that creates a dependency.</param>
         /// <returns>The builder.</returns>
         IRegisteredContainerBuilder RegisterFromMethodAsDelegate([NotNull] Delegate factoryMethod);
+    }
+
+    internal static class CanRegisterContainerBuilderInternalExtensions
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IRegisteredContainerBuilder OnDidNotRegisterLast(
+            [NotNull] this ICanRegisterContainerBuilder containerBuilder) =>
+            containerBuilder switch
+            {
+                null => throw new ArgumentNullException(nameof(containerBuilder)),
+                ContainerBuilder casterContainerBuilder => casterContainerBuilder.OnDidNotRegisterLast(),
+                _ => throw new InvalidOperationException(
+                    $"Provided container builder is of invalid type (${containerBuilder.GetType()})."
+                ),
+            };
     }
 }
