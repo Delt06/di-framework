@@ -87,7 +87,7 @@ namespace DELTation.DIFramework.Tests.Runtime
 
         private class ContainerRegisteringNull : DependencyContainerBase
         {
-            protected override void ComposeDependencies(ContainerBuilder builder)
+            protected override void ComposeDependencies(ICanRegisterContainerBuilder builder)
             {
                 builder.RegisterIfNotNull(null);
             }
@@ -95,7 +95,7 @@ namespace DELTation.DIFramework.Tests.Runtime
 
         private class ContainerRegisteringUnityNull : DependencyContainerBase
         {
-            protected override void ComposeDependencies(ContainerBuilder builder)
+            protected override void ComposeDependencies(ICanRegisterContainerBuilder builder)
             {
                 var c = gameObject.AddComponent<BoxCollider>();
                 DestroyImmediate(c); // using immediate so that object is null right away
@@ -105,7 +105,7 @@ namespace DELTation.DIFramework.Tests.Runtime
 
         private class ContainerRegisteringNotNull : DependencyContainerBase
         {
-            protected override void ComposeDependencies(ContainerBuilder builder)
+            protected override void ComposeDependencies(ICanRegisterContainerBuilder builder)
             {
                 builder.RegisterIfNotNull(new object());
             }
@@ -113,7 +113,7 @@ namespace DELTation.DIFramework.Tests.Runtime
 
         private class ContainerRegisteringNotNullUnityObj : DependencyContainerBase
         {
-            protected override void ComposeDependencies(ContainerBuilder builder)
+            protected override void ComposeDependencies(ICanRegisterContainerBuilder builder)
             {
                 var c = gameObject.AddComponent<BoxCollider>();
                 builder.RegisterIfNotNull(c);
@@ -122,7 +122,7 @@ namespace DELTation.DIFramework.Tests.Runtime
 
         private class ContainerResolvingAndRegisteringString : DependencyContainerBase
         {
-            protected override void ComposeDependencies(ContainerBuilder builder)
+            protected override void ComposeDependencies(ICanRegisterContainerBuilder builder)
             {
                 builder.TryResolveGloballyAndRegister<string>();
             }
@@ -130,7 +130,7 @@ namespace DELTation.DIFramework.Tests.Runtime
 
         private class ContainerRegisteringString : DependencyContainerBase
         {
-            protected override void ComposeDependencies(ContainerBuilder builder)
+            protected override void ComposeDependencies(ICanRegisterContainerBuilder builder)
             {
                 builder.Register("Some string");
             }

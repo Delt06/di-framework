@@ -113,7 +113,7 @@ namespace DELTation.DIFramework
         private void PullObjectsFromContainer()
         {
             var allObjects = new List<object>();
-            _container.GetAllRegisteredObjects(allObjects);
+            _container.GetAllRegisteredExternalObjects(allObjects);
 
             for (var index = 0; index < allObjects.Count; index++)
             {

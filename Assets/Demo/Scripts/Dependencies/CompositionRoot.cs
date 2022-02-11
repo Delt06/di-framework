@@ -10,15 +10,11 @@ namespace Demo.Scripts.Dependencies
     {
         [SerializeField] private Transform _bulletsRoot;
 
-        protected override void ComposeDependencies(ContainerBuilder builder)
+        protected override void ComposeDependencies(ICanRegisterContainerBuilder builder)
         {
-            // Compose your dependencies here:
-            // builder.Register(new T());
-            // builder.Register<T>();
-
             builder
-                .RegisterFromResources<BulletFactoryConfig>("Bullet Factory Config")
-                .Register<UnityLogger>()
+                .RegisterFromResources<BulletFactoryConfig>("Bullet Factory Config").AsInternal()
+                .Register<UnityLogger>().AsInternal()
                 .RegisterFromMethod((BulletFactoryConfig config, ILogger logger) =>
                     CreateBulletFactory(config, logger)
                 )

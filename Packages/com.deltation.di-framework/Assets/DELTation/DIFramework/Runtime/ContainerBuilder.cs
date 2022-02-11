@@ -12,42 +12,65 @@ using static DELTation.DIFramework.Resolution.PocoInjection;
 
 namespace DELTation.DIFramework
 {
+    public interface IAnyOperationContainerBuilder : IRegisteredContainerBuilder { }
+
     /// <summary>
     ///     Allows to build a custom container.
     /// </summary>
-    public sealed class ContainerBuilder
+    public sealed partial class ContainerBuilder : IAnyOperationContainerBuilder
     {
         private readonly List<Dependency> _dependencies = new List<Dependency>();
 
         private readonly ResolutionFunction _resolutionFunction;
-        internal readonly TagCollection<int> Tags = new TagCollection<int>();
 
         internal ContainerBuilder([NotNull] ResolutionFunction resolutionFunction) => _resolutionFunction =
             resolutionFunction ?? throw new ArgumentNullException(nameof(resolutionFunction));
 
+        private bool WasAbleToRegisterLast { get; set; }
+
         internal int DependenciesCount => _dependencies.Count;
 
-        /// <summary>
-        ///     Registers a new dependency of the given type.
-        ///     An instance of that type will be automatically created.
-        /// </summary>
-        /// <typeparam name="T">Type of the dependency.</typeparam>
-        /// <returns>The builder.</returns>
-        public ContainerBuilder Register<[MeansImplicitUse] T>() where T : class
+
+        /// <inheritdoc />
+        public IRegisteredContainerBuilder Register<[MeansImplicitUse] T>() where T : class
         {
             _dependencies.Add(new Dependency(typeof(T)));
+            return OnRegisteredLast();
+        }
+
+        /// <inheritdoc />
+        public IRegisteredContainerBuilder Register(object obj)
+        {
+            var isNull = UnityUtils.IsNullOrUnityNull(obj);
+            if (Application.isPlaying && isNull)
+                throw new ArgumentNullException(nameof(obj));
+            if (isNull) return OnDidNotRegisterLast();
+            _dependencies.Add(new Dependency(obj));
+            return OnRegisteredLast();
+        }
+
+        public IRegisteredContainerBuilder OnDidNotRegisterLast()
+        {
+            WasAbleToRegisterLast = false;
             return this;
         }
 
-        /// <summary>
-        ///     Registers a new dependency that will be created using the given delegate.
-        /// </summary>
-        /// <param name="factoryMethod">A delegate that creates a dependency.</param>
-        /// <returns>The builder.</returns>
-        internal ContainerBuilder RegisterFromMethod([NotNull] Delegate factoryMethod)
+        /// <inheritdoc />
+        public IRegisteredContainerBuilder RegisterFromMethodAsDelegate(Delegate factoryMethod)
         {
             if (factoryMethod == null) throw new ArgumentNullException(nameof(factoryMethod));
             _dependencies.Add(new Dependency(factoryMethod));
+            return OnRegisteredLast();
+        }
+
+        private void AddTag(int index, Type tag)
+        {
+            _dependencies[index].Tags.Add(tag);
+        }
+
+        private IAnyOperationContainerBuilder OnRegisteredLast()
+        {
+            WasAbleToRegisterLast = true;
             return this;
         }
 
@@ -84,22 +107,6 @@ namespace DELTation.DIFramework
             }
 
             return allCanBeResolved;
-        }
-
-        /// <summary>
-        ///     Registers a new dependency from the given object.
-        /// </summary>
-        /// <param name="obj">Object to register as dependency.</param>
-        /// <returns>The builder.</returns>
-        /// <exception cref="ArgumentNullException">When the <paramref name="obj" /> is null.</exception>
-        public ContainerBuilder Register([NotNull] object obj)
-        {
-            var isNull = UnityUtils.IsNullOrUnityNull(obj);
-            if (Application.isPlaying && isNull)
-                throw new ArgumentNullException(nameof(obj));
-            if (!isNull)
-                _dependencies.Add(new Dependency(obj));
-            return this;
         }
 
         public bool TrySortTopologically(bool dryRun = false)
@@ -216,6 +223,12 @@ namespace DELTation.DIFramework
             return _dependencies[index].GetResultingType();
         }
 
+        internal HashSet<Type> GetTags(int index)
+        {
+            ValidateIndex(index);
+            return _dependencies[index].Tags;
+        }
+
         private void ValidateIndex(int index)
         {
             if (index < 0 || index >= DependenciesCount) throw new ArgumentOutOfRangeException(nameof(index));
@@ -236,12 +249,14 @@ namespace DELTation.DIFramework
             [CanBeNull] private readonly object _object;
             [CanBeNull] private readonly Type _type;
             private readonly FactoryMethodDelegate _factoryMethodDelegate;
+            public readonly HashSet<Type> Tags;
 
             public Dependency([NotNull] object @object)
             {
                 _object = @object ?? throw new ArgumentNullException(nameof(@object));
                 _type = null;
                 _factoryMethodDelegate = default;
+                Tags = new HashSet<Type>();
             }
 
             public Dependency([NotNull] Type type)
@@ -249,6 +264,7 @@ namespace DELTation.DIFramework
                 _object = null;
                 _type = type ?? throw new ArgumentNullException(nameof(type));
                 _factoryMethodDelegate = default;
+                Tags = new HashSet<Type>();
             }
 
             public Dependency(FactoryMethodDelegate factoryMethodDelegate)
@@ -256,6 +272,7 @@ namespace DELTation.DIFramework
                 _object = null;
                 _type = null;
                 _factoryMethodDelegate = factoryMethodDelegate;
+                Tags = new HashSet<Type>();
             }
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]

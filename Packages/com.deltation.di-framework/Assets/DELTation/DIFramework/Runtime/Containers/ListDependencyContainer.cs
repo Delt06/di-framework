@@ -7,7 +7,7 @@ using Object = UnityEngine.Object;
 namespace DELTation.DIFramework.Containers
 {
     /// <summary>
-    /// Container that defines its object with a list.
+    ///     Container that defines its object with a list.
     /// </summary>
     [AddComponentMenu("Dependency Container/List Dependency Container")]
     public sealed class ListDependencyContainer : DependencyContainerBase
@@ -20,7 +20,7 @@ namespace DELTation.DIFramework.Containers
             _dependencies.Add(@object);
         }
 
-        protected override void ComposeDependencies(ContainerBuilder builder)
+        protected override void ComposeDependencies(ICanRegisterContainerBuilder builder)
         {
             for (var index = 0; index < _dependencies.Count; index++)
             {

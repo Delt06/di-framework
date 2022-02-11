@@ -20,7 +20,7 @@ namespace DELTation.DIFramework.Containers
             return TryFindObjectOfType(type, out _);
         }
 
-        void IDependencyContainer.GetAllRegisteredObjects(ICollection<object> objects)
+        void IDependencyContainer.GetAllRegisteredExternalObjects(ICollection<object> objects)
         {
             if (objects == null) throw new ArgumentNullException(nameof(objects));
         }

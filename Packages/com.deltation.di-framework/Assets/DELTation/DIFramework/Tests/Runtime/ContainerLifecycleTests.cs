@@ -186,7 +186,7 @@ namespace DELTation.DIFramework.Tests.Runtime
         {
             public List<object> ObjectsToRegister { get; } = new List<object>();
 
-            protected override void ComposeDependencies(ContainerBuilder builder)
+            protected override void ComposeDependencies(ICanRegisterContainerBuilder builder)
             {
                 foreach (var o in ObjectsToRegister)
                 {

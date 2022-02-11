@@ -12,30 +12,6 @@ namespace DELTation.DIFramework
     public static class ContainerBuilderExtensions
     {
         /// <summary>
-        ///     Mark the last dependency as internal (not allow to resolve it outside from the container).
-        /// </summary>
-        /// <param name="containerBuilder">Container builder to modify dependency in.</param>
-        /// <returns>The same container builder.</returns>
-        /// <exception cref="System.ArgumentNullException">
-        ///     If <paramref name="containerBuilder" /> is
-        ///     null.
-        /// </exception>
-        public static ContainerBuilder AsInternal([NotNull] this ContainerBuilder containerBuilder)
-        {
-            if (containerBuilder == null) throw new ArgumentNullException(nameof(containerBuilder));
-            EnsureNotEmpty(containerBuilder);
-            var index = containerBuilder.DependenciesCount - 1;
-            containerBuilder.Tags.AddTag(index, typeof(InternalOnlyTag));
-            return containerBuilder;
-        }
-
-        private static void EnsureNotEmpty(ContainerBuilder containerBuilder)
-        {
-            if (containerBuilder.DependenciesCount == 0)
-                throw new InvalidOperationException("Container builder is empty.");
-        }
-
-        /// <summary>
         ///     Load and register a dependency from Resources folder.
         ///     <a href="https://docs.unity3d.com/ScriptReference/Resources.Load.html">See Resources.Load documentation.</a>
         /// </summary>
@@ -47,7 +23,8 @@ namespace DELTation.DIFramework
         ///     If <paramref name="containerBuilder" /> or <paramref name="path" /> is
         ///     null.
         /// </exception>
-        public static ContainerBuilder RegisterFromResources<T>([NotNull] this ContainerBuilder containerBuilder,
+        public static IRegisteredContainerBuilder RegisterFromResources<T>(
+            [NotNull] this ICanRegisterContainerBuilder containerBuilder,
             [NotNull] string path) where T : Object
         {
             if (containerBuilder == null) throw new ArgumentNullException(nameof(containerBuilder));
@@ -65,11 +42,12 @@ namespace DELTation.DIFramework
         /// <returns>The same container builder.</returns>
         /// <exception cref="System.ArgumentNullException">If <paramref name="containerBuilder" /> is null.</exception>
         [NotNull]
-        public static ContainerBuilder RegisterIfNotNull([NotNull] this ContainerBuilder containerBuilder,
+        public static IRegisteredContainerBuilder RegisterIfNotNull(
+            [NotNull] this ICanRegisterContainerBuilder containerBuilder,
             [CanBeNull] object obj)
         {
             if (containerBuilder == null) throw new ArgumentNullException(nameof(containerBuilder));
-            if (UnityUtils.IsNullOrUnityNull(obj)) return containerBuilder;
+            if (UnityUtils.IsNullOrUnityNull(obj)) return containerBuilder.OnDidNotRegisterLast();
 
             Assert.IsNotNull(obj);
             return containerBuilder.Register(obj);
@@ -83,11 +61,13 @@ namespace DELTation.DIFramework
         /// <returns>The same container builder.</returns>
         /// <exception cref="System.ArgumentNullException">If <paramref name="containerBuilder" /> is null.</exception>
         [NotNull]
-        public static ContainerBuilder TryResolveGloballyAndRegister<[MeansImplicitUse] T>(
-            [NotNull] this ContainerBuilder containerBuilder) where T : class
+        public static IRegisteredContainerBuilder TryResolveGloballyAndRegister<[MeansImplicitUse] T>(
+            [NotNull] this ICanRegisterContainerBuilder containerBuilder) where T : class
         {
             if (containerBuilder == null) throw new ArgumentNullException(nameof(containerBuilder));
-            return Di.TryResolveGlobally(out T service) ? containerBuilder.Register(service) : containerBuilder;
+            if (Di.TryResolveGlobally(out T service)) return containerBuilder.Register(service);
+
+            return containerBuilder.OnDidNotRegisterLast();
         }
 
         /// <summary>
@@ -99,13 +79,13 @@ namespace DELTation.DIFramework
         /// <returns></returns>
         /// <exception cref="System.ArgumentNullException"></exception>
         [NotNull]
-        public static ContainerBuilder RegisterFromMethod<TR>([NotNull] this ContainerBuilder containerBuilder,
+        public static IRegisteredContainerBuilder RegisterFromMethod<TR>(
+            [NotNull] this ICanRegisterContainerBuilder containerBuilder,
             [NotNull] FactoryMethod<TR> factoryMethod)
             where TR : class
         {
             if (factoryMethod == null) throw new ArgumentNullException(nameof(factoryMethod));
-            containerBuilder.RegisterFromMethod(factoryMethod);
-            return containerBuilder;
+            return containerBuilder.RegisterFromMethodAsDelegate(factoryMethod);
         }
 
         /// <summary>
@@ -118,14 +98,14 @@ namespace DELTation.DIFramework
         /// <returns></returns>
         /// <exception cref="System.ArgumentNullException"></exception>
         [NotNull]
-        public static ContainerBuilder RegisterFromMethod<TR, T1>([NotNull] this ContainerBuilder containerBuilder,
+        public static IRegisteredContainerBuilder RegisterFromMethod<TR, T1>(
+            [NotNull] this ICanRegisterContainerBuilder containerBuilder,
             [NotNull] FactoryMethod<TR, T1> factoryMethod)
             where TR : class
             where T1 : class
         {
             if (factoryMethod == null) throw new ArgumentNullException(nameof(factoryMethod));
-            containerBuilder.RegisterFromMethod(factoryMethod);
-            return containerBuilder;
+            return containerBuilder.RegisterFromMethodAsDelegate(factoryMethod);
         }
 
         /// <summary>
@@ -139,15 +119,15 @@ namespace DELTation.DIFramework
         /// <returns></returns>
         /// <exception cref="System.ArgumentNullException"></exception>
         [NotNull]
-        public static ContainerBuilder RegisterFromMethod<TR, T1, T2>([NotNull] this ContainerBuilder containerBuilder,
+        public static IRegisteredContainerBuilder RegisterFromMethod<TR, T1, T2>(
+            [NotNull] this ICanRegisterContainerBuilder containerBuilder,
             [NotNull] FactoryMethod<TR, T1, T2> factoryMethod)
             where TR : class
             where T1 : class
             where T2 : class
         {
             if (factoryMethod == null) throw new ArgumentNullException(nameof(factoryMethod));
-            containerBuilder.RegisterFromMethod(factoryMethod);
-            return containerBuilder;
+            return containerBuilder.RegisterFromMethodAsDelegate(factoryMethod);
         }
 
         /// <summary>
@@ -162,16 +142,15 @@ namespace DELTation.DIFramework
         /// <returns></returns>
         /// <exception cref="System.ArgumentNullException"></exception>
         [NotNull]
-        public static ContainerBuilder RegisterFromMethod<TR, T1, T2, T3>(
-            [NotNull] this ContainerBuilder containerBuilder,
+        public static IRegisteredContainerBuilder RegisterFromMethod<TR, T1, T2, T3>(
+            [NotNull] this ICanRegisterContainerBuilder containerBuilder,
             [NotNull] FactoryMethod<TR, T1, T2, T3> factoryMethod) where TR : class
             where T1 : class
             where T2 : class
             where T3 : class
         {
             if (factoryMethod == null) throw new ArgumentNullException(nameof(factoryMethod));
-            containerBuilder.RegisterFromMethod(factoryMethod);
-            return containerBuilder;
+            return containerBuilder.RegisterFromMethodAsDelegate(factoryMethod);
         }
 
         /// <summary>
@@ -187,8 +166,8 @@ namespace DELTation.DIFramework
         /// <returns></returns>
         /// <exception cref="System.ArgumentNullException"></exception>
         [NotNull]
-        public static ContainerBuilder RegisterFromMethod<TR, T1, T2, T3, T4>(
-            [NotNull] this ContainerBuilder containerBuilder,
+        public static IRegisteredContainerBuilder RegisterFromMethod<TR, T1, T2, T3, T4>(
+            [NotNull] this ICanRegisterContainerBuilder containerBuilder,
             [NotNull] FactoryMethod<TR, T1, T2, T3, T4> factoryMethod) where TR : class
             where T1 : class
             where T2 : class
@@ -196,8 +175,7 @@ namespace DELTation.DIFramework
             where T4 : class
         {
             if (factoryMethod == null) throw new ArgumentNullException(nameof(factoryMethod));
-            containerBuilder.RegisterFromMethod(factoryMethod);
-            return containerBuilder;
+            return containerBuilder.RegisterFromMethodAsDelegate(factoryMethod);
         }
 
         /// <summary>
@@ -214,8 +192,8 @@ namespace DELTation.DIFramework
         /// <returns></returns>
         /// <exception cref="System.ArgumentNullException"></exception>
         [NotNull]
-        public static ContainerBuilder RegisterFromMethod<TR, T1, T2, T3, T4, T5>(
-            [NotNull] this ContainerBuilder containerBuilder,
+        public static IRegisteredContainerBuilder RegisterFromMethod<TR, T1, T2, T3, T4, T5>(
+            [NotNull] this ICanRegisterContainerBuilder containerBuilder,
             [NotNull] FactoryMethod<TR, T1, T2, T3, T4, T5> factoryMethod) where TR : class
             where T1 : class
             where T2 : class
@@ -224,8 +202,7 @@ namespace DELTation.DIFramework
             where T5 : class
         {
             if (factoryMethod == null) throw new ArgumentNullException(nameof(factoryMethod));
-            containerBuilder.RegisterFromMethod(factoryMethod);
-            return containerBuilder;
+            return containerBuilder.RegisterFromMethodAsDelegate(factoryMethod);
         }
     }
 }

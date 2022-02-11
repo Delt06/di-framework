@@ -28,14 +28,14 @@ namespace DELTation.DIFramework
 
         /// <summary>
         ///     Populates the provided collection with all objects registered in the container.
-        ///     <seealso cref="Di.GetAllRegisteredObjects" />
+        ///     <seealso cref="Di.GetAllRegisteredExternalObjects" />
         /// </summary>
         /// <param name="objects">Collection to put registered objects into.</param>
-        void GetAllRegisteredObjects([NotNull] ICollection<object> objects);
+        void GetAllRegisteredExternalObjects([NotNull] ICollection<object> objects);
 
         /// <summary>
         ///     Populates the provided collection with all objects assignable to certain type registered in the container.
-        ///     <seealso cref="Di.GetAllRegisteredObjects" />
+        ///     <seealso cref="Di.GetAllRegisteredExternalObjects" />
         /// </summary>
         /// <typeparam name="T">Required type.</typeparam>
         /// <param name="objects">Collection to put registered objects into.</param>

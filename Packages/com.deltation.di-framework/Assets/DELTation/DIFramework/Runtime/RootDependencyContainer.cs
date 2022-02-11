@@ -48,14 +48,14 @@ namespace DELTation.DIFramework
         }
 
         /// <inheritdoc />
-        public void GetAllRegisteredObjects(ICollection<object> objects)
+        public void GetAllRegisteredExternalObjects(ICollection<object> objects)
         {
             if (objects == null) throw new ArgumentNullException(nameof(objects));
             EnsureInitialized();
 
             foreach (var subContainer in _subContainers)
             {
-                subContainer.GetAllRegisteredObjects(objects);
+                subContainer.GetAllRegisteredExternalObjects(objects);
             }
         }
 

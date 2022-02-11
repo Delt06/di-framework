@@ -12,7 +12,7 @@ namespace DELTation.DIFramework.Containers
         private ConfigurableDependencyContainer InnerContainer => _innerContainer ??
                                                                   (_innerContainer =
                                                                       new ConfigurableDependencyContainer(
-                                                                          ComposeDependencies
+                                                                          builder => ComposeDependencies(builder)
                                                                       ));
 
         /// <inheritdoc />
@@ -30,10 +30,10 @@ namespace DELTation.DIFramework.Containers
         }
 
         /// <inheritdoc />
-        public void GetAllRegisteredObjects(ICollection<object> objects)
+        public void GetAllRegisteredExternalObjects(ICollection<object> objects)
         {
             if (objects == null) throw new ArgumentNullException(nameof(objects));
-            InnerContainer.GetAllRegisteredObjects(objects);
+            InnerContainer.GetAllRegisteredExternalObjects(objects);
         }
 
         /// <inheritdoc />
@@ -53,6 +53,6 @@ namespace DELTation.DIFramework.Containers
             [NotNull] List<(Type dependent, Type unresolvedDependency)> unresolvedDependencies) =>
             InnerContainer.DependenciesCanBeResolved(unresolvedDependencies);
 
-        protected abstract void ComposeDependencies(ContainerBuilder builder);
+        protected abstract void ComposeDependencies(ICanRegisterContainerBuilder builder);
     }
 }

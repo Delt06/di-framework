@@ -5,7 +5,7 @@ namespace Demo.Scripts.TestPocoBaking
 {
     public class TestPocoContainer : DependencyContainerBase
     {
-        protected override void ComposeDependencies(ContainerBuilder builder)
+        protected override void ComposeDependencies(ICanRegisterContainerBuilder builder)
         {
             builder.Register<TestPoco>()
                 .Register<TestPocoDependency>();

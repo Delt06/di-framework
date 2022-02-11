@@ -7,7 +7,6 @@ using DELTation.DIFramework.Tests.Runtime.Pocos;
 using NUnit.Framework;
 using UnityEngine;
 using IInterface = DELTation.DIFramework.Tests.Runtime.Pocos.IInterface;
-using Object = UnityEngine.Object;
 
 namespace DELTation.DIFramework.Tests.Runtime
 {
@@ -111,7 +110,7 @@ namespace DELTation.DIFramework.Tests.Runtime
             // Arrange
 
             // Act
-            var allRegisteredObjects = Di.GetAllRegisteredObjects();
+            var allRegisteredObjects = Di.GetAllRegisteredExternalObjects();
 
             // Assert
             Assert.That(allRegisteredObjects, Is.Not.Null);
@@ -123,7 +122,7 @@ namespace DELTation.DIFramework.Tests.Runtime
             // Arrange
 
             // Act
-            var allRegisteredObjects = Di.GetAllRegisteredObjects();
+            var allRegisteredObjects = Di.GetAllRegisteredExternalObjects();
 
             // Assert
             Assert.That(allRegisteredObjects, Is.Empty);
@@ -144,7 +143,7 @@ namespace DELTation.DIFramework.Tests.Runtime
             objects.ForEach(o => listDependencyContainer.Add(o));
 
             // Act
-            var allRegisteredObjects = Di.GetAllRegisteredObjects();
+            var allRegisteredObjects = Di.GetAllRegisteredExternalObjects();
 
             // Assert
             Assert.That(allRegisteredObjects, Is.EquivalentTo(objects));
@@ -174,7 +173,7 @@ namespace DELTation.DIFramework.Tests.Runtime
             objects2.ForEach(o => listDependencyContainer2.Add(o));
 
             // Act
-            var allRegisteredObjects = Di.GetAllRegisteredObjects();
+            var allRegisteredObjects = Di.GetAllRegisteredExternalObjects();
 
             // Assert
             var allObjects = objects1.Concat(objects2).Distinct().ToArray();
@@ -205,7 +204,7 @@ namespace DELTation.DIFramework.Tests.Runtime
             objects2.ForEach(o => listDependencyContainer2.Add(o));
 
             // Act
-            var allRegisteredObjects = Di.GetAllRegisteredObjects();
+            var allRegisteredObjects = Di.GetAllRegisteredExternalObjects();
 
             // Assert
             var allObjects = objects1.Concat(objects2).Distinct().ToArray();

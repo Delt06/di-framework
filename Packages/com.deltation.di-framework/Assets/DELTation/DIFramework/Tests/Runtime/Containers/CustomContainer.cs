@@ -7,7 +7,7 @@ namespace DELTation.DIFramework.Tests.Runtime.Containers
     {
         public const string String = "Some String";
 
-        protected override void ComposeDependencies(ContainerBuilder builder)
+        protected override void ComposeDependencies(ICanRegisterContainerBuilder builder)
         {
             builder.Register(String)
                 .Register<Ignored>()
