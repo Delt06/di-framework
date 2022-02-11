@@ -85,12 +85,10 @@ namespace DELTation.DIFramework.Editor
                     if (selectedIndex != 0)
                     {
                         var listDependencyContainer = (ListDependencyContainer) container.targetObject;
-                        listDependencyContainer.Add(components[selectedIndex - 1]);
+                        list.GetArrayElementAtIndex(index).objectReferenceValue = components[selectedIndex - 1];
+                        container.ApplyModifiedProperties();
                         container.Update();
                         EditorUtility.SetDirty(listDependencyContainer);
-
-                        list.DeleteArrayElementAtIndex(index);
-                        list.DeleteArrayElementAtIndex(index);
                     }
                 }
 
