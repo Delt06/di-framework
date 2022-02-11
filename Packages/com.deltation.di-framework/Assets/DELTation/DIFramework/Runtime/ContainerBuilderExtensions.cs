@@ -12,6 +12,30 @@ namespace DELTation.DIFramework
     public static class ContainerBuilderExtensions
     {
         /// <summary>
+        ///     Mark the last dependency as internal (not allow to resolve it outside from the container).
+        /// </summary>
+        /// <param name="containerBuilder">Container builder to modify dependency in.</param>
+        /// <returns>The same container builder.</returns>
+        /// <exception cref="System.ArgumentNullException">
+        ///     If <paramref name="containerBuilder" /> is
+        ///     null.
+        /// </exception>
+        public static ContainerBuilder AsInternal([NotNull] this ContainerBuilder containerBuilder)
+        {
+            if (containerBuilder == null) throw new ArgumentNullException(nameof(containerBuilder));
+            EnsureNotEmpty(containerBuilder);
+            var index = containerBuilder.DependenciesCount - 1;
+            containerBuilder.Tags.AddTag(index, typeof(InternalOnlyTag));
+            return containerBuilder;
+        }
+
+        private static void EnsureNotEmpty(ContainerBuilder containerBuilder)
+        {
+            if (containerBuilder.DependenciesCount == 0)
+                throw new InvalidOperationException("Container builder is empty.");
+        }
+
+        /// <summary>
         ///     Load and register a dependency from Resources folder.
         ///     <a href="https://docs.unity3d.com/ScriptReference/Resources.Load.html">See Resources.Load documentation.</a>
         /// </summary>

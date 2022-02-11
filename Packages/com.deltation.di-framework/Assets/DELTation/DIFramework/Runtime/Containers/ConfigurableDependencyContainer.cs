@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using DELTation.DIFramework.Exceptions;
+using DELTation.DIFramework.Resolution;
 using JetBrains.Annotations;
 using static DELTation.DIFramework.ContainersExtensions;
 
@@ -10,16 +11,21 @@ namespace DELTation.DIFramework.Containers
     {
         private readonly TypedCache _cache = new TypedCache();
         private readonly Action<ContainerBuilder> _composeDependencies;
+        private readonly PocoInjection.ResolutionFunction _containerBuilderResolutionFunction;
+        private readonly TagCollection<object> _objectTags = new TagCollection<object>();
         private bool _initialized;
 
-        public ConfigurableDependencyContainer([NotNull] Action<ContainerBuilder> composeDependencies) =>
+        public ConfigurableDependencyContainer([NotNull] Action<ContainerBuilder> composeDependencies)
+        {
             _composeDependencies = composeDependencies ?? throw new ArgumentNullException(nameof(composeDependencies));
+            _containerBuilderResolutionFunction = TryResolveAllowingInternal;
+        }
 
         public bool CanBeResolvedSafe(Type type)
         {
             if (type == null) throw new ArgumentNullException(nameof(type));
 
-            var builder = new ContainerBuilder(TryResolve);
+            var builder = CreateContainerBuilder();
             _composeDependencies(builder);
 
             for (var i = 0; i < builder.DependenciesCount; i++)
@@ -49,6 +55,18 @@ namespace DELTation.DIFramework.Containers
         {
             if (type == null) throw new ArgumentNullException(nameof(type));
             EnsureInitialized();
+            if (!_cache.TryGet(type, out dependency)) return false;
+            if (!_objectTags.HasTag(dependency, typeof(InternalOnlyTag))) return true;
+            dependency = default;
+            return false;
+        }
+
+        private ContainerBuilder CreateContainerBuilder() => new ContainerBuilder(_containerBuilderResolutionFunction);
+
+        private bool TryResolveAllowingInternal(Type type, out object dependency)
+        {
+            if (type == null) throw new ArgumentNullException(nameof(type));
+            EnsureInitialized();
             return _cache.TryGet(type, out dependency);
         }
 
@@ -58,7 +76,7 @@ namespace DELTation.DIFramework.Containers
         /// <returns>True if there is a loop, false otherwise.</returns>
         public bool HasLoops()
         {
-            var builder = new ContainerBuilder(TryResolve);
+            var builder = CreateContainerBuilder();
             _composeDependencies(builder);
             return !builder.TrySortTopologically(true);
         }
@@ -66,7 +84,7 @@ namespace DELTation.DIFramework.Containers
         internal bool DependenciesCanBeResolved(
             [NotNull] List<(Type dependent, Type unresolvedDependency)> unresolvedDependencies)
         {
-            var builder = new ContainerBuilder(TryResolve);
+            var builder = CreateContainerBuilder();
             _composeDependencies(builder);
             return builder.DependenciesCanBeResolved(unresolvedDependencies);
         }
@@ -77,7 +95,7 @@ namespace DELTation.DIFramework.Containers
 
             _initialized = true;
 
-            var builder = new ContainerBuilder(TryResolve);
+            var builder = CreateContainerBuilder();
             _composeDependencies(builder);
             if (!builder.TrySortTopologically())
                 throw new DependencyLoopException();
@@ -86,6 +104,7 @@ namespace DELTation.DIFramework.Containers
             {
                 var @object = builder.GetOrCreateObject(index);
                 Register(@object);
+                builder.Tags.Transfer(index, _objectTags, @object);
             }
         }
 

@@ -20,6 +20,7 @@ namespace DELTation.DIFramework
         private readonly List<Dependency> _dependencies = new List<Dependency>();
 
         private readonly ResolutionFunction _resolutionFunction;
+        internal readonly TagCollection<int> Tags = new TagCollection<int>();
 
         internal ContainerBuilder([NotNull] ResolutionFunction resolutionFunction) => _resolutionFunction =
             resolutionFunction ?? throw new ArgumentNullException(nameof(resolutionFunction));
