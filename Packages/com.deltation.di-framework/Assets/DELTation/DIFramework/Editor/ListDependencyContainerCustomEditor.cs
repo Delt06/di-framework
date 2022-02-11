@@ -69,7 +69,11 @@ namespace DELTation.DIFramework.Editor
                 if (index == list.arraySize - 1)
                     EditorGUI.EndDisabledGroup();
 
-                if (MiniButton("+")) list.InsertArrayElementAtIndex(index);
+                if (MiniButton("+"))
+                {
+                    list.InsertArrayElementAtIndex(index);
+                    list.GetArrayElementAtIndex(index + 1).objectReferenceValue = null;
+                }
 
                 if (MiniButton("-")) DeleteArrayElementAtIndex(list, index);
 
@@ -85,12 +89,10 @@ namespace DELTation.DIFramework.Editor
                     if (selectedIndex != 0)
                     {
                         var listDependencyContainer = (ListDependencyContainer) container.targetObject;
-                        listDependencyContainer.Add(components[selectedIndex - 1]);
+                        list.GetArrayElementAtIndex(index).objectReferenceValue = components[selectedIndex - 1];
+                        container.ApplyModifiedProperties();
                         container.Update();
                         EditorUtility.SetDirty(listDependencyContainer);
-
-                        list.DeleteArrayElementAtIndex(index);
-                        list.DeleteArrayElementAtIndex(index);
                     }
                 }
 
