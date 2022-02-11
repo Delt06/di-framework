@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
@@ -11,7 +10,11 @@ namespace DELTation.DIFramework
 {
     public sealed class DiSettings : ScriptableObject
     {
+        private const string AssetName = "DI Settings";
+        private const string AssetNameWithExtension = AssetName + ".asset";
+        [CanBeNull]
         private static DiSettings _instance;
+
         [SerializeField] private DependencySource _defaultDependencySource = DependencySources.All;
         [SerializeField] private bool _showIconsInHierarchy = true;
         [SerializeField] private bool _showMissingResolverWarnings = true;
@@ -49,15 +52,18 @@ namespace DELTation.DIFramework
             get => _bakeOnBuild;
         }
 
+        [NotNull]
         private static DiSettings Instance
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get
             {
-                if (_instance) return _instance;
+                if (_instance != null) return _instance;
 
                 _instance = LoadSettingsOrDefault();
-                if (_instance) return _instance;
+                if (_instance != null) return _instance;
+
+                Debug.LogWarning("DI Settings were not found in Resources. Creating...");
 
                 _instance = CreateSettings();
                 return _instance;
@@ -85,10 +91,10 @@ namespace DELTation.DIFramework
             return settings != null;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static DiSettings LoadSettingsOrDefault() => Resources.LoadAll<DiSettings>("").FirstOrDefault();
+        [MethodImpl(MethodImplOptions.AggressiveInlining), CanBeNull]
+        private static DiSettings LoadSettingsOrDefault() => Resources.Load<DiSettings>(AssetName);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining), NotNull]
         private static DiSettings CreateSettings()
         {
             var settings = CreateInstance<DiSettings>();
@@ -97,13 +103,14 @@ namespace DELTation.DIFramework
             const string parentFolder = "Assets";
             const string folder = "Resources";
             const string fullFolderName = parentFolder + "/" + folder;
-            const string assetPath = fullFolderName + "/DI Settings.asset";
+            const string assetPath = fullFolderName + "/" + AssetNameWithExtension;
 
             if (!AssetDatabase.IsValidFolder(fullFolderName))
                 AssetDatabase.CreateFolder(parentFolder, folder);
 
             AssetDatabase.CreateAsset(settings, assetPath);
             AssetDatabase.SaveAssets();
+            Debug.Log($"DI Settings were created and saved at {assetPath}.");
 #endif
 
             return settings;
