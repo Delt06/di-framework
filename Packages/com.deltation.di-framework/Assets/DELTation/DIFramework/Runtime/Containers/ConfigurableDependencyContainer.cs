@@ -32,6 +32,7 @@ namespace DELTation.DIFramework.Containers
 
             for (var i = 0; i < builder.DependenciesCount; i++)
             {
+                if (builder.GetTags(i).Contains(typeof(InternalOnlyTag))) continue;
                 if (ConformsTo(builder, i, type))
                     return true;
             }
