@@ -1,8 +1,8 @@
 ﻿using System.Linq;
+using DELTation.DIFramework.Dependencies;
 using DELTation.DIFramework.Tests.Runtime.Containers;
 using DELTation.DIFramework.Tests.Runtime.Pocos;
 using NUnit.Framework;
-using static DELTation.DIFramework.ContainerBuilder;
 
 namespace DELTation.DIFramework.Tests.Runtime
 {
@@ -12,12 +12,12 @@ namespace DELTation.DIFramework.Tests.Runtime
         public void GivenTypeAndObject_WhenHavingCtorWithObjectAsParameter_ThenDependsForward()
         {
             // Arrange
-            var dependency1 = new Dependency(typeof(CtorInjectionContainer.StringDependent));
-            var dependency2 = new Dependency("abc");
+            var dependency1 = new TypeDependency(typeof(CtorInjectionContainer.StringDependent));
+            var dependency2 = new ObjectDependency("abc");
 
             // Act
-            var dependsForward = Dependency.DependsOn(dependency1, dependency2);
-            var dependsBack = Dependency.DependsOn(dependency2, dependency1);
+            var dependsForward = DependencyUtils.DependsOn(dependency1, dependency2);
+            var dependsBack = DependencyUtils.DependsOn(dependency2, dependency1);
 
             // Assert
             Assert.That(dependsForward);
@@ -28,12 +28,12 @@ namespace DELTation.DIFramework.Tests.Runtime
         public void GivenTwoTypes_WhenHavingCtorWithOtherTypeAsParameter_ThenDependsForward()
         {
             // Arrange
-            var dependency1 = new Dependency(typeof(PocoDep3));
-            var dependency2 = new Dependency(typeof(PocoDep4));
+            var dependency1 = new TypeDependency(typeof(PocoDep3));
+            var dependency2 = new TypeDependency(typeof(PocoDep4));
 
             // Act
-            var dependsForward = Dependency.DependsOn(dependency1, dependency2);
-            var dependsBack = Dependency.DependsOn(dependency2, dependency1);
+            var dependsForward = DependencyUtils.DependsOn(dependency1, dependency2);
+            var dependsBack = DependencyUtils.DependsOn(dependency2, dependency1);
 
             // Assert
             Assert.That(dependsForward);
@@ -44,12 +44,12 @@ namespace DELTation.DIFramework.Tests.Runtime
         public void GivenTypeAndObject_WhenHavingNoCtorParameters_ThenDoNotDepend()
         {
             // Arrange
-            var dependency1 = new Dependency(typeof(object));
-            var dependency2 = new Dependency("abc");
+            var dependency1 = new TypeDependency(typeof(object));
+            var dependency2 = new ObjectDependency("abc");
 
             // Act
-            var dependsForward = Dependency.DependsOn(dependency1, dependency2);
-            var dependsBack = Dependency.DependsOn(dependency2, dependency1);
+            var dependsForward = DependencyUtils.DependsOn(dependency1, dependency2);
+            var dependsBack = DependencyUtils.DependsOn(dependency2, dependency1);
 
             // Assert
             Assert.That(dependsForward, Is.False);
@@ -60,18 +60,18 @@ namespace DELTation.DIFramework.Tests.Runtime
         public void GivenTypes_WhenHavingAllTypesAsParameters_ThenDependsForward()
         {
             // Arrange
-            var dependency1 = new Dependency(typeof(Poco));
+            var dependency1 = new TypeDependency(typeof(Poco));
             var otherDependencies = new[]
             {
                 typeof(PocoDep1),
                 typeof(PocoDep2),
                 typeof(PocoDep3),
-            }.Select(t => new Dependency(t)).ToArray();
+            }.Select(t => new TypeDependency(t)).ToArray();
 
             // Act
             var dependForward =
-                otherDependencies.Select(d => Dependency.DependsOn(dependency1, d));
-            var dependsBack = otherDependencies.Select(d => Dependency.DependsOn(d, dependency1));
+                otherDependencies.Select(d => DependencyUtils.DependsOn(dependency1, d));
+            var dependsBack = otherDependencies.Select(d => DependencyUtils.DependsOn(d, dependency1));
 
             // Assert
             Assert.That(dependForward, Is.All.True);
@@ -83,15 +83,16 @@ namespace DELTation.DIFramework.Tests.Runtime
         {
             // Arrange
             var dependency1 =
-                new Dependency(new FactoryMethod<CtorInjectionContainer.StringDependent, string>(str =>
-                        new CtorInjectionContainer.StringDependent(str)
+                new FactoryMethodDelegateDependency(new FactoryMethod<CtorInjectionContainer.StringDependent, string>(
+                        str =>
+                            new CtorInjectionContainer.StringDependent(str)
                     )
                 );
-            var dependency2 = new Dependency("abc");
+            var dependency2 = new ObjectDependency("abc");
 
             // Act
-            var dependsForward = Dependency.DependsOn(dependency1, dependency2);
-            var dependsBack = Dependency.DependsOn(dependency2, dependency1);
+            var dependsForward = DependencyUtils.DependsOn(dependency1, dependency2);
+            var dependsBack = DependencyUtils.DependsOn(dependency2, dependency1);
 
             // Assert
             Assert.That(dependsForward, Is.True);
