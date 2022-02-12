@@ -17,12 +17,12 @@ namespace DELTation.DIFramework.Dependencies
         private readonly IDependency[] _secondaryDependencies;
 
         public CompositeDependency([NotNull] IDependency mainDependency,
-            [NotNull] IEnumerable<IDependency> innerDependencies,
+            [NotNull] IEnumerable<IDependency> secondaryDependencies,
             [NotNull] CombinationHandler combine)
         {
             _primaryDependency = mainDependency ?? throw new ArgumentNullException(nameof(mainDependency));
-            if (innerDependencies == null) throw new ArgumentNullException(nameof(innerDependencies));
-            _secondaryDependencies = innerDependencies.ToArray();
+            if (secondaryDependencies == null) throw new ArgumentNullException(nameof(secondaryDependencies));
+            _secondaryDependencies = secondaryDependencies.ToArray();
             _combine = combine ?? throw new ArgumentNullException(nameof(combine));
         }
 
