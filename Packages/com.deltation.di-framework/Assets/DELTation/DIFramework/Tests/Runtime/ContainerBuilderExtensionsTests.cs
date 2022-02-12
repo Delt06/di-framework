@@ -7,6 +7,35 @@ namespace DELTation.DIFramework.Tests.Runtime
     public class ContainerBuilderExtensionsTests : TestFixtureBase
     {
         [Test]
+        public void GivenRegisterFromResources_WhenFound_ThenCanBeResolved()
+        {
+            // Arrange
+            var diSettingsContainer = CreateContainerWith<DiSettingsContainer>();
+            diSettingsContainer.Path = "DI Settings";
+
+            // Act
+            var resolved = Di.TryResolveGlobally(out DiSettings _);
+
+            // Assert
+            Assert.That(resolved);
+        }
+
+        [Test]
+        public void GivenRegisterFromResources_WhenNotFound_ThenThrowsArgumentNullException()
+        {
+            // Arrange
+            var diSettingsContainer = CreateContainerWith<DiSettingsContainer>();
+            diSettingsContainer.Path = "Some other asset path";
+
+            // Act
+            bool Code() => Di.TryResolveGlobally(out DiSettings _);
+
+            // Assert
+            Assert.That(Code, Throws.ArgumentNullException);
+        }
+
+
+        [Test]
         public void GivenRegisterIfNotNull_WhenNull_ThenNoExceptions()
         {
             // Arrange
@@ -83,6 +112,16 @@ namespace DELTation.DIFramework.Tests.Runtime
 
             // Assert
             Assert.IsFalse(resolved);
+        }
+
+        public class DiSettingsContainer : DependencyContainerBase
+        {
+            public string Path;
+
+            protected override void ComposeDependencies(ICanRegisterContainerBuilder builder)
+            {
+                builder.RegisterFromResources<DiSettings>(Path);
+            }
         }
 
         private class ContainerRegisteringNull : DependencyContainerBase
