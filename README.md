@@ -1,10 +1,10 @@
 #  Unity DI Framework
 
 [![Version](https://img.shields.io/github/v/release/Delt06/di-framework?sort=semver)](https://github.com/Delt06/di-framework/releases)
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/48d8273db00a4d93a124ed4e6736d729)](https://www.codacy.com/gh/Delt06/di-framework/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Delt06/di-framework&amp;utm_campaign=Badge_Grade)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/48d8273db00a4d93a124ed4e6736d729)](https://www.codacy.com/gh/Delt06/di-framework/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Delt06/di-framework&amp;utm_campaign=Badge_Grade)
+[![codecov](https://codecov.io/gh/Delt06/di-framework/branch/master/graph/badge.svg?token=OC6ZIFQNWO)](https://codecov.io/gh/Delt06/di-framework)
 [![Tests](https://github.com/Delt06/di-framework/actions/workflows/tests.yml/badge.svg)](https://github.com/Delt06/di-framework/actions/workflows/tests.yml)
 
 A Unity framework to inject dependencies into your components. The project contains a simple demo game to demonstrate the framework in action.
