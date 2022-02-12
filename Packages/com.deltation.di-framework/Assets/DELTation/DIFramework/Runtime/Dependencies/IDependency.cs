@@ -8,7 +8,7 @@ namespace DELTation.DIFramework.Dependencies
     internal interface IDependency
     {
         [NotNull]
-        object GetOrCreateObject(PocoInjection.ResolutionFunction resolutionFunction);
+        object ProduceInitializedObject(PocoInjection.ResolutionFunction resolutionFunction);
 
         [NotNull, MustUseReturnValue]
         Type GetResultingType();

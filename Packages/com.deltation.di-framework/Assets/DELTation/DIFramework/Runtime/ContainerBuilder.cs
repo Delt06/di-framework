@@ -199,7 +199,7 @@ namespace DELTation.DIFramework
         public object GetOrCreateObject(int index)
         {
             ValidateIndex(index);
-            return _dependencies[index].GetOrCreateObject(_resolutionFunction);
+            return _dependencies[index].ProduceInitializedObject(_resolutionFunction);
         }
 
         internal Type GetType(int index)

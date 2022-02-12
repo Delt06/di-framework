@@ -11,7 +11,7 @@ namespace DELTation.DIFramework.Dependencies
         public FactoryMethodDelegateDependency(FactoryMethodDelegate factoryMethodDelegate) =>
             _factoryMethodDelegate = factoryMethodDelegate;
 
-        public object GetOrCreateObject(PocoInjection.ResolutionFunction resolutionFunction) =>
+        public object ProduceInitializedObject(PocoInjection.ResolutionFunction resolutionFunction) =>
             _factoryMethodDelegate.Instantiate(resolutionFunction);
 
         public Type GetResultingType() => _factoryMethodDelegate.ReturnType;
