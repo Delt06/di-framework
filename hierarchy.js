@@ -1,7 +1,6 @@
 var hierarchy =
 [
     [ "DELTation.DIFramework.Baking.BakedInjection", "class_d_e_l_tation_1_1_d_i_framework_1_1_baking_1_1_baked_injection.html", null ],
-    [ "DELTation.DIFramework.ContainerBuilder", "class_d_e_l_tation_1_1_d_i_framework_1_1_container_builder.html", null ],
     [ "DELTation.DIFramework.ContainerBuilderExtensions", "class_d_e_l_tation_1_1_d_i_framework_1_1_container_builder_extensions.html", null ],
     [ "DELTation.DIFramework.ContainersExtensions", "class_d_e_l_tation_1_1_d_i_framework_1_1_containers_extensions.html", null ],
     [ "DELTation.DIFramework.Di", "class_d_e_l_tation_1_1_d_i_framework_1_1_di.html", null ],
@@ -12,8 +11,18 @@ var hierarchy =
       [ "DELTation.DIFramework.Exceptions.DependencyNotResolvedException", "class_d_e_l_tation_1_1_d_i_framework_1_1_exceptions_1_1_dependency_not_resolved_exception.html", null ],
       [ "DELTation.DIFramework.Exceptions.NotInjectableException", "class_d_e_l_tation_1_1_d_i_framework_1_1_exceptions_1_1_not_injectable_exception.html", null ]
     ] ],
+    [ "DELTation.DIFramework.ICanRegisterContainerBuilder", "interface_d_e_l_tation_1_1_d_i_framework_1_1_i_can_register_container_builder.html", [
+      [ "DELTation.DIFramework.IRegisteredContainerBuilder", "interface_d_e_l_tation_1_1_d_i_framework_1_1_i_registered_container_builder.html", [
+        [ "DELTation.DIFramework.IAnyOperationContainerBuilder", "interface_d_e_l_tation_1_1_d_i_framework_1_1_i_any_operation_container_builder.html", null ]
+      ] ]
+    ] ],
+    [ "DELTation.DIFramework.Dependencies.IDependency", "interface_d_e_l_tation_1_1_d_i_framework_1_1_dependencies_1_1_i_dependency.html", [
+      [ "DELTation.DIFramework.Dependencies.CompositeDependency", "class_d_e_l_tation_1_1_d_i_framework_1_1_dependencies_1_1_composite_dependency.html", null ],
+      [ "DELTation.DIFramework.Dependencies.FactoryMethodDelegateDependency", "class_d_e_l_tation_1_1_d_i_framework_1_1_dependencies_1_1_factory_method_delegate_dependency.html", null ],
+      [ "DELTation.DIFramework.Dependencies.ObjectDependency", "class_d_e_l_tation_1_1_d_i_framework_1_1_dependencies_1_1_object_dependency.html", null ],
+      [ "DELTation.DIFramework.Dependencies.TypeDependency", "class_d_e_l_tation_1_1_d_i_framework_1_1_dependencies_1_1_type_dependency.html", null ]
+    ] ],
     [ "DELTation.DIFramework.IDependencyContainer", "interface_d_e_l_tation_1_1_d_i_framework_1_1_i_dependency_container.html", [
-      [ "DELTation.DIFramework.Containers.ConfigurableDependencyContainer", "class_d_e_l_tation_1_1_d_i_framework_1_1_containers_1_1_configurable_dependency_container.html", null ],
       [ "DELTation.DIFramework.Containers.DependencyContainerBase", "class_d_e_l_tation_1_1_d_i_framework_1_1_containers_1_1_dependency_container_base.html", [
         [ "DELTation.DIFramework.Containers.ChildrenDependencyContainer", "class_d_e_l_tation_1_1_d_i_framework_1_1_containers_1_1_children_dependency_container.html", null ],
         [ "DELTation.DIFramework.Containers.ListDependencyContainer", "class_d_e_l_tation_1_1_d_i_framework_1_1_containers_1_1_list_dependency_container.html", null ]

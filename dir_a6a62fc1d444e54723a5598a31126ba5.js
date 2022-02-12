@@ -2,6 +2,7 @@ var dir_a6a62fc1d444e54723a5598a31126ba5 =
 [
     [ "Baking", "dir_04bb9a8a57d6d7dbe1e6985709706cd6.html", "dir_04bb9a8a57d6d7dbe1e6985709706cd6" ],
     [ "Containers", "dir_8bd65f270220a4290ce3c941f1cd89ef.html", "dir_8bd65f270220a4290ce3c941f1cd89ef" ],
+    [ "Dependencies", "dir_17a182b2026f19d5cd4e44795cfd04ce.html", "dir_17a182b2026f19d5cd4e44795cfd04ce" ],
     [ "Editor", "dir_339c38c916dd7c61479bc931227f879c.html", "dir_339c38c916dd7c61479bc931227f879c" ],
     [ "Exceptions", "dir_95a303e48bbc8476e6163526b219dd6d.html", "dir_95a303e48bbc8476e6163526b219dd6d" ],
     [ "Lifecycle", "dir_902fea7f4738e82748970408ef4b3410.html", "dir_902fea7f4738e82748970408ef4b3410" ],
@@ -11,11 +12,12 @@ var dir_a6a62fc1d444e54723a5598a31126ba5 =
     [ "Sorting", "dir_e4fac6cf1e126ac194cbc521ece9b965.html", "dir_e4fac6cf1e126ac194cbc521ece9b965" ],
     [ "AssemblyInfo.cs", "_assembly_info_8cs.html", null ],
     [ "ContainerBuilder.cs", "_container_builder_8cs.html", [
-      [ "DELTation.DIFramework.ContainerBuilder", "class_d_e_l_tation_1_1_d_i_framework_1_1_container_builder.html", "class_d_e_l_tation_1_1_d_i_framework_1_1_container_builder" ]
+      [ "DELTation.DIFramework.IAnyOperationContainerBuilder", "interface_d_e_l_tation_1_1_d_i_framework_1_1_i_any_operation_container_builder.html", null ]
     ] ],
-    [ "ContainerBuilderExtensions.cs", "_container_builder_extensions_8cs.html", [
-      [ "DELTation.DIFramework.ContainerBuilderExtensions", "class_d_e_l_tation_1_1_d_i_framework_1_1_container_builder_extensions.html", "class_d_e_l_tation_1_1_d_i_framework_1_1_container_builder_extensions" ]
+    [ "ContainerBuilder.Registered.cs", "_container_builder_8_registered_8cs.html", [
+      [ "DELTation.DIFramework.IRegisteredContainerBuilder", "interface_d_e_l_tation_1_1_d_i_framework_1_1_i_registered_container_builder.html", "interface_d_e_l_tation_1_1_d_i_framework_1_1_i_registered_container_builder" ]
     ] ],
+    [ "ContainerBuilderExtensions.cs", "_container_builder_extensions_8cs.html", "_container_builder_extensions_8cs" ],
     [ "ContainerLifecycle.cs", "_container_lifecycle_8cs.html", [
       [ "DELTation.DIFramework.ContainerLifecycle", "class_d_e_l_tation_1_1_d_i_framework_1_1_container_lifecycle.html", "class_d_e_l_tation_1_1_d_i_framework_1_1_container_lifecycle" ]
     ] ],
@@ -34,10 +36,14 @@ var dir_a6a62fc1d444e54723a5598a31126ba5 =
     [ "FactoryMethodDelegate.cs", "_factory_method_delegate_8cs.html", [
       [ "DELTation.DIFramework.FactoryMethodDelegate", "struct_d_e_l_tation_1_1_d_i_framework_1_1_factory_method_delegate.html", "struct_d_e_l_tation_1_1_d_i_framework_1_1_factory_method_delegate" ]
     ] ],
+    [ "ICanRegisterContainerBuilder.cs", "_i_can_register_container_builder_8cs.html", [
+      [ "DELTation.DIFramework.ICanRegisterContainerBuilder", "interface_d_e_l_tation_1_1_d_i_framework_1_1_i_can_register_container_builder.html", "interface_d_e_l_tation_1_1_d_i_framework_1_1_i_can_register_container_builder" ]
+    ] ],
     [ "IDependencyContainer.cs", "_i_dependency_container_8cs.html", [
       [ "DELTation.DIFramework.IDependencyContainer", "interface_d_e_l_tation_1_1_d_i_framework_1_1_i_dependency_container.html", "interface_d_e_l_tation_1_1_d_i_framework_1_1_i_dependency_container" ]
     ] ],
     [ "IInitializable.cs", "_i_initializable_8cs.html", null ],
+    [ "InternalOnlyTag.cs", "_internal_only_tag_8cs.html", null ],
     [ "IResolver.cs", "_i_resolver_8cs.html", null ],
     [ "Resolver.cs", "_resolver_8cs.html", [
       [ "DELTation.DIFramework.Resolver", "class_d_e_l_tation_1_1_d_i_framework_1_1_resolver.html", "class_d_e_l_tation_1_1_d_i_framework_1_1_resolver" ]

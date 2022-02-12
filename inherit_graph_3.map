@@ -1,3 +1,7 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$class_d_e_l_tation_1_1_d_i_framework_1_1_containers_extensions.html" title=" " alt="" coords="5,5,235,47"/>
+<area shape="rect" id="node1" href="$interface_d_e_l_tation_1_1_d_i_framework_1_1_dependencies_1_1_i_dependency.html" title=" " alt="" coords="5,104,257,145"/>
+<area shape="rect" id="node2" href="$class_d_e_l_tation_1_1_d_i_framework_1_1_dependencies_1_1_composite_dependency.html" title=" " alt="" coords="305,5,557,47"/>
+<area shape="rect" id="node3" href="$class_d_e_l_tation_1_1_d_i_framework_1_1_dependencies_1_1_factory_method_delegate_dependency.html" title=" " alt="" coords="305,71,557,112"/>
+<area shape="rect" id="node4" href="$class_d_e_l_tation_1_1_d_i_framework_1_1_dependencies_1_1_object_dependency.html" title=" " alt="" coords="305,136,557,177"/>
+<area shape="rect" id="node5" href="$class_d_e_l_tation_1_1_d_i_framework_1_1_dependencies_1_1_type_dependency.html" title=" " alt="" coords="305,201,557,243"/>
 </map>
