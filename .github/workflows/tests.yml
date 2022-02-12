@@ -66,9 +66,6 @@ jobs:
           unityVersion: ${{ env.UNITY_VERSION }}
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           checkName: ${{ matrix.testMode }} Test Results
-      - run: ls ./CodeCoverage
-      - run: ls ./CodeCoverage/workspace-opencov
-      - run: ls ./CodeCoverage/workspace-opencov/PlayMode
       - uses: codecov/codecov-action@v2
         with:
           files: ./CodeCoverage/workspace-opencov/PlayMode/TestCoverageResults_0000.xml
