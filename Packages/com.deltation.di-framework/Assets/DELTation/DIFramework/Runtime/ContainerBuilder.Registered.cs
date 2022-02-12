@@ -6,7 +6,7 @@ namespace DELTation.DIFramework
     public interface IRegisteredContainerBuilder : ICanRegisterContainerBuilder
     {
         /// <summary>
-        ///     Mark the last dependency as internal (not allow to resolve it outside from the container).
+        ///     Mark the last dependency as internal (disallow to resolve it outside the container).
         /// </summary>
         /// <returns>The same container builder.</returns>
         IRegisteredContainerBuilder AsInternal();
