@@ -71,7 +71,6 @@ jobs:
           files: /CodeCoverage/Report/Summary.xml
           fail_ci_if_error: true # optional (default = false)
           verbose: true # optional (default = false)
-      - run: cat ./CodeCoverage/Report/Summary.xml
       - uses: actions/upload-artifact@v2
         with:
           name: Test results (all modes)
