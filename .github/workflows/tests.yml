@@ -68,7 +68,7 @@ jobs:
           checkName: ${{ matrix.testMode }} Test Results
       - uses: codecov/codecov-action@v2
         with:
-          files: /CodeCoverage/Report/Summary.xml
+          files: ./CodeCoverage/Report/Summary.xml
           fail_ci_if_error: true # optional (default = false)
           verbose: true # optional (default = false)
       - uses: actions/upload-artifact@v2
