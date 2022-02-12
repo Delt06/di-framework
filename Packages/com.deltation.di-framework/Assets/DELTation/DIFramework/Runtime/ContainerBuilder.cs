@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.CompilerServices;
+using DELTation.DIFramework.Dependencies;
 using DELTation.DIFramework.Pooling;
-using DELTation.DIFramework.Resolution;
 using DELTation.DIFramework.Sorting;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -12,41 +9,78 @@ using static DELTation.DIFramework.Resolution.PocoInjection;
 
 namespace DELTation.DIFramework
 {
+    public interface IAnyOperationContainerBuilder : IRegisteredContainerBuilder { }
+
     /// <summary>
     ///     Allows to build a custom container.
     /// </summary>
-    public sealed class ContainerBuilder
+    internal sealed partial class ContainerBuilder : IAnyOperationContainerBuilder
     {
-        private readonly List<Dependency> _dependencies = new List<Dependency>();
+        private readonly List<DependencyWithMetadata> _dependencies = new List<DependencyWithMetadata>();
 
         private readonly ResolutionFunction _resolutionFunction;
 
         internal ContainerBuilder([NotNull] ResolutionFunction resolutionFunction) => _resolutionFunction =
             resolutionFunction ?? throw new ArgumentNullException(nameof(resolutionFunction));
 
+        private bool WasAbleToRegisterLast { get; set; }
+
         internal int DependenciesCount => _dependencies.Count;
 
-        /// <summary>
-        ///     Registers a new dependency of the given type.
-        ///     An instance of that type will be automatically created.
-        /// </summary>
-        /// <typeparam name="T">Type of the dependency.</typeparam>
-        /// <returns>The builder.</returns>
-        public ContainerBuilder Register<[MeansImplicitUse] T>() where T : class
+
+        /// <inheritdoc />
+        public IRegisteredContainerBuilder Register<[MeansImplicitUse] T>() where T : class
         {
-            _dependencies.Add(new Dependency(typeof(T)));
+            AddDependency(new TypeDependency(typeof(T)));
+            return OnRegisteredLast();
+        }
+
+        /// <inheritdoc />
+        public IRegisteredContainerBuilder Register(object obj)
+        {
+            var isNull = UnityUtils.IsNullOrUnityNull(obj);
+            if (Application.isPlaying && isNull)
+                throw new ArgumentNullException(nameof(obj));
+            if (isNull) return OnDidNotRegisterLast();
+            AddDependency(new ObjectDependency(obj));
+            return OnRegisteredLast();
+        }
+
+        /// <inheritdoc />
+        public IRegisteredContainerBuilder RegisterFromMethodAsDelegate(Delegate factoryMethod)
+        {
+            if (factoryMethod == null) throw new ArgumentNullException(nameof(factoryMethod));
+            var dependency = new FactoryMethodDelegateDependency(factoryMethod);
+            AddDependency(dependency);
+            return OnRegisteredLast();
+        }
+
+        public IRegisteredContainerBuilder RegisterCompositeDependency(CompositeDependency compositeDependency)
+        {
+            if (compositeDependency == null) throw new ArgumentNullException(nameof(compositeDependency));
+            AddDependency(compositeDependency);
+            return OnRegisteredLast();
+        }
+
+        private void AddDependency(IDependency dependency)
+        {
+            _dependencies.Add(new DependencyWithMetadata(dependency));
+        }
+
+        internal IRegisteredContainerBuilder OnDidNotRegisterLast()
+        {
+            WasAbleToRegisterLast = false;
             return this;
         }
 
-        /// <summary>
-        ///     Registers a new dependency that will be created using the given delegate.
-        /// </summary>
-        /// <param name="factoryMethod">A delegate that creates a dependency.</param>
-        /// <returns>The builder.</returns>
-        internal ContainerBuilder RegisterFromMethod([NotNull] Delegate factoryMethod)
+        private void AddTag(int index, Type tag)
         {
-            if (factoryMethod == null) throw new ArgumentNullException(nameof(factoryMethod));
-            _dependencies.Add(new Dependency(factoryMethod));
+            _dependencies[index].Tags.Add(tag);
+        }
+
+        private IAnyOperationContainerBuilder OnRegisteredLast()
+        {
+            WasAbleToRegisterLast = true;
             return this;
         }
 
@@ -70,7 +104,7 @@ namespace DELTation.DIFramework
                 }
 
                 localUnresolvedDependencies.Clear();
-                if (Dependency.DependenciesCanBeResolved(dependent, possibleDependencyResolvers,
+                if (DependencyUtils.DependenciesCanBeResolved(dependent, possibleDependencyResolvers,
                         localUnresolvedDependencies
                     )) continue;
 
@@ -83,22 +117,6 @@ namespace DELTation.DIFramework
             }
 
             return allCanBeResolved;
-        }
-
-        /// <summary>
-        ///     Registers a new dependency from the given object.
-        /// </summary>
-        /// <param name="obj">Object to register as dependency.</param>
-        /// <returns>The builder.</returns>
-        /// <exception cref="ArgumentNullException">When the <paramref name="obj" /> is null.</exception>
-        public ContainerBuilder Register([NotNull] object obj)
-        {
-            var isNull = UnityUtils.IsNullOrUnityNull(obj);
-            if (Application.isPlaying && isNull)
-                throw new ArgumentNullException(nameof(obj));
-            if (!isNull)
-                _dependencies.Add(new Dependency(obj));
-            return this;
         }
 
         public bool TrySortTopologically(bool dryRun = false)
@@ -116,7 +134,7 @@ namespace DELTation.DIFramework
                 {
                     var dependent = _dependencies[i];
                     var dependency = _dependencies[j];
-                    if (!Dependency.DependsOn(dependent, dependency)) continue;
+                    if (!DependencyUtils.DependsOn(dependent, dependency)) continue;
 
                     graph[j].Add(i);
                 }
@@ -131,7 +149,7 @@ namespace DELTation.DIFramework
                 return false;
             }
 
-            var sortedDependencies = ListPool<Dependency>.Rent();
+            var sortedDependencies = ListPool<DependencyWithMetadata>.Rent();
 
             for (var resultIndex = result.Count - 1; resultIndex >= 0; resultIndex--)
             {
@@ -149,7 +167,7 @@ namespace DELTation.DIFramework
                 }
             }
 
-            ListPool<Dependency>.Return(sortedDependencies);
+            ListPool<DependencyWithMetadata>.Return(sortedDependencies);
             ListPool<int>.Return(result);
             return true;
         }
@@ -169,7 +187,7 @@ namespace DELTation.DIFramework
                 {
                     var dependent = _dependencies[i];
                     var dependency = _dependencies[j];
-                    if (!Dependency.DependsOn(dependent, dependency)) continue;
+                    if (!DependencyUtils.DependsOn(dependent, dependency)) continue;
 
                     graph[j].Add(i);
                 }
@@ -188,26 +206,8 @@ namespace DELTation.DIFramework
         public object GetOrCreateObject(int index)
         {
             ValidateIndex(index);
-
-            if (TryGetObject(index, out var obj))
-                return obj;
-
-            if (TryGetType(index, out var type))
-            {
-                var instance = CreateInstance(type);
-                return instance;
-            }
-
-            if (TryGetFactoryMethodDelegate(index, out var factoryMethodDelegate))
-            {
-                var instance = factoryMethodDelegate.Instantiate(_resolutionFunction);
-                return instance;
-            }
-
-            throw InvalidStateException();
+            return _dependencies[index].ProduceInitializedObject(_resolutionFunction);
         }
-
-        private object CreateInstance(Type type) => PocoInjection.CreateInstance(type, _resolutionFunction);
 
         internal Type GetType(int index)
         {
@@ -215,173 +215,15 @@ namespace DELTation.DIFramework
             return _dependencies[index].GetResultingType();
         }
 
+        internal HashSet<Type> GetTags(int index)
+        {
+            ValidateIndex(index);
+            return _dependencies[index].Tags;
+        }
+
         private void ValidateIndex(int index)
         {
             if (index < 0 || index >= DependenciesCount) throw new ArgumentOutOfRangeException(nameof(index));
-        }
-
-        private bool TryGetObject(int index, out object obj) => _dependencies[index].TryGetObject(out obj);
-
-        private bool TryGetType(int index, out Type type) => _dependencies[index].TryGetType(out type);
-
-        private bool TryGetFactoryMethodDelegate(int index, out FactoryMethodDelegate factoryMethodDelegate) =>
-            _dependencies[index].TryGetFactoryMethodDelegate(out factoryMethodDelegate);
-
-        private static InvalidOperationException InvalidStateException() =>
-            new InvalidOperationException("Invalid state.");
-
-        internal readonly struct Dependency : IEquatable<Dependency>
-        {
-            [CanBeNull] private readonly object _object;
-            [CanBeNull] private readonly Type _type;
-            private readonly FactoryMethodDelegate _factoryMethodDelegate;
-
-            public Dependency([NotNull] object @object)
-            {
-                _object = @object ?? throw new ArgumentNullException(nameof(@object));
-                _type = null;
-                _factoryMethodDelegate = default;
-            }
-
-            public Dependency([NotNull] Type type)
-            {
-                _object = null;
-                _type = type ?? throw new ArgumentNullException(nameof(type));
-                _factoryMethodDelegate = default;
-            }
-
-            public Dependency(FactoryMethodDelegate factoryMethodDelegate)
-            {
-                _object = null;
-                _type = null;
-                _factoryMethodDelegate = factoryMethodDelegate;
-            }
-
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public Type GetResultingType()
-            {
-                if (TryGetObject(out var @object))
-                    return @object.GetType();
-                if (TryGetType(out var type))
-                    return type;
-                if (TryGetFactoryMethodDelegate(out var factoryMethodDelegate))
-                    return factoryMethodDelegate.ReturnType;
-
-                throw InvalidStateException();
-            }
-
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public bool TryGetObject(out object obj)
-            {
-                obj = _object;
-                return obj != null;
-            }
-
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public bool TryGetType(out Type type)
-            {
-                type = _type;
-                return type != null;
-            }
-
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public bool TryGetFactoryMethodDelegate(out FactoryMethodDelegate factoryMethodDelegate)
-            {
-                if (_factoryMethodDelegate.IsValid)
-                {
-                    factoryMethodDelegate = _factoryMethodDelegate;
-                    return true;
-                }
-
-                factoryMethodDelegate = default;
-                return false;
-            }
-
-            internal static bool DependenciesCanBeResolved(Dependency dependent, List<Type> possibleDependencyResolvers,
-                List<Type> unresolvedDependencies)
-            {
-                if (dependent.TryGetObject(out _))
-                    return true;
-
-                if (dependent.TryGetType(out var type))
-                    return TryGetInjectableConstructorParameters(type, out var parameters) &&
-                           DependenciesCanBeResolved(parameters, possibleDependencyResolvers, unresolvedDependencies);
-
-                if (dependent.TryGetFactoryMethodDelegate(out var factoryMethodDelegate))
-                    return DependenciesCanBeResolved(factoryMethodDelegate.ParameterTypes, possibleDependencyResolvers,
-                        unresolvedDependencies
-                    );
-
-                throw InvalidStateException();
-            }
-
-            private static bool DependenciesCanBeResolved(IEnumerable<ParameterInfo> dependencies,
-                IReadOnlyCollection<Type> possibleDependencyResolvers, List<Type> unresolvedDependencies)
-            {
-                bool CanBeResolved(ParameterInfo dependency) =>
-                    possibleDependencyResolvers.Any(possibleDependency =>
-                        dependency.ParameterType.IsAssignableFrom(possibleDependency)
-                    );
-
-                var canResolveAll = true;
-
-                foreach (var dependency in dependencies)
-                {
-                    if (CanBeResolved(dependency)) continue;
-
-                    canResolveAll = false;
-                    unresolvedDependencies.Add(dependency.ParameterType);
-                }
-
-                return canResolveAll;
-            }
-
-            public static bool DependsOn(Dependency dependent, Dependency dependency)
-            {
-                if (dependent.TryGetObject(out _))
-                    return false;
-
-                var dependencyType = dependency.GetResultingType();
-                if (dependent.TryGetType(out var type))
-                    return TryGetInjectableConstructorParameters(type, out var parameters) &&
-                           DependsOn(parameters, dependencyType);
-
-                if (dependent.TryGetFactoryMethodDelegate(out var factoryMethodDelegate))
-                    return DependsOn(factoryMethodDelegate.ParameterTypes, dependencyType);
-
-                throw InvalidStateException();
-            }
-
-            private static bool DependsOn([NotNull] IReadOnlyList<ParameterInfo> dependents, [NotNull] Type dependency)
-            {
-                if (dependents == null) throw new ArgumentNullException(nameof(dependents));
-                if (dependency == null) throw new ArgumentNullException(nameof(dependency));
-
-                foreach (var dependent in dependents)
-                {
-                    if (dependent.ParameterType.IsAssignableFrom(dependency))
-                        return true;
-                }
-
-                return false;
-            }
-
-            public bool Equals(Dependency other) => Equals(_object, other._object) &&
-                                                    _type == other._type &&
-                                                    _factoryMethodDelegate.Equals(other._factoryMethodDelegate);
-
-            public override bool Equals(object obj) => obj is Dependency other && Equals(other);
-
-            public override int GetHashCode()
-            {
-                unchecked
-                {
-                    var hashCode = _object != null ? _object.GetHashCode() : 0;
-                    hashCode = (hashCode * 397) ^ (_type != null ? _type.GetHashCode() : 0);
-                    hashCode = (hashCode * 397) ^ _factoryMethodDelegate.GetHashCode();
-                    return hashCode;
-                }
-            }
         }
     }
 }

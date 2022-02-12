@@ -1,0 +1,21 @@
+{
+    "name": "DIFramework.PerformanceTests",
+    "rootNamespace": "",
+    "references": [
+        "GUID:91836b14885b8a34196f4aa8303d7793",
+        "GUID:1b60fcce313931d4f9eefc7f1c079778"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

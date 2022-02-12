@@ -11,13 +11,15 @@ namespace DELTation.DIFramework
         private readonly IDictionary<Type, object> _objects = new Dictionary<Type, object>();
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal void AddAllObjectsTo([NotNull] ICollection<object> targetCollection)
+        internal void AddObjectsTo([NotNull] ICollection<object> targetCollection, [NotNull] Predicate<object> filter)
         {
             if (targetCollection == null) throw new ArgumentNullException(nameof(targetCollection));
+            if (filter == null) throw new ArgumentNullException(nameof(filter));
 
             foreach (var @object in _allObjects)
             {
-                targetCollection.Add(@object);
+                if (filter(@object))
+                    targetCollection.Add(@object);
             }
         }
 

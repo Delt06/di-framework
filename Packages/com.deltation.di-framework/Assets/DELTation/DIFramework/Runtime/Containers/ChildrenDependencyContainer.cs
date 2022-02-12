@@ -1,15 +1,14 @@
 ﻿using UnityEngine;
-using Component = UnityEngine.Component;
 
 namespace DELTation.DIFramework.Containers
 {
     /// <summary>
-    /// Containers that registers all children.
+    ///     Containers that registers all children.
     /// </summary>
     [DisallowMultipleComponent, AddComponentMenu("Dependency Container/Children Dependency Container")]
     public sealed class ChildrenDependencyContainer : DependencyContainerBase
     {
-        protected override void ComposeDependencies(ContainerBuilder builder)
+        protected override void ComposeDependencies(ICanRegisterContainerBuilder builder)
         {
             foreach (var component in GetComponentsInChildren<Component>())
             {

@@ -1,4 +1,6 @@
-﻿using DELTation.DIFramework.Containers;
+﻿using System.Collections.Generic;
+using System.Text;
+using DELTation.DIFramework.Containers;
 using NUnit.Framework;
 using UnityEngine;
 
@@ -6,6 +8,59 @@ namespace DELTation.DIFramework.Tests.Runtime
 {
     public class ContainerBuilderExtensionsTests : TestFixtureBase
     {
+        [Test]
+        public void GivenRegisterFromMethod_WhenResolving_ThenCanResolveAll()
+        {
+            // Arrange
+            CreateContainerWith<RegisterFromMethodContainer>();
+
+            // Act
+            var canResolveS = Di.TryResolveGlobally(out string _);
+            var canResolveSb = Di.TryResolveGlobally(out StringBuilder _);
+            var canResolveL = Di.TryResolveGlobally(out List _);
+            var canResolveLi = Di.TryResolveGlobally(out List<int> _);
+            var canResolveLf = Di.TryResolveGlobally(out List<float> _);
+            var canResolveLd = Di.TryResolveGlobally(out List<double> _);
+
+            // Assert
+            Assert.That(canResolveS);
+            Assert.That(canResolveSb);
+            Assert.That(canResolveL);
+            Assert.That(canResolveLi);
+            Assert.That(canResolveLf);
+            Assert.That(canResolveLd);
+        }
+
+
+        [Test]
+        public void GivenRegisterFromResources_WhenFound_ThenCanBeResolved()
+        {
+            // Arrange
+            var diSettingsContainer = CreateContainerWith<DiSettingsContainer>();
+            diSettingsContainer.Path = "DI Settings";
+
+            // Act
+            var resolved = Di.TryResolveGlobally(out DiSettings _);
+
+            // Assert
+            Assert.That(resolved);
+        }
+
+        [Test]
+        public void GivenRegisterFromResources_WhenNotFound_ThenThrowsArgumentNullException()
+        {
+            // Arrange
+            var diSettingsContainer = CreateContainerWith<DiSettingsContainer>();
+            diSettingsContainer.Path = "Some other asset path";
+
+            // Act
+            bool Code() => Di.TryResolveGlobally(out DiSettings _);
+
+            // Assert
+            Assert.That(Code, Throws.ArgumentNullException);
+        }
+
+
         [Test]
         public void GivenRegisterIfNotNull_WhenNull_ThenNoExceptions()
         {
@@ -85,9 +140,35 @@ namespace DELTation.DIFramework.Tests.Runtime
             Assert.IsFalse(resolved);
         }
 
+        public class RegisterFromMethodContainer : DependencyContainerBase
+        {
+            protected override void ComposeDependencies(ICanRegisterContainerBuilder builder)
+            {
+                builder
+                    .RegisterFromMethod(() => "abc")
+                    .RegisterFromMethod((string s) => new StringBuilder())
+                    .RegisterFromMethod((string s, StringBuilder sb) => new List())
+                    .RegisterFromMethod((string s, StringBuilder sb, List l) => new List<int>())
+                    .RegisterFromMethod((string s, StringBuilder sb, List l, List<int> li) => new List<float>())
+                    .RegisterFromMethod((string s, StringBuilder sb, List l, List<int> li, List<float> lf) =>
+                        new List<double>()
+                    );
+            }
+        }
+
+        public class DiSettingsContainer : DependencyContainerBase
+        {
+            public string Path;
+
+            protected override void ComposeDependencies(ICanRegisterContainerBuilder builder)
+            {
+                builder.RegisterFromResources<DiSettings>(Path);
+            }
+        }
+
         private class ContainerRegisteringNull : DependencyContainerBase
         {
-            protected override void ComposeDependencies(ContainerBuilder builder)
+            protected override void ComposeDependencies(ICanRegisterContainerBuilder builder)
             {
                 builder.RegisterIfNotNull(null);
             }
@@ -95,7 +176,7 @@ namespace DELTation.DIFramework.Tests.Runtime
 
         private class ContainerRegisteringUnityNull : DependencyContainerBase
         {
-            protected override void ComposeDependencies(ContainerBuilder builder)
+            protected override void ComposeDependencies(ICanRegisterContainerBuilder builder)
             {
                 var c = gameObject.AddComponent<BoxCollider>();
                 DestroyImmediate(c); // using immediate so that object is null right away
@@ -105,7 +186,7 @@ namespace DELTation.DIFramework.Tests.Runtime
 
         private class ContainerRegisteringNotNull : DependencyContainerBase
         {
-            protected override void ComposeDependencies(ContainerBuilder builder)
+            protected override void ComposeDependencies(ICanRegisterContainerBuilder builder)
             {
                 builder.RegisterIfNotNull(new object());
             }
@@ -113,7 +194,7 @@ namespace DELTation.DIFramework.Tests.Runtime
 
         private class ContainerRegisteringNotNullUnityObj : DependencyContainerBase
         {
-            protected override void ComposeDependencies(ContainerBuilder builder)
+            protected override void ComposeDependencies(ICanRegisterContainerBuilder builder)
             {
                 var c = gameObject.AddComponent<BoxCollider>();
                 builder.RegisterIfNotNull(c);
@@ -122,7 +203,7 @@ namespace DELTation.DIFramework.Tests.Runtime
 
         private class ContainerResolvingAndRegisteringString : DependencyContainerBase
         {
-            protected override void ComposeDependencies(ContainerBuilder builder)
+            protected override void ComposeDependencies(ICanRegisterContainerBuilder builder)
             {
                 builder.TryResolveGloballyAndRegister<string>();
             }
@@ -130,7 +211,7 @@ namespace DELTation.DIFramework.Tests.Runtime
 
         private class ContainerRegisteringString : DependencyContainerBase
         {
-            protected override void ComposeDependencies(ContainerBuilder builder)
+            protected override void ComposeDependencies(ICanRegisterContainerBuilder builder)
             {
                 builder.Register("Some string");
             }
