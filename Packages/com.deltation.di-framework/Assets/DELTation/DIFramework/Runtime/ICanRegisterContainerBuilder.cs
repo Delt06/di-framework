@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
+using DELTation.DIFramework.Dependencies;
 using JetBrains.Annotations;
 
 namespace DELTation.DIFramework
@@ -28,6 +29,13 @@ namespace DELTation.DIFramework
         /// <param name="factoryMethod">A delegate that creates a dependency.</param>
         /// <returns>The builder.</returns>
         IRegisteredContainerBuilder RegisterFromMethodAsDelegate([NotNull] Delegate factoryMethod);
+
+        /// <summary>
+        ///     Registers a new composite dependency.
+        /// </summary>
+        /// <param name="compositeDependency">The dependency to register.</param>
+        /// <returns>The builder.</returns>
+        IRegisteredContainerBuilder RegisterCompositeDependency([NotNull] CompositeDependency compositeDependency);
     }
 
     internal static class CanRegisterContainerBuilderInternalExtensions

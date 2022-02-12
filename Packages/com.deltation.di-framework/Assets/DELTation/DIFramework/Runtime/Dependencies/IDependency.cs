@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 
 namespace DELTation.DIFramework.Dependencies
 {
-    internal interface IDependency
+    public interface IDependency
     {
         [NotNull]
         object ProduceInitializedObject(PocoInjection.ResolutionFunction resolutionFunction);

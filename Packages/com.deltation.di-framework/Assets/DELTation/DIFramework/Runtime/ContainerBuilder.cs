@@ -55,6 +55,13 @@ namespace DELTation.DIFramework
             return OnRegisteredLast();
         }
 
+        public IRegisteredContainerBuilder RegisterCompositeDependency(CompositeDependency compositeDependency)
+        {
+            if (compositeDependency == null) throw new ArgumentNullException(nameof(compositeDependency));
+            AddDependency(compositeDependency);
+            return OnRegisteredLast();
+        }
+
         private void AddDependency(IDependency dependency)
         {
             _dependencies.Add(new DependencyWithMetadata(dependency));

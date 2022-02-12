@@ -4,7 +4,7 @@ using DELTation.DIFramework.Resolution;
 
 namespace DELTation.DIFramework.Dependencies
 {
-    internal class FactoryMethodDelegateDependency : IDependency
+    public class FactoryMethodDelegateDependency : IDependency
     {
         private readonly FactoryMethodDelegate _factoryMethodDelegate;
 

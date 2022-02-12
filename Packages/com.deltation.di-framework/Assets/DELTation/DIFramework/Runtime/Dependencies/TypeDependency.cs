@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 
 namespace DELTation.DIFramework.Dependencies
 {
-    internal class TypeDependency : IDependency
+    public class TypeDependency : IDependency
     {
         private readonly Type _type;
 
