@@ -67,11 +67,11 @@ jobs:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           checkName: ${{ matrix.testMode }} Test Results
       - run: ls ./CodeCoverage
-      - run: ls ./CodeCoverage/di-framework-opencov
-      - run: ls ./CodeCoverage/di-framework-opencov/PlayMode
+      - run: ls ./CodeCoverage/workspace-opencov
+      - run: ls ./CodeCoverage/workspace-opencov/PlayMode
       - uses: codecov/codecov-action@v2
         with:
-          files: ./CodeCoverage/di-framework-opencov/PlayMode/TestCoverageResults_0000.xml
+          files: ./CodeCoverage/workspace-opencov/PlayMode/TestCoverageResults_0000.xml
           fail_ci_if_error: true # optional (default = false)
           verbose: true # optional (default = false)
       - uses: actions/upload-artifact@v2
