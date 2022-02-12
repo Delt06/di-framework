@@ -62,7 +62,7 @@ jobs:
         with:
           projectPath: ${{ env.PROJECT_PATH }}
           testMode: all
-          customParameters: "-nographics -debugCodeOptimization -enableCodeCoverage -coverageResultsPath ./CodeCoverage"
+          customParameters: "-nographics -debugCodeOptimization -enableCodeCoverage -coverageOptions enableCyclomaticComplexity;generateBadgeReport;assemblyFilters:+DIFramework -coverageResultsPath ./CodeCoverage"
           unityVersion: ${{ env.UNITY_VERSION }}
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           checkName: ${{ matrix.testMode }} Test Results
