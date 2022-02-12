@@ -1,4 +1,6 @@
-﻿using DELTation.DIFramework.Containers;
+﻿using System.Collections.Generic;
+using System.Text;
+using DELTation.DIFramework.Containers;
 using NUnit.Framework;
 using UnityEngine;
 
@@ -6,6 +8,30 @@ namespace DELTation.DIFramework.Tests.Runtime
 {
     public class ContainerBuilderExtensionsTests : TestFixtureBase
     {
+        [Test]
+        public void GivenRegisterFromMethod_WhenResolving_ThenCanResolveAll()
+        {
+            // Arrange
+            CreateContainerWith<RegisterFromMethodContainer>();
+
+            // Act
+            var canResolveS = Di.TryResolveGlobally(out string _);
+            var canResolveSb = Di.TryResolveGlobally(out StringBuilder _);
+            var canResolveL = Di.TryResolveGlobally(out List _);
+            var canResolveLi = Di.TryResolveGlobally(out List<int> _);
+            var canResolveLf = Di.TryResolveGlobally(out List<float> _);
+            var canResolveLd = Di.TryResolveGlobally(out List<double> _);
+
+            // Assert
+            Assert.That(canResolveS);
+            Assert.That(canResolveSb);
+            Assert.That(canResolveL);
+            Assert.That(canResolveLi);
+            Assert.That(canResolveLf);
+            Assert.That(canResolveLd);
+        }
+
+
         [Test]
         public void GivenRegisterFromResources_WhenFound_ThenCanBeResolved()
         {
@@ -112,6 +138,22 @@ namespace DELTation.DIFramework.Tests.Runtime
 
             // Assert
             Assert.IsFalse(resolved);
+        }
+
+        public class RegisterFromMethodContainer : DependencyContainerBase
+        {
+            protected override void ComposeDependencies(ICanRegisterContainerBuilder builder)
+            {
+                builder
+                    .RegisterFromMethod(() => "abc")
+                    .RegisterFromMethod((string s) => new StringBuilder())
+                    .RegisterFromMethod((string s, StringBuilder sb) => new List())
+                    .RegisterFromMethod((string s, StringBuilder sb, List l) => new List<int>())
+                    .RegisterFromMethod((string s, StringBuilder sb, List l, List<int> li) => new List<float>())
+                    .RegisterFromMethod((string s, StringBuilder sb, List l, List<int> li, List<float> lf) =>
+                        new List<double>()
+                    );
+            }
         }
 
         public class DiSettingsContainer : DependencyContainerBase
