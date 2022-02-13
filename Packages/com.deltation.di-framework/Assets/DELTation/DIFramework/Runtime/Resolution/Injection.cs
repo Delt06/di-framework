@@ -9,25 +9,47 @@ using UnityEngine;
 namespace DELTation.DIFramework.Resolution
 {
     /// <summary>
-    /// Contains methods related to injection of dependencies.
+    ///     Contains methods related to injection of dependencies.
     /// </summary>
     public static class Injection
     {
         /// <summary>
-        /// Invalidates injection cache.
+        ///     The name of injected methods.
+        /// </summary>
+        public static readonly string Constructor = "Construct";
+
+        private static readonly IDictionary<Type, List<MethodInfo>>
+            ConstructMethods = new Dictionary<Type, List<MethodInfo>>();
+
+        private static readonly IDictionary<MethodInfo, ParameterInfo[]> InjectableParameters =
+            new Dictionary<MethodInfo, ParameterInfo[]>();
+
+        private static readonly IDictionary<MethodInfo, ParameterInfo[]> Parameters =
+            new Dictionary<MethodInfo, ParameterInfo[]>();
+
+        private static readonly IDictionary<int, List<object[]>> FreeArgumentsArraysCache =
+            new Dictionary<int, List<object[]>>();
+
+        public static bool CacheIsEmpty() =>
+            ConstructMethods.Count == 0 && InjectableParameters.Count == 0 && Parameters.Count == 0 &&
+            FreeArgumentsArraysCache.Count == 0;
+
+        /// <summary>
+        ///     Invalidates injection cache.
         /// </summary>
         public static void InvalidateCache()
         {
             InjectableParameters.Clear();
             ConstructMethods.Clear();
+            Parameters.Clear();
             FreeArgumentsArraysCache.Clear();
         }
 
         /// <summary>
-        /// Generates cache to improve further performance.
+        ///     Generates cache to improve further performance.
         /// </summary>
         /// <param name="gameObject">GameObject to get optimized components from.</param>
-        /// <exception cref="ArgumentNullException">When the <paramref name="gameObject"/> is null.</exception>
+        /// <exception cref="ArgumentNullException">When the <paramref name="gameObject" /> is null.</exception>
         public static void WarmUp([NotNull] GameObject gameObject)
         {
             if (gameObject == null) throw new ArgumentNullException(nameof(gameObject));
@@ -40,10 +62,10 @@ namespace DELTation.DIFramework.Resolution
         }
 
         /// <summary>
-        /// Generates cache to improve further performance.
+        ///     Generates cache to improve further performance.
         /// </summary>
         /// <param name="types">Types to optimize.</param>
-        /// <exception cref="ArgumentNullException">When the <paramref name="types"/> are null.</exception>
+        /// <exception cref="ArgumentNullException">When the <paramref name="types" /> are null.</exception>
         public static void WarmUp([NotNull] params Type[] types)
         {
             if (types == null) throw new ArgumentNullException(nameof(types));
@@ -55,10 +77,10 @@ namespace DELTation.DIFramework.Resolution
         }
 
         /// <summary>
-        /// Generates cache to improve further performance.
+        ///     Generates cache to improve further performance.
         /// </summary>
         /// <param name="type">Type to optimize.</param>
-        /// <exception cref="ArgumentNullException">When the <paramref name="type"/> is null.</exception>
+        /// <exception cref="ArgumentNullException">When the <paramref name="type" /> is null.</exception>
         public static void WarmUp([NotNull] Type type)
         {
             if (type == null) throw new ArgumentNullException(nameof(type));
@@ -70,11 +92,11 @@ namespace DELTation.DIFramework.Resolution
         }
 
         /// <summary>
-        /// Returns all the dependencies of the type.
+        ///     Returns all the dependencies of the type.
         /// </summary>
         /// <param name="componentType">Type to get dependencies of.</param>
         /// <returns>An IEnumerable of dependencies.</returns>
-        /// <exception cref="ArgumentNullException">When the <paramref name="componentType"/> is null.</exception>
+        /// <exception cref="ArgumentNullException">When the <paramref name="componentType" /> is null.</exception>
         public static IEnumerable<Type> GetAllDependenciesOf([NotNull] Type componentType)
         {
             if (componentType == null) throw new ArgumentNullException(nameof(componentType));
@@ -100,11 +122,11 @@ namespace DELTation.DIFramework.Resolution
         }
 
         /// <summary>
-        /// Checks whether the type is injectable.
+        ///     Checks whether the type is injectable.
         /// </summary>
         /// <param name="componentType">Type to check.</param>
         /// <returns>True if type is injectable, false otherwise.</returns>
-        /// <exception cref="ArgumentNullException">When the <paramref name="componentType"/> is null.</exception>
+        /// <exception cref="ArgumentNullException">When the <paramref name="componentType" /> is null.</exception>
         public static bool IsInjectable([NotNull] Type componentType)
         {
             if (componentType == null) throw new ArgumentNullException(nameof(componentType));
@@ -258,20 +280,6 @@ namespace DELTation.DIFramework.Resolution
             method.Name == Constructor &&
             method.IsPublic && method.ReturnType == typeof(void);
 
-        /// <summary>
-        /// The name of injected methods.
-        /// </summary>
-        public static readonly string Constructor = "Construct";
-
-        private static readonly IDictionary<Type, List<MethodInfo>>
-            ConstructMethods = new Dictionary<Type, List<MethodInfo>>();
-
-        private static readonly IDictionary<MethodInfo, ParameterInfo[]> InjectableParameters =
-            new Dictionary<MethodInfo, ParameterInfo[]>();
-
-        private static readonly IDictionary<MethodInfo, ParameterInfo[]> Parameters =
-            new Dictionary<MethodInfo, ParameterInfo[]>();
-
         internal static object[] RentArgumentsArray(int length)
         {
             var arraysList = GetArgumentsArraysList(length);
@@ -305,8 +313,5 @@ namespace DELTation.DIFramework.Resolution
             if (FreeArgumentsArraysCache.TryGetValue(length, out var arraysList)) return arraysList;
             return FreeArgumentsArraysCache[length] = new List<object[]>();
         }
-
-        private static readonly IDictionary<int, List<object[]>> FreeArgumentsArraysCache =
-            new Dictionary<int, List<object[]>>();
     }
 }
