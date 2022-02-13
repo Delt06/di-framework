@@ -89,6 +89,11 @@ jobs:
         - shell: bash
           name: Print Code Coverage Report Summary
           run: cat ./CodeCoverage/Report/Summary.xml
+          
+        - run: ls ./CodeCoverage
+        - run: ls ./CodeCoverage/workspace-opencov
+        - run: ls ./CodeCoverage/workspace-opencov/PlayMode
+        - run: cat ./CodeCoverage/workspace-opencov/PlayMode/TestCoverageResults_0000.xml
 
         - name: Upload Code Coverage to Codecov
           uses: codecov/codecov-action@v2
