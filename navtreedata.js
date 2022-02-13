@@ -71,7 +71,7 @@ var NAVTREEINDEX =
 [
 "_assembly_info_8cs.html",
 "class_d_e_l_tation_1_1_d_i_framework_1_1_dependencies_1_1_composite_dependency.html#a3f37edddc391d7754ecac2901527ee91",
-"interface_d_e_l_tation_1_1_d_i_framework_1_1_i_registered_container_builder.html"
+"interface_d_e_l_tation_1_1_d_i_framework_1_1_i_dependency_container.html#a8f25674ad6ea6070186f2b6c67755a66"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
