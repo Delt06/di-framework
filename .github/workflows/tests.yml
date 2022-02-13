@@ -97,7 +97,7 @@ jobs:
             verbose: true # optional (default = false)
 
         - name: Check Code Coverage Threshold
-          uses: AnImaginedReality/UnityCodeCoverage.Action
+          uses: AnImaginedReality/UnityCodeCoverage.Action@master
           with:
             required-coverage: 75
             coverage-file-path: ./CodeCoverage/Report/Summary.xml
