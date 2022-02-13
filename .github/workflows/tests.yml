@@ -66,12 +66,38 @@ jobs:
           unityVersion: ${{ env.UNITY_VERSION }}
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           checkName: ${{ matrix.testMode }} Test Results
-      - uses: codecov/codecov-action@v2
+      - name: Save Code Coverage
+        uses: actions/upload-artifact@v1
         with:
-          files: ./CodeCoverage/workspace-opencov/PlayMode/TestCoverageResults_0000.xml
-          fail_ci_if_error: true # optional (default = false)
-          verbose: true # optional (default = false)
+          name: Code Coverage Summary
+          path: ./CodeCoverage
       - uses: actions/upload-artifact@v2
         with:
           name: Test results (all modes)
           path: ${{ steps.testRunner.outputs.artifactsPath }}
+
+  code-coverage:
+      name: Coverage
+      needs: test
+      runs-on: ubuntu-latest
+      steps:
+        - name: Load Code Coverage
+          uses: actions/download-artifact@v1
+          with:
+            name: Code Coverage Summary
+            path: ./CodeCoverage
+        - shell: bash
+          run: ./CodeCoverage/Report/Summary.xml
+
+        - name: Upload Code Coverage to Codecov
+          uses: codecov/codecov-action@v2
+          with:
+            files: ./CodeCoverage/workspace-opencov/PlayMode/TestCoverageResults_0000.xml
+            fail_ci_if_error: true # optional (default = false)
+            verbose: true # optional (default = false)
+
+        - name: Check Code Coverage Threshold
+          uses: AnImaginedReality/UnityCodeCoverage.Action
+          with:
+            required-coverage: 75
+            coverage-file-path: ./CodeCoverage/Report/Summary.xml
