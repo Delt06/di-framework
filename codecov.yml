@@ -1,0 +1,19 @@
+﻿coverage:
+    status:
+        project:
+            default:
+                # basic
+                target: auto
+                threshold: 0%
+                base: auto
+                if_ci_failed: error #success, failure, error, ignore
+                informational: false
+                only_pulls: false
+        patch: false
+
+    range: 70..90
+    round: down       # up, down, or nearest
+    precision: 2      # Number of decimal places, between 0 and 5
+    
+comment:
+    layout: diff, files  # accepted in any order: reach, diff, flags, and/or files
