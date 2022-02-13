@@ -77,7 +77,7 @@ jobs:
           path: ${{ steps.testRunner.outputs.artifactsPath }}
 
   code-coverage:
-      name: Coverage
+      name: Code Coverage ☂️
       needs: test
       runs-on: ubuntu-latest
       steps:
