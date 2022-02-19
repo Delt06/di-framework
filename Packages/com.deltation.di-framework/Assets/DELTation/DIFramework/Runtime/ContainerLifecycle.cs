@@ -17,11 +17,11 @@ namespace DELTation.DIFramework
     {
         [SerializeField] private DependencyContainerBase _container;
 
-        private readonly List<IDestroyable> _destroyables = new List<IDestroyable>();
-        private readonly List<IFixedUpdatable> _fixedUpdatables = new List<IFixedUpdatable>();
-        private readonly List<ILateUpdatable> _lateUpdatables = new List<ILateUpdatable>();
-        private readonly List<IStartable> _startables = new List<IStartable>();
-        private readonly List<IUpdatable> _updatables = new List<IUpdatable>();
+        internal readonly List<IDestroyable> Destroyables = new List<IDestroyable>();
+        internal readonly List<IFixedUpdatable> FixedUpdatables = new List<IFixedUpdatable>();
+        internal readonly List<ILateUpdatable> LateUpdatables = new List<ILateUpdatable>();
+        internal readonly List<IStartable> Startables = new List<IStartable>();
+        internal readonly List<IUpdatable> Updatables = new List<IUpdatable>();
 
         public DependencyContainerBase Container
         {
@@ -68,45 +68,45 @@ namespace DELTation.DIFramework
         private void InvokeStartables()
         {
             // ReSharper disable once ForCanBeConvertedToForeach
-            for (var index = 0; index < _startables.Count; index++)
+            for (var index = 0; index < Startables.Count; index++)
             {
-                _startables[index].OnStart();
+                Startables[index].OnStart();
             }
         }
 
         private void InvokeUpdatables()
         {
             // ReSharper disable once ForCanBeConvertedToForeach
-            for (var index = 0; index < _updatables.Count; index++)
+            for (var index = 0; index < Updatables.Count; index++)
             {
-                _updatables[index].OnUpdate();
+                Updatables[index].OnUpdate();
             }
         }
 
         private void InvokeFixedUpdatables()
         {
             // ReSharper disable once ForCanBeConvertedToForeach
-            for (var index = 0; index < _fixedUpdatables.Count; index++)
+            for (var index = 0; index < FixedUpdatables.Count; index++)
             {
-                _fixedUpdatables[index].OnFixedUpdate();
+                FixedUpdatables[index].OnFixedUpdate();
             }
         }
 
         protected virtual void InvokeLateUpdatables()
         {
             // ReSharper disable once ForCanBeConvertedToForeach
-            for (var index = 0; index < _lateUpdatables.Count; index++)
+            for (var index = 0; index < LateUpdatables.Count; index++)
             {
-                _lateUpdatables[index].OnLateUpdate();
+                LateUpdatables[index].OnLateUpdate();
             }
         }
 
         private void InvokeDestroyables()
         {
             // ReSharper disable once ForCanBeConvertedToForeach
-            for (var index = 0; index < _destroyables.Count; index++)
+            for (var index = 0; index < Destroyables.Count; index++)
             {
-                _destroyables[index].OnDestroy();
+                Destroyables[index].OnDestroy();
             }
         }
 
@@ -120,15 +120,15 @@ namespace DELTation.DIFramework
                 var obj = allObjects[index];
                 // ReSharper disable once ConvertIfStatementToSwitchStatement
                 if (obj is IStartable startable)
-                    _startables.Add(startable);
+                    Startables.Add(startable);
                 if (obj is IUpdatable updatable)
-                    _updatables.Add(updatable);
+                    Updatables.Add(updatable);
                 if (obj is IFixedUpdatable fixedUpdatable)
-                    _fixedUpdatables.Add(fixedUpdatable);
+                    FixedUpdatables.Add(fixedUpdatable);
                 if (obj is ILateUpdatable lateUpdatable)
-                    _lateUpdatables.Add(lateUpdatable);
+                    LateUpdatables.Add(lateUpdatable);
                 if (obj is IDestroyable destroyable)
-                    _destroyables.Add(destroyable);
+                    Destroyables.Add(destroyable);
             }
         }
     }

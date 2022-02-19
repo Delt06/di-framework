@@ -10,7 +10,7 @@ namespace DELTation.DIFramework.Dependencies
     {
         public static bool DependenciesCanBeResolved<T>(T dependent,
             List<Type> possibleDependencyResolvers,
-            List<Type> unresolvedDependencies) where T : IDependency
+            ICollection<Type> unresolvedDependencies) where T : IDependency
         {
             var dependencies = ListPool<Type>.Rent();
 
@@ -23,7 +23,7 @@ namespace DELTation.DIFramework.Dependencies
         }
 
         private static bool DependenciesCanBeResolved(IEnumerable<Type> dependencies,
-            IReadOnlyCollection<Type> possibleDependencyResolvers, List<Type> unresolvedDependencies)
+            IReadOnlyCollection<Type> possibleDependencyResolvers, ICollection<Type> unresolvedDependencies)
         {
             bool CanBeResolved(Type dependency) =>
                 possibleDependencyResolvers.Any(dependency.IsAssignableFrom);
@@ -41,19 +41,25 @@ namespace DELTation.DIFramework.Dependencies
             return canResolveAll;
         }
 
-        public static bool DependsOn<T1, T2>(T1 dependent, T2 dependency) where T1 : IDependency where T2 : IDependency
+        public static bool DependsOn<T1, T2>(T1 dependent, T2 dependency)
+            where T1 : IDependency where T2 : IDependency =>
+            DependsOn(dependent, dependency, out _);
+
+        public static bool DependsOn<T1, T2>(T1 dependent, T2 dependency, out Type requiredDependencyType)
+            where T1 : IDependency where T2 : IDependency
         {
             var dependents = ListPool<Type>.Rent();
 
             dependent.GetDependencies(dependents);
             var dependencyType = dependency.GetResultingType();
-            var dependsOn = DependsOn(dependents, dependencyType);
+            var dependsOn = DependsOn(dependents, dependencyType, out requiredDependencyType);
 
             ListPool<Type>.Return(dependents);
             return dependsOn;
         }
 
-        private static bool DependsOn([NotNull] IReadOnlyList<Type> dependents, [NotNull] Type dependency)
+        private static bool DependsOn([NotNull] IReadOnlyList<Type> dependents, [NotNull] Type dependency,
+            out Type requiredDependencyType)
         {
             if (dependents == null) throw new ArgumentNullException(nameof(dependents));
             if (dependency == null) throw new ArgumentNullException(nameof(dependency));
@@ -63,9 +69,13 @@ namespace DELTation.DIFramework.Dependencies
             {
                 var dependent = dependents[index];
                 if (dependent.IsAssignableFrom(dependency))
+                {
+                    requiredDependencyType = dependent;
                     return true;
+                }
             }
 
+            requiredDependencyType = default;
             return false;
         }
     }

@@ -62,6 +62,8 @@ namespace DELTation.DIFramework
             return OnRegisteredLast();
         }
 
+        internal DependencyWithMetadata[] GetDependencies() => _dependencies.ToArray();
+
         private void AddDependency(IDependency dependency)
         {
             _dependencies.Add(new DependencyWithMetadata(dependency));

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using DELTation.DIFramework.Dependencies;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -52,6 +53,8 @@ namespace DELTation.DIFramework.Containers
         internal bool DependenciesCanBeResolved(
             [NotNull] List<(Type dependent, Type unresolvedDependency)> unresolvedDependencies) =>
             InnerContainer.DependenciesCanBeResolved(unresolvedDependencies);
+
+        internal DependencyWithMetadata[] GetRawDependencies() => InnerContainer.GetRawDependencies();
 
         protected abstract void ComposeDependencies(ICanRegisterContainerBuilder builder);
     }

@@ -34,18 +34,18 @@ namespace {0}
     }}
 }}
 ";
-
-        public static string ClassName => "BakedInjectionData";
-
-        public static string Namespace => string.Join(".", GetFoldersHierarchy().Skip(1));
-
-        public static IReadOnlyList<string> GetFoldersHierarchy() => FoldersHierarchy;
+        private const int SpacesInIndent = 4;
 
 
         private static readonly string[] FoldersHierarchy = { "Scripts", "DI", "Baked" };
 
         public static readonly string DoubleIndent = new string(' ', SpacesInIndent * 2);
         public static readonly string TripleIndent = new string(' ', SpacesInIndent * 3);
-        private const int SpacesInIndent = 4;
+
+        public static string ClassName => "BakedInjectionData";
+
+        public static string Namespace => string.Join(".", GetFoldersHierarchy().Skip(1));
+
+        public static IReadOnlyList<string> GetFoldersHierarchy() => FoldersHierarchy;
     }
 }

@@ -15,6 +15,8 @@ namespace DELTation.DIFramework.Dependencies
             Tags = new HashSet<Type>();
         }
 
+        public string GetInternalDependencyTypeName() => _dependency.GetInternalDependencyTypeName();
+
         public object ProduceInitializedObject(PocoInjection.ResolutionFunction resolutionFunction) =>
             _dependency.ProduceInitializedObject(resolutionFunction);
 

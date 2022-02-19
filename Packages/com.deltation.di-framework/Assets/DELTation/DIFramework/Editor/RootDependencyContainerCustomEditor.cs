@@ -8,6 +8,9 @@ namespace DELTation.DIFramework.Editor
     [CustomEditor(typeof(RootDependencyContainer))]
     internal sealed class RootDependencyContainerCustomEditor : UnityEditor.Editor
     {
+        private string[] _typeNames = Array.Empty<string>();
+        private Type[] _types = Array.Empty<Type>();
+
         private void OnEnable()
         {
             _types = AppDomain.CurrentDomain.GetAssemblies()
@@ -45,8 +48,5 @@ namespace DELTation.DIFramework.Editor
 
             EditorGUILayout.EndHorizontal();
         }
-
-        private string[] _typeNames = Array.Empty<string>();
-        private Type[] _types = Array.Empty<Type>();
     }
 }
