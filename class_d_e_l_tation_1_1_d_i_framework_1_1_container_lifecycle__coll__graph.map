@@ -1,4 +1,9 @@
 <map id="DELTation.DIFramework.ContainerLifecycle" name="DELTation.DIFramework.ContainerLifecycle">
-<area shape="rect" id="node1" title="Pulls all registered objects from a container and calls lifecycle events on them (DIFramework...." alt="" coords="5,80,228,121"/>
-<area shape="rect" id="node2" href="$class_mono_behaviour.html" title=" " alt="" coords="61,5,173,32"/>
+<area shape="rect" id="node1" title="Pulls all registered objects from a container and calls lifecycle events on them (DIFramework...." alt="" coords="365,125,588,166"/>
+<area shape="rect" id="node2" href="$class_mono_behaviour.html" title=" " alt="" coords="55,5,167,32"/>
+<area shape="rect" id="node3" title=" " alt="" coords="16,56,205,83"/>
+<area shape="rect" id="node4" title=" " alt="" coords="5,107,216,133"/>
+<area shape="rect" id="node5" title=" " alt="" coords="7,157,214,184"/>
+<area shape="rect" id="node6" title=" " alt="" coords="24,208,197,235"/>
+<area shape="rect" id="node7" title=" " alt="" coords="21,259,201,285"/>
 </map>
