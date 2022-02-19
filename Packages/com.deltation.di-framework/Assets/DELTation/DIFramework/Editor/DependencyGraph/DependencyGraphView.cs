@@ -206,8 +206,8 @@ namespace DELTation.DIFramework.Editor.DependencyGraph
                     var node = dependencyNodes[nodeDataIndex];
                     var nodePosition = node.GetPosition();
                     nodePosition.x = layer * 300;
-                    var t = indexOnLayer / (nodeDataIndices.Count - 1f);
-                    nodePosition.y = 100 * maxNodesInLayer * t;
+                    var t = (1 + indexOnLayer) / (nodeDataIndices.Count + 1f);
+                    nodePosition.y = 100 * (maxNodesInLayer + 1) * t;
                     node.SetPosition(nodePosition);
                 }
             }
