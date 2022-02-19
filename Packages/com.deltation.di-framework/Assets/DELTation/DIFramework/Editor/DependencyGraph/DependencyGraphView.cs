@@ -52,7 +52,7 @@ namespace DELTation.DIFramework.Editor.DependencyGraph
                 }
             }
 
-            var unresolvedDependencies = new List<Type>();
+            var unresolvedDependencies = new HashSet<Type>();
             var possibleDependencyResolvers = new List<Type>();
 
             for (var index = 0; index < rawDependencies.Length; index++)
@@ -95,7 +95,12 @@ namespace DELTation.DIFramework.Editor.DependencyGraph
         {
             var nodeDataList = new NodeData[rawDependencies.Length];
             PopulateNodeFollowers(rawDependencies, nodeDataList);
-            AssignLayers(nodeDataList, new HashSet<int>(), 0);
+
+            var visited = new HashSet<int>();
+            for (var i = 0; i < rawDependencies.Length; i++)
+            {
+                AssignLayers(nodeDataList, visited, i);
+            }
 
             var nodeDataIndicesByLayers = GetNodeDataIndicesByLayers(nodeDataList, out var maxNodesInLayer);
             SetNodePositions(dependencyNodes, nodeDataIndicesByLayers, maxNodesInLayer);
@@ -107,6 +112,11 @@ namespace DELTation.DIFramework.Editor.DependencyGraph
             {
                 var nodeData = new NodeData();
                 nodeDataList[nodeDataIndex] = nodeData;
+            }
+
+            for (var nodeDataIndex = 0; nodeDataIndex < nodeDataList.Length; nodeDataIndex++)
+            {
+                var nodeData = nodeDataList[nodeDataIndex];
 
                 for (var otherIndex = 0; otherIndex < rawDependencies.Length; otherIndex++)
                 {
@@ -115,7 +125,10 @@ namespace DELTation.DIFramework.Editor.DependencyGraph
                     var nodeDependency = rawDependencies[nodeDataIndex];
                     var otherDependency = rawDependencies[otherIndex];
                     if (DependencyUtils.DependsOn(otherDependency, nodeDependency))
+                    {
                         nodeData.Followers.Add(otherIndex);
+                        nodeDataList[otherIndex].Predecessors.Add(nodeDataIndex);
+                    }
                 }
             }
         }
@@ -125,12 +138,14 @@ namespace DELTation.DIFramework.Editor.DependencyGraph
             if (visited.Contains(index)) return;
 
             var nodeData = nodeDataList[index];
-            nodeData.NodeLayer = Mathf.Max(nodeData.NodeLayer, layer);
+            nodeData.NodeLayer = nodeData.Predecessors.Count == 0
+                ? layer
+                : Mathf.Max(layer, nodeData.Predecessors.Max(p => nodeDataList[p].NodeLayer + 1));
             visited.Add(index);
 
             foreach (var followerIndex in nodeData.Followers)
             {
-                AssignLayers(nodeDataList, visited, followerIndex, layer + 1);
+                AssignLayers(nodeDataList, visited, followerIndex, nodeData.NodeLayer + 1);
             }
         }
 
@@ -217,6 +232,7 @@ namespace DELTation.DIFramework.Editor.DependencyGraph
         private class NodeData
         {
             public readonly List<int> Followers = new List<int>();
+            public readonly List<int> Predecessors = new List<int>();
             public int NodeLayer;
         }
     }

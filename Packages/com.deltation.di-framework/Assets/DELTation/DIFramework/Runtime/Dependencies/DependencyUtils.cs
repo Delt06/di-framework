@@ -10,7 +10,7 @@ namespace DELTation.DIFramework.Dependencies
     {
         public static bool DependenciesCanBeResolved<T>(T dependent,
             List<Type> possibleDependencyResolvers,
-            List<Type> unresolvedDependencies) where T : IDependency
+            ICollection<Type> unresolvedDependencies) where T : IDependency
         {
             var dependencies = ListPool<Type>.Rent();
 
@@ -23,7 +23,7 @@ namespace DELTation.DIFramework.Dependencies
         }
 
         private static bool DependenciesCanBeResolved(IEnumerable<Type> dependencies,
-            IReadOnlyCollection<Type> possibleDependencyResolvers, List<Type> unresolvedDependencies)
+            IReadOnlyCollection<Type> possibleDependencyResolvers, ICollection<Type> unresolvedDependencies)
         {
             bool CanBeResolved(Type dependency) =>
                 possibleDependencyResolvers.Any(dependency.IsAssignableFrom);
