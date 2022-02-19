@@ -1,4 +1,5 @@
 ﻿using System;
+using DELTation.DIFramework.Dependencies;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -65,7 +66,16 @@ namespace DELTation.DIFramework
             [NotNull] this ICanRegisterContainerBuilder containerBuilder) where T : class
         {
             if (containerBuilder == null) throw new ArgumentNullException(nameof(containerBuilder));
-            if (Di.TryResolveGlobally(out T service)) return containerBuilder.Register(service);
+
+            if (Application.isPlaying)
+            {
+                if (Di.TryResolveGlobally(out T service))
+                    return containerBuilder.Register(service);
+            }
+            else
+            {
+                return containerBuilder.RegisterDependency(new GlobalDependency(typeof(T)));
+            }
 
             return containerBuilder.OnDidNotRegisterLast();
         }

@@ -46,10 +46,30 @@ namespace DELTation.DIFramework
             containerBuilder switch
             {
                 null => throw new ArgumentNullException(nameof(containerBuilder)),
-                ContainerBuilder casterContainerBuilder => casterContainerBuilder.OnDidNotRegisterLast(),
-                _ => throw new InvalidOperationException(
-                    $"Provided container builder is of invalid type (${containerBuilder.GetType()})."
-                ),
+                ContainerBuilder castedContainerBuilder => castedContainerBuilder.OnDidNotRegisterLast(),
+                _ => throw InvalidContainerType(containerBuilder),
             };
+
+        public static IRegisteredContainerBuilder RegisterDependency(
+            [NotNull] this ICanRegisterContainerBuilder containerBuilder, [NotNull] IDependency dependency)
+        {
+            if (dependency == null) throw new ArgumentNullException(nameof(dependency));
+            switch (containerBuilder)
+            {
+                case null:
+                    throw new ArgumentNullException(nameof(containerBuilder));
+                case ContainerBuilder castedContainerBuilder:
+                    castedContainerBuilder.AddDependency(dependency);
+                    return castedContainerBuilder;
+                default:
+                    throw InvalidContainerType(containerBuilder);
+            }
+        }
+
+
+        private static InvalidOperationException InvalidContainerType(ICanRegisterContainerBuilder containerBuilder) =>
+            new InvalidOperationException(
+                $"Provided container builder is of invalid type (${containerBuilder.GetType()})."
+            );
     }
 }

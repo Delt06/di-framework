@@ -64,8 +64,9 @@ namespace DELTation.DIFramework
 
         internal DependencyWithMetadata[] GetDependencies() => _dependencies.ToArray();
 
-        private void AddDependency(IDependency dependency)
+        internal void AddDependency([NotNull] IDependency dependency)
         {
+            if (dependency == null) throw new ArgumentNullException(nameof(dependency));
             _dependencies.Add(new DependencyWithMetadata(dependency));
         }
 
