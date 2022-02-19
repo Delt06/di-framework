@@ -1,7 +1,5 @@
 var NAVTREEINDEX2 =
 {
-"interface_d_e_l_tation_1_1_d_i_framework_1_1_i_dependency_container.html#a8f25674ad6ea6070186f2b6c67755a66":[1,0,0,0,18,2],
-"interface_d_e_l_tation_1_1_d_i_framework_1_1_i_dependency_container.html#a8f25674ad6ea6070186f2b6c67755a66":[2,0,0,0,17,2],
 "interface_d_e_l_tation_1_1_d_i_framework_1_1_i_registered_container_builder.html":[1,0,0,0,19],
 "interface_d_e_l_tation_1_1_d_i_framework_1_1_i_registered_container_builder.html":[2,0,0,0,18],
 "interface_d_e_l_tation_1_1_d_i_framework_1_1_i_registered_container_builder.html#a48bad91317bbbb972af5d103a647b40d":[1,0,0,0,19,0],

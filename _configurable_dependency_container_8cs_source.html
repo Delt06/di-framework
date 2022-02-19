@@ -176,72 +176,73 @@ $(document).ready(function(){initNavTree('_configurable_dependency_container_8cs
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>        {</div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>            var builder = CreateContainerBuilder();</div>
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>            _composeDependencies(builder);</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>            <span class="keywordflow">return</span> builder.DependenciesCanBeResolved(unresolvedDependencies);</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>        }</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>        <span class="keyword">private</span> <span class="keywordtype">void</span> EnsureInitialized()</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>        {</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>            <span class="keywordflow">if</span> (_initialized) <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>            _initialized = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>            var builder = CreateContainerBuilder();</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>            _composeDependencies(builder);</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>            <span class="keywordflow">if</span> (!builder.TrySortTopologically())</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>                <span class="keywordflow">throw</span> <span class="keyword">new</span> <a class="code hl_class" href="class_d_e_l_tation_1_1_d_i_framework_1_1_exceptions_1_1_dependency_loop_exception.html">DependencyLoopException</a>();</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>            <span class="keywordflow">for</span> (var index = 0; index &lt; builder.DependenciesCount; index++)</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>            {</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>                var @<span class="keywordtype">object</span> = builder.GetOrCreateObject(index);</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>                Register(@<span class="keywordtype">object</span>);</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>                var tags = builder.GetTags(index);</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>                _objectTags.AddMany(@<span class="keywordtype">object</span>, tags);</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>            }</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>        }</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keywordtype">bool</span> ConformsTo(ContainerBuilder builder, <span class="keywordtype">int</span> index, Type checkedType) =&gt;</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>            checkedType.IsAssignableFrom(builder.GetType(index));</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span> </div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>        <span class="keyword">private</span> <span class="keywordtype">void</span> Register([NotNull] <span class="keywordtype">object</span> dependency)</div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>        {</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>            <span class="keywordflow">if</span> (dependency == <span class="keyword">null</span>) <span class="keywordflow">throw</span> <span class="keyword">new</span> ArgumentNullException(nameof(dependency));</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>            <span class="keywordflow">if</span> (ShouldBeIgnoredByContainer(dependency)) <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span> </div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>            <span class="keywordflow">if</span> (_cache.TryRegister(dependency, out var registeredDependency))</div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>                <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span> </div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>            var type = dependency.GetType();</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>            <span class="keywordflow">throw</span> <span class="keyword">new</span> <a class="code hl_class" href="class_d_e_l_tation_1_1_d_i_framework_1_1_exceptions_1_1_dependency_already_registered.html">DependencyAlreadyRegistered</a>(type, registeredDependency);</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>        }</div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span> </div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>        <span class="keyword">private</span> <span class="keyword">class </span>TagCollection&lt;TKey&gt;</div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>        {</div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>            <span class="keyword">private</span> readonly Dictionary&lt;TKey, HashSet&lt;Type&gt;&gt; _tags = <span class="keyword">new</span> Dictionary&lt;TKey, HashSet&lt;Type&gt;&gt;();</div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span> </div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>            <span class="keyword">internal</span> <span class="keywordtype">void</span> AddMany(TKey key, HashSet&lt;Type&gt; tags)</div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>            {</div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>                <span class="keywordflow">foreach</span> (var tag <span class="keywordflow">in</span> tags)</div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>                {</div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>                    AddTag(key, tag);</div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>                }</div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>            }</div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span> </div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>            <span class="keyword">public</span> <span class="keywordtype">bool</span> HasTag(TKey key, Type tag)</div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>            {</div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>                <span class="keywordflow">if</span> (!_tags.TryGetValue(key, out var tags)) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>                <span class="keywordflow">return</span> tags != <span class="keyword">null</span> &amp;&amp; tags.Contains(tag);</div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>            }</div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span> </div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>            <span class="keyword">private</span> <span class="keywordtype">void</span> AddTag(TKey key, Type tag)</div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>            {</div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>                <span class="keywordflow">if</span> (!_tags.TryGetValue(key, out var tags))</div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>                    _tags[key] = tags = <span class="keyword">new</span> HashSet&lt;Type&gt;();</div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>                tags.Add(tag);</div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>            }</div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>        }</div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>    }</div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>}</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>            builder.TrySortTopologically();</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>            <span class="keywordflow">return</span> builder.DependenciesCanBeResolved(unresolvedDependencies);</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>        }</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>        <span class="keyword">private</span> <span class="keywordtype">void</span> EnsureInitialized()</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>        {</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>            <span class="keywordflow">if</span> (_initialized) <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> </div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>            _initialized = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>            var builder = CreateContainerBuilder();</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>            _composeDependencies(builder);</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>            <span class="keywordflow">if</span> (!builder.TrySortTopologically())</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>                <span class="keywordflow">throw</span> <span class="keyword">new</span> <a class="code hl_class" href="class_d_e_l_tation_1_1_d_i_framework_1_1_exceptions_1_1_dependency_loop_exception.html">DependencyLoopException</a>();</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>            <span class="keywordflow">for</span> (var index = 0; index &lt; builder.DependenciesCount; index++)</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>            {</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>                var @<span class="keywordtype">object</span> = builder.GetOrCreateObject(index);</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>                Register(@<span class="keywordtype">object</span>);</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span> </div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>                var tags = builder.GetTags(index);</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>                _objectTags.AddMany(@<span class="keywordtype">object</span>, tags);</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>            }</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>        }</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keywordtype">bool</span> ConformsTo(ContainerBuilder builder, <span class="keywordtype">int</span> index, Type checkedType) =&gt;</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>            checkedType.IsAssignableFrom(builder.GetType(index));</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>        <span class="keyword">private</span> <span class="keywordtype">void</span> Register([NotNull] <span class="keywordtype">object</span> dependency)</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>        {</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>            <span class="keywordflow">if</span> (dependency == <span class="keyword">null</span>) <span class="keywordflow">throw</span> <span class="keyword">new</span> ArgumentNullException(nameof(dependency));</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>            <span class="keywordflow">if</span> (ShouldBeIgnoredByContainer(dependency)) <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span> </div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>            <span class="keywordflow">if</span> (_cache.TryRegister(dependency, out var registeredDependency))</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>                <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span> </div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>            var type = dependency.GetType();</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>            <span class="keywordflow">throw</span> <span class="keyword">new</span> <a class="code hl_class" href="class_d_e_l_tation_1_1_d_i_framework_1_1_exceptions_1_1_dependency_already_registered.html">DependencyAlreadyRegistered</a>(type, registeredDependency);</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>        }</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span> </div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>        <span class="keyword">private</span> <span class="keyword">class </span>TagCollection&lt;TKey&gt;</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>        {</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>            <span class="keyword">private</span> readonly Dictionary&lt;TKey, HashSet&lt;Type&gt;&gt; _tags = <span class="keyword">new</span> Dictionary&lt;TKey, HashSet&lt;Type&gt;&gt;();</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span> </div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>            <span class="keyword">internal</span> <span class="keywordtype">void</span> AddMany(TKey key, HashSet&lt;Type&gt; tags)</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>            {</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>                <span class="keywordflow">foreach</span> (var tag <span class="keywordflow">in</span> tags)</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>                {</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>                    AddTag(key, tag);</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>                }</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>            }</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span> </div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>            <span class="keyword">public</span> <span class="keywordtype">bool</span> HasTag(TKey key, Type tag)</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>            {</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>                <span class="keywordflow">if</span> (!_tags.TryGetValue(key, out var tags)) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>                <span class="keywordflow">return</span> tags != <span class="keyword">null</span> &amp;&amp; tags.Contains(tag);</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>            }</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span> </div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>            <span class="keyword">private</span> <span class="keywordtype">void</span> AddTag(TKey key, Type tag)</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>            {</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>                <span class="keywordflow">if</span> (!_tags.TryGetValue(key, out var tags))</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>                    _tags[key] = tags = <span class="keyword">new</span> HashSet&lt;Type&gt;();</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>                tags.Add(tag);</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>            }</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>        }</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>    }</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>}</div>
 <div class="ttc" id="aclass_d_e_l_tation_1_1_d_i_framework_1_1_containers_extensions_html"><div class="ttname"><a href="class_d_e_l_tation_1_1_d_i_framework_1_1_containers_extensions.html">DELTation.DIFramework.ContainersExtensions</a></div><div class="ttdef"><b>Definition:</b> <a href="_containers_extensions_8cs_source.html#l00009">ContainersExtensions.cs:10</a></div></div>
 <div class="ttc" id="aclass_d_e_l_tation_1_1_d_i_framework_1_1_exceptions_1_1_dependency_already_registered_html"><div class="ttname"><a href="class_d_e_l_tation_1_1_d_i_framework_1_1_exceptions_1_1_dependency_already_registered.html">DELTation.DIFramework.Exceptions.DependencyAlreadyRegistered</a></div><div class="ttdef"><b>Definition:</b> <a href="_dependency_already_registered_8cs_source.html#l00006">DependencyAlreadyRegistered.cs:7</a></div></div>
 <div class="ttc" id="aclass_d_e_l_tation_1_1_d_i_framework_1_1_exceptions_1_1_dependency_loop_exception_html"><div class="ttname"><a href="class_d_e_l_tation_1_1_d_i_framework_1_1_exceptions_1_1_dependency_loop_exception.html">DELTation.DIFramework.Exceptions.DependencyLoopException</a></div><div class="ttdef"><b>Definition:</b> <a href="_dependency_loop_exception_8cs_source.html#l00005">DependencyLoopException.cs:6</a></div></div>
