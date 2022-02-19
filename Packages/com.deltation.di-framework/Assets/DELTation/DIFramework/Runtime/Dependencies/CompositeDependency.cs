@@ -26,6 +26,8 @@ namespace DELTation.DIFramework.Dependencies
             _combine = combine ?? throw new ArgumentNullException(nameof(combine));
         }
 
+        public string GetInternalDependencyTypeName() => "Composite";
+
         public object ProduceInitializedObject(PocoInjection.ResolutionFunction resolutionFunction)
         {
             var primaryObject = _primaryDependency.ProduceInitializedObject(resolutionFunction);

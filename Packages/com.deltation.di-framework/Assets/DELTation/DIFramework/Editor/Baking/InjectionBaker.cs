@@ -14,6 +14,10 @@ namespace DELTation.DIFramework.Editor.Baking
 {
     internal sealed class InjectionBaker
     {
+        private readonly Type[] _bakedTypes;
+
+        private readonly string _className;
+
         public InjectionBaker([NotNull] string className, [NotNull] IEnumerable<Type> bakedTypes)
         {
             if (bakedTypes == null) throw new ArgumentNullException(nameof(bakedTypes));
@@ -190,8 +194,5 @@ namespace DELTation.DIFramework.Editor.Baking
             const string lf = "\n";
             stringBuilder.Replace(crlf, lf);
         }
-
-        private readonly string _className;
-        private readonly Type[] _bakedTypes;
     }
 }

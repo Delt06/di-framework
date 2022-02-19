@@ -11,6 +11,8 @@ namespace DELTation.DIFramework.Dependencies
 
         public ObjectDependency([NotNull] object o) => _object = o ?? throw new ArgumentNullException(nameof(o));
 
+        public string GetInternalDependencyTypeName() => "Object";
+
         public object ProduceInitializedObject(PocoInjection.ResolutionFunction resolutionFunction) => _object;
         public Type GetResultingType() => _object.GetType();
 

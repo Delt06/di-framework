@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using DELTation.DIFramework.Dependencies;
 using DELTation.DIFramework.Exceptions;
 using DELTation.DIFramework.Resolution;
 using JetBrains.Annotations;
@@ -129,6 +130,14 @@ namespace DELTation.DIFramework.Containers
 
             var type = dependency.GetType();
             throw new DependencyAlreadyRegistered(type, registeredDependency);
+        }
+
+        public DependencyWithMetadata[] GetRawDependencies()
+        {
+            var builder = CreateContainerBuilder();
+            _composeDependencies(builder);
+            builder.TrySortTopologically();
+            return builder.GetDependencies();
         }
 
         private class TagCollection<TKey>

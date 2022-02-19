@@ -7,7 +7,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using DELTation.DIFramework.Containers;
+using DELTation.DIFramework.Editor.DependencyGraph;
 using UnityEditor;
+using UnityEngine;
 
 namespace DELTation.DIFramework.Editor
 {
@@ -42,6 +44,9 @@ namespace DELTation.DIFramework.Editor
                     EditorGUILayout.HelpBox(message, MessageType.Error, wide);
                 }
             }
+
+            if (GUILayout.Button("View dependency graph"))
+                OpenGraphEditorWindow();
         }
 
         private string ComposeUnresolvedDependenciesMessage()
@@ -51,6 +56,14 @@ namespace DELTation.DIFramework.Editor
                     $"{t.dependent.GetFriendlyName()} could not resolve a dependency of type {t.unresolvedDependency.GetFriendlyName()}."
                 )
             );
+        }
+
+        private void OpenGraphEditorWindow()
+        {
+            var window = CreateInstance<DependencyGraphWindow>();
+            window.titleContent = new GUIContent($"{target.GetType().GetFriendlyName()} Dependencies");
+            window.Initialize((DependencyContainerBase) target);
+            window.Show();
         }
     }
 }

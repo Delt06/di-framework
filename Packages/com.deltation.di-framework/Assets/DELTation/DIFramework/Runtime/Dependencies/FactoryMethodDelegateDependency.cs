@@ -11,6 +11,8 @@ namespace DELTation.DIFramework.Dependencies
         public FactoryMethodDelegateDependency(FactoryMethodDelegate factoryMethodDelegate) =>
             _factoryMethodDelegate = factoryMethodDelegate;
 
+        public string GetInternalDependencyTypeName() => "Factory Method";
+
         public object ProduceInitializedObject(PocoInjection.ResolutionFunction resolutionFunction) =>
             _factoryMethodDelegate.Instantiate(resolutionFunction);
 

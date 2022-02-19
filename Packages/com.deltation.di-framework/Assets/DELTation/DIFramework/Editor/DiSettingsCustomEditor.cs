@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 using DELTation.DIFramework.Baking;
 using DELTation.DIFramework.Editor.Baking;
 using UnityEditor;
@@ -10,6 +9,10 @@ namespace DELTation.DIFramework.Editor
     [CustomEditor(typeof(DiSettings))]
     public class DiSettingsCustomEditor : UnityEditor.Editor
     {
+        private readonly StringBuilder _stringBuilder = new StringBuilder();
+
+        private GUILayoutOption _expandWidth;
+
         private void OnEnable()
         {
             _expandWidth = GUILayout.ExpandWidth(true);
@@ -64,8 +67,5 @@ namespace DELTation.DIFramework.Editor
 
             GUILayout.Box(_stringBuilder.ToString(), boxStyle, _expandWidth);
         }
-
-        private GUILayoutOption _expandWidth;
-        private readonly StringBuilder _stringBuilder = new StringBuilder();
     }
 }

@@ -8,7 +8,6 @@ using DELTation.DIFramework.Resolution;
 using UnityEditor;
 using UnityEngine;
 using static DELTation.DIFramework.Editor.Baking.InjectionBakingData;
-using static DELTation.DIFramework.Editor.Baking.InjectionBakingTypesUtils;
 
 namespace DELTation.DIFramework.Editor.Baking
 {
