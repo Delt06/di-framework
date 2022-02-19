@@ -13,6 +13,10 @@ namespace DELTation.DIFramework.Dependencies
 
         public object ProduceInitializedObject(PocoInjection.ResolutionFunction resolutionFunction) => _object;
         public Type GetResultingType() => _object.GetType();
-        public void GetDependencies(ICollection<Type> dependencies) { }
+
+        public void GetDependencies(ICollection<Type> dependencies)
+        {
+            // already created objects do not have any dependencies
+        }
     }
 }

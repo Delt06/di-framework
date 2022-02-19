@@ -18,7 +18,7 @@ namespace DELTation.DIFramework.Editor
             if (HasResolverInParent(gameObject)) return;
             if (!IsInjectable(gameObject)) return;
 
-            DrawIcon(gameObject, selectionRect);
+            DrawIcon(selectionRect);
         }
 
         private static bool HasResolverInParent(GameObject gameObject)
@@ -46,7 +46,7 @@ namespace DELTation.DIFramework.Editor
             return false;
         }
 
-        private static void DrawIcon(Object @object, Rect selectionRect)
+        private static void DrawIcon(Rect selectionRect)
         {
             const float iconSize = 16f;
             var rect = new Rect(selectionRect.x + selectionRect.width - iconSize, selectionRect.y, iconSize, iconSize);
