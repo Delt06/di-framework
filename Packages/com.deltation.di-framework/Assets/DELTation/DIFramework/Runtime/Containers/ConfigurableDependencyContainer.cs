@@ -91,6 +91,7 @@ namespace DELTation.DIFramework.Containers
         {
             var builder = CreateContainerBuilder();
             _composeDependencies(builder);
+            builder.TrySortTopologically();
             return builder.DependenciesCanBeResolved(unresolvedDependencies);
         }
 
