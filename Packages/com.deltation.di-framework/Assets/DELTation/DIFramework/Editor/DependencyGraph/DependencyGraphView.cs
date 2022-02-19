@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using DELTation.DIFramework.Containers;
 using DELTation.DIFramework.Dependencies;
 using JetBrains.Annotations;
@@ -11,6 +12,8 @@ namespace DELTation.DIFramework.Editor.DependencyGraph
 {
     public class DependencyGraphView : GraphView
     {
+        private static readonly int FakeNodeIndex = -1;
+
         public DependencyGraphView([NotNull] DependencyContainerBase dependencyContainer)
         {
             if (dependencyContainer == null) throw new ArgumentNullException(nameof(dependencyContainer));
@@ -29,7 +32,7 @@ namespace DELTation.DIFramework.Editor.DependencyGraph
                 var rawDependency = rawDependencies[index];
                 var typeName = rawDependency.GetResultingType().GetFriendlyName();
                 var title = $"{typeName} ({rawDependency.GetInternalDependencyTypeName()})";
-                var node = GenerateNode(index, title);
+                var node = GenerateNode(title);
                 dependencyNodes.Add(node);
                 AddElement(node);
             }
@@ -73,6 +76,8 @@ namespace DELTation.DIFramework.Editor.DependencyGraph
                 }
             }
 
+            ApplyLayerBasedLayout(rawDependencies, dependencyNodes);
+
             foreach (var dependencyNode in dependencyNodes)
             {
                 dependencyNode.RefreshExpandedState();
@@ -80,19 +85,139 @@ namespace DELTation.DIFramework.Editor.DependencyGraph
             }
 
             deleteSelection = delegate { };
+            Focus();
+        }
+
+        // The sugiyama algorithm
+        // https://drive.google.com/file/d/1uAAch1SxLLVBJ53ZX-zX4AnwzwhcXcEM/view
+        private static void ApplyLayerBasedLayout(DependencyWithMetadata[] rawDependencies,
+            List<DependencyNode> dependencyNodes)
+        {
+            var nodeDataList = new NodeData[rawDependencies.Length];
+            PopulateNodeFollowers(rawDependencies, nodeDataList);
+            AssignLayers(nodeDataList, new HashSet<int>(), 0);
+
+            var nodeDataIndicesByLayers = GetNodeDataIndicesByLayers(nodeDataList, out var maxNodesInLayer);
+            SetNodePositions(dependencyNodes, nodeDataIndicesByLayers, maxNodesInLayer);
+        }
+
+        private static void PopulateNodeFollowers(DependencyWithMetadata[] rawDependencies, NodeData[] nodeDataList)
+        {
+            for (var nodeDataIndex = 0; nodeDataIndex < nodeDataList.Length; nodeDataIndex++)
+            {
+                var nodeData = new NodeData();
+                nodeDataList[nodeDataIndex] = nodeData;
+
+                for (var otherIndex = 0; otherIndex < rawDependencies.Length; otherIndex++)
+                {
+                    if (nodeDataIndex == otherIndex) continue;
+
+                    var nodeDependency = rawDependencies[nodeDataIndex];
+                    var otherDependency = rawDependencies[otherIndex];
+                    if (DependencyUtils.DependsOn(otherDependency, nodeDependency))
+                        nodeData.Followers.Add(otherIndex);
+                }
+            }
+        }
+
+        private static void AssignLayers(NodeData[] nodeDataList, HashSet<int> visited, int index, int layer = 0)
+        {
+            if (visited.Contains(index)) return;
+
+            var nodeData = nodeDataList[index];
+            nodeData.NodeLayer = Mathf.Max(nodeData.NodeLayer, layer);
+            visited.Add(index);
+
+            foreach (var followerIndex in nodeData.Followers)
+            {
+                AssignLayers(nodeDataList, visited, followerIndex, layer + 1);
+            }
+        }
+
+        private static List<int>[] GetNodeDataIndicesByLayers(NodeData[] nodeDataList, out int maxNodesInLayer)
+        {
+            var maxLayer = nodeDataList.Select(nd => nd.NodeLayer).Max();
+            var nodeDataIndicesByLayers = new List<int>[maxLayer + 1];
+            maxNodesInLayer = 0;
+
+            for (var layer = 0; layer <= maxLayer; layer++)
+            {
+                var capturedLayer = layer;
+                var nodeIndicesOnThisLayer = nodeDataList
+                        .Select((nd, i) => (nd, i))
+                        .Where(t => t.nd.NodeLayer == capturedLayer)
+                        .Select(t => t.i)
+                        .ToList()
+                    ;
+                nodeDataIndicesByLayers[layer] = nodeIndicesOnThisLayer;
+                maxNodesInLayer = Mathf.Max(maxNodesInLayer, nodeIndicesOnThisLayer.Count);
+            }
+
+            for (var layer = 0; layer < maxLayer; layer++)
+            {
+                var nodeIndicesOnThisLayer = nodeDataIndicesByLayers[layer];
+
+                foreach (var nodeIndex in nodeIndicesOnThisLayer)
+                {
+                    if (nodeIndex == FakeNodeIndex) continue;
+
+                    var nodeData = nodeDataList[nodeIndex];
+                    if (nodeData.Followers.All(f => nodeDataList[f].NodeLayer == nodeData.NodeLayer + 1)) continue;
+
+                    // if there are some followers further from the next layer, insert fake node
+                    var nodeIndicesOnNextLayer = nodeDataIndicesByLayers[layer + 1];
+                    if (nodeIndex < nodeIndicesOnNextLayer.Count)
+                        nodeIndicesOnNextLayer.Insert(nodeIndex, FakeNodeIndex);
+                    else
+                        nodeIndicesOnNextLayer.Add(FakeNodeIndex);
+                }
+            }
+
+            return nodeDataIndicesByLayers;
+        }
+
+        private static void SetNodePositions(List<DependencyNode> dependencyNodes, List<int>[] nodeDataIndicesByLayers,
+            int maxNodesInLayer)
+        {
+            for (var layer = 0; layer < nodeDataIndicesByLayers.Length; layer++)
+            {
+                var nodeDataIndices = nodeDataIndicesByLayers[layer];
+
+                for (var indexOnLayer = 0; indexOnLayer < nodeDataIndices.Count; indexOnLayer++)
+                {
+                    var nodeDataIndex = nodeDataIndices[indexOnLayer];
+                    if (nodeDataIndex == FakeNodeIndex) continue;
+
+                    var node = dependencyNodes[nodeDataIndex];
+                    var nodePosition = node.GetPosition();
+                    nodePosition.x = layer * 300;
+                    var t = indexOnLayer / (nodeDataIndices.Count - 1f);
+                    nodePosition.y = 100 * maxNodesInLayer * t;
+                    node.SetPosition(nodePosition);
+                }
+            }
         }
 
         public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter) => new List<Port>();
 
-        private DependencyNode GenerateNode(int index, string title)
+        private static DependencyNode GenerateNode(string title)
         {
             var node = new DependencyNode
             {
                 title = title,
             };
 
-            node.SetPosition(new Rect(100 + 400 * index, 200, 100, 150));
+            var position = Vector2.zero;
+            var size = new Vector2(150, 100);
+
+            node.SetPosition(new Rect(position, size));
             return node;
+        }
+
+        private class NodeData
+        {
+            public readonly List<int> Followers = new List<int>();
+            public int NodeLayer;
         }
     }
 }
