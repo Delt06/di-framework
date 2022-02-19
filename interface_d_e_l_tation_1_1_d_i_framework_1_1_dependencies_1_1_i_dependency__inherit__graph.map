@@ -1,8 +1,9 @@
 <map id="DELTation.DIFramework.Dependencies.IDependency" name="DELTation.DIFramework.Dependencies.IDependency">
-<area shape="rect" id="node1" title=" " alt="" coords="5,136,257,177"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,169,257,211"/>
 <area shape="rect" id="node2" href="$class_d_e_l_tation_1_1_d_i_framework_1_1_dependencies_1_1_composite_dependency.html" title=" " alt="" coords="305,5,557,47"/>
 <area shape="rect" id="node3" title=" " alt="" coords="305,71,557,112"/>
 <area shape="rect" id="node4" href="$class_d_e_l_tation_1_1_d_i_framework_1_1_dependencies_1_1_factory_method_delegate_dependency.html" title=" " alt="" coords="305,136,557,177"/>
-<area shape="rect" id="node5" href="$class_d_e_l_tation_1_1_d_i_framework_1_1_dependencies_1_1_object_dependency.html" title=" " alt="" coords="305,201,557,243"/>
-<area shape="rect" id="node6" href="$class_d_e_l_tation_1_1_d_i_framework_1_1_dependencies_1_1_type_dependency.html" title=" " alt="" coords="305,267,557,308"/>
+<area shape="rect" id="node5" title=" " alt="" coords="305,201,557,243"/>
+<area shape="rect" id="node6" href="$class_d_e_l_tation_1_1_d_i_framework_1_1_dependencies_1_1_object_dependency.html" title=" " alt="" coords="305,267,557,308"/>
+<area shape="rect" id="node7" href="$class_d_e_l_tation_1_1_d_i_framework_1_1_dependencies_1_1_type_dependency.html" title=" " alt="" coords="305,332,557,373"/>
 </map>
