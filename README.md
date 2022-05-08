@@ -136,7 +136,8 @@ public sealed class Movement : MonoBehaviour
 ```
 
 ## Extensions
-- [Event System](https://github.com/Delt06/di-events)
+- [di-events](https://github.com/Delt06/di-events)
+- [di-systems](https://github.com/Delt06/di-systems)
 
 ## Projects using DI Framework
 - https://github.com/Delt06/computer-battle
