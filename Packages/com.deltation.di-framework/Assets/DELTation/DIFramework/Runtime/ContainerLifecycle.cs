@@ -33,6 +33,12 @@ namespace DELTation.DIFramework
             }
         }
 
+        private void Reset()
+        {
+            if (_container == null)
+                _container = GetComponent<DependencyContainerBase>();
+        }
+
         protected virtual void Start()
         {
             AssetThatContainerIsAssigned();
