@@ -28,8 +28,6 @@ namespace DELTation.DIFramework.Editor
                 richText = true,
             };
 
-            _report = new ResolverReport((Resolver) serializedObject.targetObject);
-
             _overrideDependencySourceProp = serializedObject.FindProperty("_overrideDependencySource");
             _dependencySourceProp = serializedObject.FindProperty("_dependencySource");
             _destroyWhenFinishedProp = serializedObject.FindProperty("_destroyWhenFinished");
@@ -37,8 +35,6 @@ namespace DELTation.DIFramework.Editor
 
         public override void OnInspectorGUI()
         {
-            _report.Generate();
-
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.PropertyField(_overrideDependencySourceProp);
             if (_overrideDependencySourceProp.boolValue)
@@ -51,6 +47,14 @@ namespace DELTation.DIFramework.Editor
             if (serializedObject.isEditingMultipleObjects) return;
 
             EditorGUILayout.Space();
+
+            if (GUILayout.Button("Generate Report"))
+            {
+                _report ??= new ResolverReport((Resolver) serializedObject.targetObject);
+                _report.Generate();
+            }
+
+            if (_report == null) return;
 
             GUILayout.BeginHorizontal();
             EditorGUILayout.LabelField("<size=14><b>Dependencies</b></size>:", _headerStyle);
